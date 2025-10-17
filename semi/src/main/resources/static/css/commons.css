@@ -1,0 +1,442 @@
+
+div {
+    box-shadow: 0 0 1px 0 grey;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 빙그레 메로나체, 고딕, sans-serif;
+}
+
+.left {
+    text-align: left !important;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.right {
+    text-align: right !important;
+}
+
+
+.cell {
+    margin: 10px auto;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+.btn {
+    font-size: 16px;
+    outline: none;
+    padding: 0.5em 0.75em;
+    cursor: pointer;
+    border: 1px solid #636e72;
+    border-radius: 0.1em;
+    
+    text-decoration: none;
+    color: #2c3e50;
+    background-color: #f2f2f2;
+    display: inline-block;
+    text-align: center;
+}
+.btn:hover{
+    filter: brightness(92%);
+}
+.btn.btn-positive {
+    background-color: #0984e3;
+    border-color: #0984e3;
+    color: white;
+}
+.btn.btn-negative {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
+}
+.btn.btn-neutral {
+    background-color:#7f8c8d;
+    border-color: #7f8c8d;
+    color: white;
+}
+
+.field {
+    outline: none;
+    font-size: 16px;
+    padding: 0.5em 0.75em;
+    border: 1px solid #636e72;
+    border-radius: 0.1em;
+}
+
+.field:focus {
+    border-color: #313739;
+}
+
+textarea.field {
+    resize: vertical;
+}
+
+.w-25p{width: 25% !important;}
+.w-50p{width: 50% !important;}
+.w-75p{width: 75% !important;}
+.w-100p{width: 100% !important;}
+
+.w-200 { width: 200px !important;}
+.w-250 { width: 250px !important;}
+.w-300 { width: 300px !important;}
+.w-350 { width: 350px !important;}
+.w-400 { width: 400px !important;}
+.w-450 { width: 450px !important;}
+.w-500 { width: 500px !important;}
+.w-550 { width: 550px !important;}
+.w-600 { width: 600px !important;}
+.w-650 { width: 650px !important;}
+.w-700 { width: 700px !important;}
+.w-750 { width: 750px !important;}
+.w-800 { width: 800px !important;}
+.w-850 { width: 850px !important;}
+.w-900 { width: 900px !important;}
+.w-950 { width: 950px !important;}
+.w-1000 { width: 1000px !important;}
+.w-1050 { width: 1050px !important;}
+.w-1100 { width: 1100px !important;}
+.w-1150 { width: 1150px !important;}
+.w-1200 { width: 1200px !important;}
+
+.mt-0 {margin-top: 0px !important;}
+.mt-10 {margin-top: 10px !important;}
+.mt-20 {margin-top: 20px !important;}
+.mt-30 {margin-top: 30px !important;}
+.mt-40 {margin-top: 40px !important;}
+.mt-50 {margin-top: 50px !important;}
+
+.mb-0 {margin-bottom: 0px !important;}
+.mb-10 {margin-bottom: 10px !important;}
+.mb-20 {margin-bottom: 20px !important;}
+.mb-30 {margin-bottom: 30px !important;}
+.mb-40 {margin-bottom: 40px !important;}
+.mb-50 {margin-bottom: 50px !important;}
+
+.ms-0 {margin-left: 0px !important;}
+.ms-5 {margin-left: 5px !important;}
+.ms-10 {margin-left: 10px !important;}
+.ms-20 {margin-left: 20px !important;}
+.ms-30 {margin-left: 30px !important;}
+.ms-40 {margin-left: 40px !important;}
+.ms-50 {margin-left: 50px !important;}
+
+.me-0 {margin-right: 0px !important;}
+.me-5 {margin-right: 5px !important;}
+.me-10 {margin-right: 10px !important;}
+.me-20 {margin-right: 20px !important;}
+.me-30 {margin-right: 30px !important;}
+.me-40 {margin-right: 40px !important;}
+.me-50 {margin-right: 50px !important;}
+
+/*
+    글자 색
+*/
+
+.red{color: #d63031 !important}
+.orange{color: #e17055 !important}
+.yellow{color: #fdcb6e !important}
+.green{color: #00cec9 !important}
+.blue{color: #0984e3 !important}
+.purple{color: #6c5ce7 !important}
+.black{color: #2d3436 !important}
+.gray{color: #636e72 !important}
+.white{color: white !important}
+
+/*배경 색*/
+.bgred{background-color: #d63031 !important}
+.bgorange{background-color: #e17055 !important}
+.bgyellow{background-color: #fdcb6e !important}
+.bggreen{background-color: #00cec9 !important}
+.bgblue{background-color: #0984e3 !important}
+.bgpurple{background-color: #6c5ce7 !important}
+.bgblack{background-color: #2d3436 !important}
+.bggray{background-color: #636e72 !important}
+.bgwhite{background-color: white !important}
+
+.table {
+    /* border: 1px solid #636e72; */
+    border-collapse: collapse;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.table.table-border,
+.table.table-border > thead > tr > th,
+.table.table-border > thead > tr > td,
+.table.table-border > tbody > tr > th,
+.table.table-border > tbody > tr > td,   
+.table.table-border > tfoot > tr > td, 
+.table.table-border > tfoot > tr > td {
+    border: 1px solid #636e72;
+}
+
+.table.table-border-bottom,
+.table.table-border-bottom > thead > tr > th,
+.table.table-border-bottom > thead > tr > td,
+.table.table-border-bottom > tbody > tr > th,
+.table.table-border-bottom > tbody > tr > td,   
+.table.table-border-bottom > tfoot > tr > td, 
+.table.table-border-bottom > tfoot > tr > td {
+    /* border: 1px solid #636e72; */
+    border-bottom: 1px solid #636e72;
+    border-top: 1px solid #636e72;
+}
+        
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,   
+.table > tfoot > tr > td, 
+.table > tfoot > tr > td {
+    /* border: 1px solid #636e72; */
+    font-weight: inherit; /*가장 가까운 외부영역의 규칙을 따라라.*/
+    font-size: inherit;
+    text-align: center;
+    padding: 0.25em;
+}
+/* 
+    확장 스타일 3번 - 줄무늬 테이블
+    - nth-child는 순서와 패턴을 지정할 때 사용
+    - n이라는 글자를 쓰면 n=1,2,3,4,5,..로 변하며 적용
+*/
+.table.table-striped > thead > tr {
+    background-color: #dfe6e9;
+}
+.table.table-striped > tbody > tr:nth-child(2n) {
+    background-color: #f2f2f2;
+}
+
+/* 확장 스타일 2번 - 마우스에 반응하는 테이블 */
+.table.table-hover > tbody > tr:hover {
+    background-color: #dfe6e9;
+}
+
+/* 페이징 관련*/
+
+.pagination {
+    text-align: center;
+    font-size: 16;
+}
+.pagination > a {
+    text-decoration: none;
+    color: #2d3436;
+    display: inline-block;
+    /* border: 1px solid transparent; */
+    min-width: 2.5em;
+    padding: 0.5em;
+}
+.pagination > a:hover,
+.pagination > a.on{
+    /* border: 1px solid #2d3436; */
+    /* box-shadow: x y b s c; */
+    box-shadow: 0 0 2px 1px #2d3436;
+}
+
+/* 뱃지 스타일 */
+.badge {
+	background-color: #fdcb6e;
+	border: 1px solid #2d3436;
+	border-radius: 11px;
+	padding: 0 0.25em;
+}
+
+/* 
+            floatbox 디자인
+            - float는 좌/우 원하는 곳에 손쉽게 배치하는 속성
+            - 일반 디자인과는 어울리기가 힘듦
+            - 독자적인 영역(float-box)을 만들어서 자동초기화.
+            - 가상의 영역을 선택하여 실제 영역처럼 사용(가상선택자)
+                - ::before는 시작 지점
+                - ::after는 종료 지점
+                - 생성을 먼저 해야함
+*/
+.float-box > .float-left {
+    float: left;
+    box-shadow: 0 0 1px 0 gray;
+}
+
+.float-box > .float-right {
+    float: right;
+}
+.float-box::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* text-decoration 제거용 */
+
+.link {
+    text-decoration: none;
+}
+
+/* Flexible 디자인 */
+.flex-box {
+    display: flex;
+    flex-direction: row;
+}
+.inline-flex-box {
+    display: inline-flex;
+    flex-direction: row;
+}
+/* 세로형 배치를 원할 경우 */
+.flex-box.flex-vertical,
+.inline-flex-box.flex-vertical {
+    flex-direction: column;
+}
+/* 플렉스 배치 내에서 나머지를 모두 차지 */
+.flex-box > .flex-fill,
+.inline-flex-box > .flex-fill{
+    flex-grow: 1;
+}
+/* 크기가 충분할 경우 정가운데 배치 */
+.flex-box.flex-center,
+.inline-flex-box.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+/* 기본 메뉴 디자인 */
+
+.menu {
+    flex-direction: row;
+    background-color: #ffffff;
+    display: flex;
+}
+.menu > a {
+    background-color: #ffffff;
+    font-size: 20px;
+    text-decoration: none;
+    color: #333333;
+    display: inline-block;
+    width: 130px;
+    text-align: center;
+    padding: 0.5em;
+}
+
+.menu > a:hover{
+    filter: brightness(90%);
+}
+
+.menu > .divider {
+    margin-left: auto;
+    margin-right: auto;
+}
+.ellipsis {
+    /* 
+    혹시라도 넘어가면 말줄임표 처리 
+    - 반드시 4가지 속성이 존재해야만 적용 가능
+    - 폭(width), 넘침(overflow), 글자 넘침(text-overflow), 줄바꿈(whitespace)
+    */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.dropdown-menu,
+.dropdown-menu ul,
+.dropdown-menu li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/* 1 */
+.dropdown-menu ul {
+    display: none;
+}
+/* 2 */
+.dropdown-menu {
+    display: flex;
+}
+/* 3 */
+.dropdown-menu li:hover > ul {
+    display:block;
+}
+/* 4 */
+.dropdown-menu li {
+    position: relative;
+    width: 130px;
+}
+.dropdown-menu ul {
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    width: 100%;
+}
+/* 5 */
+.dropdown-menu a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    background-color: #636e72;
+    width: 100%;
+    text-align: center;
+    padding: 0.25em 0.5em;
+}
+.dropdown-menu a:hover {
+    font-weight: 400;
+    filter: brightness(105%);
+}
+/* 6 */
+/* .dropdown-menu > .dropdown > .collapse .collapse */
+.dropdown-menu > li li > ul {
+    top: 0;
+    left: 100%;
+}
+/* 7 */
+.dropdown-menu > .divider {
+    margin-left: auto;
+    margin-right: auto;
+}
+/* 8 */
+.dropdown-menu > .divider ~ li li > ul {
+    top: 0;
+    right: 100%;
+    left: auto;
+}
+/* 배경색 설정 */
+.dropdown-menu,
+.dropdown-menu ul {
+    background-color: #636e72;
+}
+
+/* 목표: .field에 .success / .fail이 추가된 상황에서의 디자인 */
+.field.success {
+    border-color: #0984e3 !important;
+    
+}
+.field.fail,
+.field.fail2 {
+    border-color: #d63031 !important;
+}
+
+.success-feedback,
+.fail-feedback,
+.fail2-feedback {
+    display: none;
+}
+
+.field.success ~ .success-feedback {
+    display: block;
+}
+
+.field.fail ~ .fail-feedback,
+.field.fail2 ~ .fail2-feedback {
+    display: block;
+}
+
+.success-feedback {
+    color: #0984e3;
+}
+
+.fail-feedback,
+.fail2-feedback {
+    color: #d63031;
+}
