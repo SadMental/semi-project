@@ -51,8 +51,8 @@ public class MemberController {
 		if(findDto == null) return "redirct:login?error";
 		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirct:login?error";
 		
-		session.setAttribute("login_id", findDto.getMemberId());
-		session.setAttribute("login_level", findDto.getMemberLevel());
+		session.setAttribute("loginId", findDto.getMemberId());
+		session.setAttribute("loginLevel", findDto.getMemberLevel());
 		
 		return "/WEB-INF/views/home.jsp";
 	}
@@ -61,8 +61,8 @@ public class MemberController {
 	public String logout(
 			HttpSession session
 			) {
-		session.removeAttribute("login_id");
-		session.removeAttribute("login_level");
+		session.removeAttribute("loginId");
+		session.removeAttribute("loginLevel");
 		
 		return "redirect:/";
 	}
