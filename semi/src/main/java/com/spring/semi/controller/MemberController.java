@@ -48,8 +48,8 @@ public class MemberController {
 			HttpSession session
 			) {
 		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
-		if(findDto == null) return "redirct:login?error";
-		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirct:login?error";
+		if(findDto == null) return "redirect:login?error";
+		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:login?error";
 		
 		session.setAttribute("loginId", findDto.getMemberId());
 		session.setAttribute("loginLevel", findDto.getMemberLevel());
