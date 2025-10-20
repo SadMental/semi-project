@@ -56,4 +56,14 @@ public class MemberController {
 		
 		return "/WEB-INF/views/home.jsp";
 	}
+	
+	@GetMapping("/logout")
+	public String logout(
+			HttpSession session
+			) {
+		session.removeAttribute("login_id");
+		session.removeAttribute("login_level");
+		
+		return "redirect:/";
+	}
 }
