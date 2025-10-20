@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class BoardDto {
 	private int boardCategoryNo;
 	private int boardNo;
+	private String boardTitle;
 	private String boardContent;
 	private String boardWriter;
 	private Timestamp boardWtime;
