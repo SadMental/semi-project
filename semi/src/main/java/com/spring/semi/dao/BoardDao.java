@@ -24,7 +24,7 @@ public class BoardDao {
 	}
 	
 	public void insert(BoardDto boardDto) {
-		String sql = "insert into";
+		String sql = "insert into ";
 		Object[] params = {};
 		jdbcTemplate.update(sql, params);
 	}
