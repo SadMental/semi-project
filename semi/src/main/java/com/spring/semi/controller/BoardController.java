@@ -14,7 +14,7 @@ import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dto.BoardDto;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/free/board")
 public class BoardController {
 	@Autowired
 	private BoardDao boardDao;
@@ -28,14 +28,14 @@ public class BoardController {
 		return "/WEB-INF/views/board/list.jsp";
 	}
 	
-	@GetMapping("/insert")
-	public String insert() 
+	@GetMapping("/write")
+	public String write() 
 	{
-		return "/WEB-INF/views/board/insert.jsp";
+		return "/WEB-INF/views/board/write.jsp";
 	}
 	
-	@PostMapping("/insert")
-	public String insert(@ModelAttribute BoardDto boardDto) 
+	@PostMapping("/write")
+	public String write(@ModelAttribute BoardDto boardDto) 
 	{
 		int sequence = boardDao.sequence();
 		boardDto.setBoardNo(sequence);

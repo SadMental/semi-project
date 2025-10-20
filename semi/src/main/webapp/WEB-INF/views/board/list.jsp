@@ -3,6 +3,43 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1>board-list</h1>
+<div class = "container w-900">
+    <div class = "cell mb-30 center">
+        <h1>자유게시판</h1>
+    </div>
+	
+	<div class = "cell right">
+	    <a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
+	</div>
+
+    <div class = "cell">
+        <table class = "table w-100p center">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>조회수</th>
+                    <th><i class="fa-solid fa-heart red"></i></th>
+                </tr>
+            </thead>
+
+            <tbody>
+				<c:forEach var="boardDto" items="${boardList}">
+					<tr>
+						<td>${boardDto.boardNo}</td>
+						<td><a href="#">${boardDto.boardTitle}</a></td>
+						<td>${boardDto.boardWriter}</td>
+						<td>${boardDto.boardView}</td>
+						<td>${boardDto.boardLike}</td>
+					</tr>
+				</c:forEach>
+            </tbody>
+        
+        <div class = "cell right">
+	    	<a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
+		</div>
+    </div>
+</div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
