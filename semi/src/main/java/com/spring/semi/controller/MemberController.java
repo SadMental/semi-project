@@ -54,6 +54,6 @@ public class MemberController {
 		session.setAttribute("login_id", findDto.getMemberId());
 		session.setAttribute("login_level", findDto.getMemberLevel());
 		
-		return "/WEB-INF/views/home.jsp";
+		return "redirect:/";
 	}
 }
