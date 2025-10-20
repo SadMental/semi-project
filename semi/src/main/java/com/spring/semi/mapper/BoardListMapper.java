@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.spring.semi.dto.BoardDto;
 
 @Component
-public class BoardMapper  implements RowMapper<BoardDto> {
+public class BoardListMapper  implements RowMapper<BoardDto> {
 
 	@Override
 	public BoardDto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -17,7 +17,7 @@ public class BoardMapper  implements RowMapper<BoardDto> {
 				.boardCategoryNo(rs.getInt("board_category_no"))
 				.boardNo(rs.getInt("board_no"))
 				.boardTitle(rs.getString("board_title"))
-				.boardContent(rs.getString("board_content"))
+				//.boardContent(rs.getString("board_content"))
 				.boardWriter(rs.getString("board_writer"))
 				.boardWtime(rs.getTimestamp("board_wtime"))
 				.boardEtime(rs.getTimestamp("board_etime"))
