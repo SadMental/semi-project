@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class MailDto {
-	private String MailSender;
-	private String MailTarget;
-	private String MailContent;
-	private Timestamp MailWtime;
+	private int mailNo;
+	private String mailSender;
+	private String mailTarget;
+	private String mailContent;
+	private Timestamp mailWtime;
 }
