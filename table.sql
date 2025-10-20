@@ -70,6 +70,8 @@ create table board(
 	board_category_no references category(category_no) on delete cascade,
     -- 게시글의 번호
 	board_no number primary key,
+    -- 게시글의 제목
+    board_title varchar2(1000) not null,
     -- 게시글의 내용
 	board_content varchar2(4000) not null,
     -- 게시글의 작성자
