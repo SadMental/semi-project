@@ -22,7 +22,7 @@ public class BoardController {
 	@RequestMapping("/list")
 	public String list(Model model) 
 	{	
-		List<BoardDto> boardList = boardDao.selectList();
+		List<BoardDto> boardList = boardDao.selectList(1);
 		model.addAttribute("boardList", boardList);
 		
 		return "/WEB-INF/views/board/list.jsp";
@@ -40,7 +40,7 @@ public class BoardController {
 		int sequence = boardDao.sequence();
 		boardDto.setBoardNo(sequence);
 		
-		boardDao.insert(boardDto);
+		boardDao.insert(boardDto, 1);
 		return "redirect:/board/list";
 	}
 	

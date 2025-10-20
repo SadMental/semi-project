@@ -23,15 +23,22 @@ public class BoardDao {
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	
-	public void insert(BoardDto boardDto) {
-		String sql = "insert into";
-		Object[] params = {};
+	public void insert(BoardDto boardDto, int boardType) {
+		String sql = "insert into board (board_category_no, board_no, "
+				+ "board_title, board_content) "
+				+ "values (?, ?, ?, ?)";
+		Object[] params = {boardType, 
+				boardDto.getBoardNo(),
+				boardDto.getBoardTitle(),
+				boardDto.getBoardContent()};
 		jdbcTemplate.update(sql, params);
 	}
 	
-	public List<BoardDto> selectList()
+	public List<BoardDto> selectList(int boardType)
 	{
-		String sql = "select * from board order by board_no asc";
-		return jdbcTemplate.query(sql, boardListMapper);
+		String sql = "select * from board where board_category_no=? "
+				+ "order by board_no asc";
+		Object[] params = {boardType};
+		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
 }
