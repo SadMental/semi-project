@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dto.BoardDto;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/free/board")
 public class BoardController {
@@ -35,13 +37,16 @@ public class BoardController {
 	}
 	
 	@PostMapping("/write")
-	public String write(@ModelAttribute BoardDto boardDto) 
+	public String write(@ModelAttribute BoardDto boardDto, HttpSession session) 
 	{
 		int sequence = boardDao.sequence();
 		boardDto.setBoardNo(sequence);
 		
+		String loginId = (String)session.getAttribute("loginId");
+		boardDto.setBoardWriter(loginId);
+		
 		boardDao.insert(boardDto, 1);
-		return "redirect:/board/list";
+		return "redirect:/free/board/list";
 	}
 	
 	

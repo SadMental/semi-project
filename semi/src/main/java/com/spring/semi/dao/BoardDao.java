@@ -26,9 +26,10 @@ public class BoardDao {
 	public void insert(BoardDto boardDto, int boardType) {
 		String sql = "insert into board (board_category_no, board_no, "
 				+ "board_writer, board_title, board_content) "
-				+ "values (?, ?, "+"asdf"+", ?, ?)";
+				+ "values (?, ?, ?, ?, ?)";
 		Object[] params = {boardType, 
 				boardDto.getBoardNo(),
+				boardDto.getBoardWriter(),
 				boardDto.getBoardTitle(),
 				boardDto.getBoardContent()};
 		jdbcTemplate.update(sql, params);
@@ -37,7 +38,7 @@ public class BoardDao {
 	public List<BoardDto> selectList(int boardType)
 	{
 		String sql = "select * from board where board_category_no=? "
-				+ "order by board_no asc";
+				+ "order by board_no desc";
 		Object[] params = {boardType};
 		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
