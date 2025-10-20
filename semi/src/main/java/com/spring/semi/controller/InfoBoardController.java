@@ -34,9 +34,6 @@ public class InfoBoardController {
 	@PostMapping("/write")
 	public String insert(@ModelAttribute BoardDto boardDto, HttpSession session)
 	{
-		String loginId=(String) session.getAttribute("loginId");
-		String memberLevel = (String) session.getAttribute("loginId");
-		boardDto.setBoardWriter(loginId);
 		int boardNo = boardDao.sequence();
 		boardDto.setBoardNo(boardNo);
 		
