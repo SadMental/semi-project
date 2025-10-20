@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.HeaderDto;
@@ -53,7 +54,7 @@ public class AdoptionBoardController {
 	   BoardDto boardDto =boardDao.selectOne(boardNo);
 	  if(boardDto==null) throw new TargetNotfoundException("존재하지 않는글");
 	  Document document = Jsoup.parse(boardDto.getBoardContent());
-	  Element elements = document.select(".custom-image"); // <img>를 찾고
+	  Elements elements = document.select(".custom-image"); // <img>를 찾고
 	  for(Element element : elements) {
 		int attachmentNo =Integer.parseInt(element.attr("data-pk"));
 		attachmentServcie.delete(attachmentNo);
