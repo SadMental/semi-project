@@ -4,7 +4,7 @@ $(function(){
         minHeight: 200, // set minimum height of editor
         maxHeight: 400, // set maximum height of editor
 
-        placeholder:"타인 죽는다?",
+        placeholder:"내용을 입력하세요.",
         toolbar:[
         ["font", ["style", "fontname", "fontsize", "forecolor", "backcolor"]],
         ["style", ["bold", "italic", "underline", "strikethrough"]],

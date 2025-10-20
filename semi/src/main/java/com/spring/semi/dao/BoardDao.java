@@ -25,8 +25,8 @@ public class BoardDao {
 	
 	public void insert(BoardDto boardDto, int boardType) {
 		String sql = "insert into board (board_category_no, board_no, "
-				+ "board_title, board_content) "
-				+ "values (?, ?, ?, ?)";
+				+ "board_writer, board_title, board_content) "
+				+ "values (?, ?, "+"asdf"+", ?, ?)";
 		Object[] params = {boardType, 
 				boardDto.getBoardNo(),
 				boardDto.getBoardTitle(),
