@@ -3,6 +3,8 @@ package com.spring.semi.aop;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.spring.semi.error.NeedPermissionException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
