@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class BoardDto {
-	private int BoardCategoryNo;
-	private int BoardNo;
-	private String BoardContent;
-	private String BoardWriter;
-	private Timestamp BoardWtime;
-	private Timestamp BoardEtime;
-	private int BoardLike;
-	private int BoardView;
-	private int BoardHeader;
+	private int boardCategoryNo;
+	private int boardNo;
+	private String boardContent;
+	private String boardWriter;
+	private Timestamp boardWtime;
+	private Timestamp boardEtime;
+	private int boardLike;
+	private int boardView;
+	private int boardHeader;
 }

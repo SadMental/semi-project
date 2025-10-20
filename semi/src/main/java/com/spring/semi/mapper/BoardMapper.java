@@ -1,0 +1,28 @@
+package com.spring.semi.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import com.spring.semi.dto.BoardDto;
+
+@Component
+public class BoardMapper  implements RowMapper<BoardDto> {
+
+	@Override
+	public BoardDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+		return BoardDto.builder()
+				.boardCategoryNo(rs.getInt("board_category_no"))
+				.boardNo(rs.getInt("board_no"))
+				.boardContent(rs.getString("board_content"))
+				.boardWriter(rs.getString("board_writer"))
+				.boardWtime(rs.getTimestamp("board_wtime"))
+				.boardEtime(rs.getTimestamp("board_etime"))
+				.boardLike(rs.getInt("board_like"))
+				.boardView(rs.getInt("board_view"))
+				.boardHeader(rs.getInt("board_header"))
+				.build();
+	}
+}

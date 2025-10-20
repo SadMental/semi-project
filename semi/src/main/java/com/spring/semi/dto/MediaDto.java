@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class MediaDto {
-	private int MediaNo;
-	private String MediaType;
-	private String MediaName;
-	private Timestamp MedieWtime;
-	private String MediaLink;
+	private int mediaNo;
+	private String mediaType;
+	private String mediaName;
+	private Timestamp mediaWtime;
+	private String mediaLink;
 }

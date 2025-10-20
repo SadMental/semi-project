@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class AnimalDto {
-	private int AnimalNo;
-	private String AnimalName;
-	private String AnimalPermission;
+	private int animalNo;
+	private String animalName;
+	private String animalPermission;
 }
