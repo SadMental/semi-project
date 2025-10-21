@@ -2,6 +2,7 @@ package com.spring.semi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.MemberDto;
+import com.spring.semi.error.NeedPermissionException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -65,6 +67,40 @@ public class MemberController {
 		session.removeAttribute("loginLevel");
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/edit")
+	public String edit(
+			HttpSession session,
+			Model model
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(login_id);
+		model.addAttribute("memberDto", memberDto);
+		return "/WEB-INF/views/member/edit.jsp";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(
+			HttpSession session,
+			@ModelAttribute MemberDto memberDto
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		if(login_id == null) throw new NeedPermissionException("임시");
+		MemberDto originDto = memberDao.selectOne(login_id);
+		if(originDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:edit?error";
+		MemberDto editDto = MemberDto.builder()
+						.memberNickname(memberDto.getMemberNickname())
+						.memberDesciption(memberDto.getMemberDesciption())
+						.memberEmail(memberDto.getMemberEmail())
+						.memberAuth(memberDto.getMemberAuth())
+						.memberAnimal(memberDto.getMemberAnimal())
+						.build();
+		
+		memberDao.updateForUser(editDto);
+		
+		return "redircet:edit";
+		
 	}
 	
 }

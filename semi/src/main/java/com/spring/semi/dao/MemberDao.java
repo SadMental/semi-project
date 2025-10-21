@@ -38,7 +38,7 @@ public class MemberDao {
 	}
 	
 	public boolean updateForUser(MemberDto memberDto) {
-		String sql = "update set member_nickname = ?, member_pw = ?, member_email = ?, "
+		String sql = "update set member_pw = ?, member_nickname = ?, member_email = ?, "
 												+ "member_description = ?, member_auth = ?, member_animal = ?"
 												+ "where member_id = ?";
 		Object[] params = {
@@ -58,5 +58,6 @@ public class MemberDao {
 		return list.isEmpty()? null : list.get(0);
 	}
 	
+
 	
 }
