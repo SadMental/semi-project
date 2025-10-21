@@ -109,8 +109,6 @@ public class MemberController {
 			) {
 		String login_id = (String) session.getAttribute("loginId");
 		MemberDto findDto = memberDao.selectOne(login_id);
-		System.out.println("change_pw : " + change_pw);
-		System.out.println("member_pw : " + member_pw);
 		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:password?error";
 		memberDao.updateForUserPassword(change_pw, findDto.getMemberId());
 		
@@ -127,6 +125,25 @@ public class MemberController {
 		model.addAttribute("memberDto", memberDto);
 		
 		return "/WEB-INF/views/member/mypage.jsp";
+	}
+	
+	@GetMapping("/drop")
+	public String drop() {
+		return "/WEB-INF/views/member/drop.jsp";
+	}
+	
+	@PostMapping("/drop")
+	public String drop(
+			HttpSession session,
+			@RequestParam String member_pw
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		MemberDto findDto = memberDao.selectOne(login_id);
+		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:drop?error";
+		memberDao.delete(login_id);
+		session.removeAttribute("loginId");
+		session.removeAttribute("loginLevel");
+		return "/WEB-INF/views/member/thankyou.jsp";
 	}
 	
 }
