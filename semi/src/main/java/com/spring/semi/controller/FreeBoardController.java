@@ -22,15 +22,15 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/board/free")
-public class BoardController {
-	private final MediaService attachmentService;
+public class FreeBoardController {
+	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
 	
-    BoardController(MediaService attachmentService) {
-        this.attachmentService = attachmentService;
+    FreeBoardController(MediaService mediaService) {
+        this.mediaService = mediaService;
     }
 	
 	@RequestMapping("/list")

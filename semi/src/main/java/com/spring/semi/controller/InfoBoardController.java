@@ -19,7 +19,7 @@ import com.spring.semi.dto.MemberDto;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/infoBoard")
+@RequestMapping("/board/info")
 public class InfoBoardController {
 	@Autowired
 	private BoardDao boardDao;
@@ -29,7 +29,7 @@ public class InfoBoardController {
 	@GetMapping("/write")
 	public String write()
 	{
-      return "/WEB-INF/views/infoBoard/write.jsp";
+      return "/WEB-INF/views/board/info/write.jsp";
 	}
 	@PostMapping("/write")
 	public String write(@ModelAttribute BoardDto boardDto, HttpSession session)
@@ -49,7 +49,7 @@ public class InfoBoardController {
 		List<BoardDto> boardList = boardDao.selectList(2);
 		model.addAttribute("boardList", boardList);
 		
-		return "/WEB-INF/views/infoBoard/list.jsp";
+		return "/WEB-INF/views/board/info/list.jsp";
 		
 	}
 	//상세
@@ -62,7 +62,7 @@ public class InfoBoardController {
 			MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter()); 
 			model.addAttribute("memberDto", memberDto);
 		}		
-		return "/WEB-INF/views/infoBoard/detail.jsp";				
+		return "/WEB-INF/views/board/info/detail.jsp";				
 	}
 	//삭제
 	//수정

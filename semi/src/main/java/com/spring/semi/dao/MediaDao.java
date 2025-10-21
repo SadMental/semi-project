@@ -10,7 +10,7 @@ import com.spring.semi.dto.MediaDto;
 import com.spring.semi.mapper.MediaMapper;
 
 @Repository
-public class MediaDao 
+public class MediaDao
 {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
