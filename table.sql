@@ -106,7 +106,7 @@ create table media(
     -- 미디어(이미지, 영상)의 번호
 	media_no number primary key,
     -- 미디어의 종류(확장자)
-	media_type char(4) not null,
+	media_type varchar2(10) not null,
     -- 미디어의 본래 이름
 	media_name varchar2(1000) not null,
     -- 미디어의 크기
