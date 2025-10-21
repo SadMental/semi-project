@@ -65,12 +65,18 @@ public class InfoBoardController {
 		return "/WEB-INF/views/infoBoard/detail.jsp";				
 	}
 	//삭제
-	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo) {
-		BoardDto boardDto = boardDao.selectOne(boardNo);//후에 예외처리를 위한
-		boardDao.delete(boardNo);
-		return "redirect:list";
+	@GetMapping("/delete")
+	public String showDeleteForm(@RequestParam int boardNo, Model model) {
+	    BoardDto boardDto = boardDao.selectOne(boardNo);
+	    model.addAttribute("boardDto", boardDto);
+	    return "/WEB-INF/views/infoBoard/delete.jsp";
 	}
+	@PostMapping("/delete")
+	public String doDelete(@RequestParam int boardNo) {
+	    boardDao.delete(boardNo);
+	    return "redirect:list";
+	}
+
 	//수정
 	@GetMapping("/edit")
 	public String edit(Model model, @RequestParam int boardNo) {
