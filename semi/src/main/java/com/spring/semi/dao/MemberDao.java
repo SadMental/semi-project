@@ -51,7 +51,7 @@ public class MemberDao {
 	}
 	
 	public boolean updateForUserPassword(String member_pw, String member_id) {
-		String sql = "update member set member_pw = ? where member_id = ?";
+		String sql = "update member set member_pw = ?, member_change = systimestamp where member_id = ?";
 		Object[] params = {
 				member_pw, member_id
 		};
