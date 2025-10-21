@@ -17,10 +17,6 @@ public class MemberDto {
 	private int memberPoint;
 	private int memberLevel;
 	private String memberAuth;
-<<<<<<< HEAD
-=======
-	private int memberAnimal;
->>>>>>> refs/remotes/origin/main
 	private Timestamp memberJoin;
 	private Timestamp memberLogin;
 	private Timestamp memberChange;
