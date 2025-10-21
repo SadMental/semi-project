@@ -51,8 +51,6 @@ public class BoardController {
 	@PostMapping("/write")
 	public String write(@ModelAttribute BoardDto boardDto, HttpSession session) 
 	{
-		System.out.println(boardDto);
-		
 		int boardNo = boardDao.sequence();
 		boardDto.setBoardNo(boardNo);
 		
