@@ -30,6 +30,8 @@
         <!-- 헤더(Header) -->
         <h2>Header</h2>
         
+        <jsp:include page="/WEB-INF/views/template/menu.jsp"></jsp:include>
+        
 		<!-- 섹션 -->
 		<div class="flex-fill">    
 			<hr>	
