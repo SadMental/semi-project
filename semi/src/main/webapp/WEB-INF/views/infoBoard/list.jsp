@@ -84,6 +84,10 @@
     padding: 40px 0;
     color: #8c6d5b;
   }
+  .mb-20 {
+  margin-bottom: 20px;
+}
+  
 </style>
 
 <div class="container w-800">
@@ -91,8 +95,8 @@
         <h1>정보 게시판</h1>
     </div>
 
-    <div class="cell right">
-        <a href="write" class="btn btn-positive">새글 작성</a>
+    <div class="cell right mb-20">
+        <a href="write" class="btn btn-positive">새로운 글 작성</a>
     </div>
 
     <c:choose>
@@ -114,7 +118,7 @@
                         <c:forEach var="boardDto" items="${boardList}">
                             <tr>
                                 <td>${boardDto.boardNo}</td>
-                                <td style="text-align: left;">
+                                <td style="text-align: center;">
                                     <a href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
                                 </td>
                                 <td>${boardDto.boardWriter}</td>
