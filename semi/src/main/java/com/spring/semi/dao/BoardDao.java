@@ -68,4 +68,6 @@ public class BoardDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
+	//attachment
+	
 }
