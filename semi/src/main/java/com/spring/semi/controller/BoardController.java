@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dto.BoardDto;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/free/board")
 public class BoardController {
 	@Autowired
 	private BoardDao boardDao;
@@ -22,26 +24,29 @@ public class BoardController {
 	@RequestMapping("/list")
 	public String list(Model model) 
 	{	
-		List<BoardDto> boardList = boardDao.selectList();
+		List<BoardDto> boardList = boardDao.selectList(1);
 		model.addAttribute("boardList", boardList);
 		
 		return "/WEB-INF/views/board/list.jsp";
 	}
 	
-	@GetMapping("/insert")
-	public String insert() 
+	@GetMapping("/write")
+	public String write() 
 	{
-		return "/WEB-INF/views/board/insert.jsp";
+		return "/WEB-INF/views/board/write.jsp";
 	}
 	
-	@PostMapping("/insert")
-	public String insert(@ModelAttribute BoardDto boardDto) 
+	@PostMapping("/write")
+	public String write(@ModelAttribute BoardDto boardDto, HttpSession session) 
 	{
 		int sequence = boardDao.sequence();
 		boardDto.setBoardNo(sequence);
 		
-		boardDao.insert(boardDto);
-		return "redirect:/board/list";
+		String loginId = (String)session.getAttribute("loginId");
+		boardDto.setBoardWriter(loginId);
+		
+		boardDao.insert(boardDto, 1);
+		return "redirect:/free/board/list";
 	}
 	
 	
