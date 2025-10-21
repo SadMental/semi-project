@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.MemberDto;
+import com.spring.semi.error.NeedPermissionException;
 
 import jakarta.servlet.http.HttpSession;
 

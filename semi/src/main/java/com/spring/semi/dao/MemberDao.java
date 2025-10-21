@@ -66,5 +66,6 @@ public class MemberDao {
 		return list.isEmpty()? null : list.get(0);
 	}
 	
+
 	
 }
