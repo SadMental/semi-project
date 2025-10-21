@@ -13,7 +13,7 @@ public class MemberDto {
 	private String memberPw;
 	private String memberNickname;
 	private String memberEmail;
-	private String memberDesciption;
+	private String memberDescription;
 	private int memberPoint;
 	private int memberLevel;
 	private String memberAuth;

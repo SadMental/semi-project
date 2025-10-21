@@ -2,10 +2,12 @@ package com.spring.semi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.MemberDto;
@@ -65,6 +67,66 @@ public class MemberController {
 		session.removeAttribute("loginLevel");
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/edit")
+	public String edit(
+			HttpSession session,
+			Model model
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(login_id);
+		model.addAttribute("memberDto", memberDto);
+		return "/WEB-INF/views/member/edit.jsp";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(
+			HttpSession session,
+			@ModelAttribute MemberDto memberDto
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		MemberDto originDto = memberDao.selectOne(login_id);
+		if(originDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:edit?error";
+		
+		memberDto.setMemberId(login_id);
+		memberDao.updateForUser(memberDto);
+		
+		return "redirect:mypage";
+		
+	}
+	
+	@GetMapping("/password")
+	public String password() {
+		return "/WEB-INF/views/member/password.jsp";
+	}
+	
+	@PostMapping("/password")
+	public String passwrod(
+			HttpSession session,
+			@RequestParam(name = "change_pw") String change_pw,
+			@RequestParam(name = "current_pw") String member_pw
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		MemberDto findDto = memberDao.selectOne(login_id);
+		System.out.println("change_pw : " + change_pw);
+		System.out.println("member_pw : " + member_pw);
+		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:password?error";
+		memberDao.updateForUserPassword(change_pw, findDto.getMemberId());
+		
+		return "redirect:mypage";
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage(
+			Model model, 
+			HttpSession session
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(login_id);
+		model.addAttribute("memberDto", memberDto);
+		
+		return "/WEB-INF/views/member/mypage.jsp";
 	}
 	
 }

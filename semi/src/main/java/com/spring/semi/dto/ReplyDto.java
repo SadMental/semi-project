@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class ReplyDto {
 	private int replyCategoryNo;
 	private int replyTarget;
+	private int replyNo;
 	private String replyContent;
 	private String replyWriter;
 	private Timestamp replyWtime;
