@@ -17,7 +17,7 @@ public class MemberDto {
 	private int memberPoint;
 	private int memberLevel;
 	private String memberAuth;
-	private Integer memberAnimal;
+	private int memberAnimal;
 	private Timestamp memberJoin;
 	private Timestamp memberLogin;
 	private Timestamp memberChange;
