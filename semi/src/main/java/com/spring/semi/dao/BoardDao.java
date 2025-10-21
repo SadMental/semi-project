@@ -22,7 +22,7 @@ public class BoardDao {
 		String sql = "select board_seq.nextval from dual";
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
-	
+	//등록
 	public void insert(BoardDto boardDto, int boardType) {
 		String sql = "insert into board (board_category_no, board_no, "
 				+ "board_writer, board_title, board_content) "
@@ -34,7 +34,7 @@ public class BoardDao {
 				boardDto.getBoardContent()};
 		jdbcTemplate.update(sql, params);
 	}
-	
+	//목록
 	public List<BoardDto> selectList(int boardType)
 	{
 		String sql = "select * from board where board_category_no=? "
@@ -42,4 +42,33 @@ public class BoardDao {
 		Object[] params = {boardType};
 		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
+	//상세
+	public BoardDto selectOne(int boardNo) {
+		String sql = "select * from board where board_no=?";
+		Object[] params = {boardNo};
+		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+	}
+	//삭제
+	public boolean delete(int boardNo) {
+		String sql = "delete board where board_no = ?";
+		Object[] params = {boardNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	//수정
+	public boolean update(BoardDto boardDto) {
+		String sql = "update board "
+						+ "set board_title=?, board_content=? "
+						+ ", board_etime=systimestamp "
+						+ "where board_no=?";
+		Object[] params = {
+			boardDto.getBoardTitle(), boardDto.getBoardContent(),
+		    boardDto.getBoardNo()
+		};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+
+	//attachment
+	
+
 }

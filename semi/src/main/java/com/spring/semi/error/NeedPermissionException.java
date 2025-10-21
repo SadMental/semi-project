@@ -1,6 +1,6 @@
 package com.spring.semi.error;
 
-public class NeedPermissionException extends Exception {
+public class NeedPermissionException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public NeedPermissionException() {

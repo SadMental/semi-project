@@ -13,8 +13,9 @@ public class AdminInterceptor implements HandlerInterceptor{
    public boolean preHandle(HttpServletRequest request,HttpServletRequest response,
 		   Object Handler) throws Exception{
 	   HttpSession session =request.getSession();
-	   String loginLevel=(String)session.getAttribute("loginLevel");
-	   if(loginLevel.equals("관리자")==false)
+	   Integer loginLevel = (Integer) session.getAttribute("loginLevel");
+	   int limit = 2;
+	   if(loginLevel<limit)
 		   throw new NeedPermissionException("권한 부족");
 	   return true;
    }
