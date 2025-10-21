@@ -40,8 +40,9 @@ public class AdoptionBoardController {
 	 {
 		 String loginId =(String) session.getAttribute("loginLevel");
 		 boardDto.setBoardWriter(loginId);
-		 String loginLevel = (String)session.getAttribute("loginLevel");
-		 if(loginLevel.equals("관리자")==false && headerDto.getHeaderName().equals("공지"))
+		 int limit =2;
+		 Integer loginLevel = (Integer) session.getAttribute("loginLevel");
+		 if(loginLevel<limit && headerDto.getHeaderName().equals("공지"))
 			 throw new NeedPermissionException("공지글을 작성할 권한이 없습니다");
 		 int boardNo = boardDao.sequence(); // 번호를 생성해서
 		 boardDto.setBoardNo(boardNo); //게시글 정보에 합친다.
