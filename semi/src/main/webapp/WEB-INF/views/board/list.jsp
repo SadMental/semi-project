@@ -1,5 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>
+=======
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
@@ -12,6 +24,7 @@
 	    <a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
 	</div>
 
+<c:if test="${not empty boardList}">
     <div class = "cell">
         <table class = "table w-100p center">
             <thead>
@@ -35,11 +48,12 @@
 					</tr>
 				</c:forEach>
             </tbody>
-        
+        </table>
+    </div>
+</c:if>
         <div class = "cell right">
 	    	<a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
 		</div>
-    </div>
 </div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
