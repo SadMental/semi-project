@@ -19,18 +19,18 @@ $(function(){
                 // FormData 생성
                 var form = new FormData();
 				for(var i=0; i<files.length;i++)
-                	form.append("attach", files[i]);
+                	form.append("media", files[i]);
 
                 // Ajax 업로드
                 $.ajax({
                     processData: false,
                     contentType: false,
-                    url: "/rest/board/temps",
+                    url: "/rest/media/temps",
                     method: "post",
                     data: form,
                     success: function(response) { // response == 업로드된 파일번호(int)
 						for(var i=0;i<response.length;i++){
-	                        var img = $("<img>").attr("src", "/attachment/download?attachmentNo=" 
+	                        var img = $("<img>").attr("src", "/media/download?mediaNo=" 
 								+ response[i]).attr("data-pk", response[i]).addClass("custom-image");
 	                        $(".summernote-editor").summernote("insertNode", img[0]);							
 						}

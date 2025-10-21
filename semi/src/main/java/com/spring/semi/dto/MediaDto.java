@@ -13,5 +13,5 @@ public class MediaDto {
 	private String mediaType;
 	private String mediaName;
 	private Timestamp mediaWtime;
-	private String mediaLink;
+	private long mediaSize;
 }

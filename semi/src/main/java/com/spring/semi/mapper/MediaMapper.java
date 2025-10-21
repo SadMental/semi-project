@@ -14,11 +14,11 @@ public class MediaMapper implements RowMapper<MediaDto> {
 	@Override
 	public MediaDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return MediaDto.builder()
-				.mediaNo(rs.getInt("media.no"))
+				.mediaNo(rs.getInt("media_no"))
 				.mediaType(rs.getString("media_type"))
 				.mediaName(rs.getString("media_name"))
 				.mediaWtime(rs.getTimestamp("media_wtime"))
-				.mediaLink(rs.getString("media_link"))
+				.mediaSize(rs.getLong("media_size"))
 				.build();
 	}
 }

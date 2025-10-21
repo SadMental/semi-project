@@ -16,20 +16,20 @@ import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
-import com.spring.semi.service.AttachmentService;
+import com.spring.semi.service.MediaService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/board/free")
 public class BoardController {
-	private final AttachmentService attachmentService;
+	private final MediaService attachmentService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
 	
-    BoardController(AttachmentService attachmentService) {
+    BoardController(MediaService attachmentService) {
         this.attachmentService = attachmentService;
     }
 	

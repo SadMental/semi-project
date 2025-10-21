@@ -13,35 +13,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.spring.semi.dao.AttachmentDao;
-import com.spring.semi.dto.AttachmentDto;
+import com.spring.semi.dao.MediaDao;
+import com.spring.semi.dto.MediaDto;
 import com.spring.semi.error.TargetNotfoundException;
-import com.spring.semi.service.AttachmentService;
+import com.spring.semi.service.MediaService;
 
 @Controller
-@RequestMapping("/attachment")
-public class AttachmentController 
+@RequestMapping("/media")
+public class MediaController 
 {
 	@Autowired
-	private AttachmentService attachmentService;
+	private MediaService mediaService;
 	@Autowired
-	private AttachmentDao attachmentDao;
+	private MediaDao mediaDao;
 	
 	@GetMapping("/download")
-	public ResponseEntity<ByteArrayResource> download(@RequestParam int attachmentNo) throws IOException 
+	public ResponseEntity<ByteArrayResource> download(@RequestParam int mediaNo) throws IOException 
 	{
-		AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
-		if (attachmentDao == null)
+		MediaDto mediaDto = mediaDao.selectOne(mediaNo);
+		if (mediaDto == null)
 			throw new TargetNotfoundException("존재하지 않는 파일");
 		
-		ByteArrayResource resource = attachmentService.load(attachmentNo);
+		ByteArrayResource resource = mediaService.load(mediaNo);
 		
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8.name())
-				.header(HttpHeaders.CONTENT_TYPE, attachmentDto.getAttachmentType())
-				.contentLength(attachmentDto.getAttachmentSize())
+				.header(HttpHeaders.CONTENT_TYPE, mediaDto.getMediaType())
+				.contentLength(mediaDto.getMediaSize())
 				.header(HttpHeaders.CONTENT_DISPOSITION, 
-						ContentDisposition.attachment().filename(attachmentDto.getAttachmentName(), StandardCharsets.UTF_8).build().toString())
+						ContentDisposition.attachment().filename(mediaDto.getMediaName(), StandardCharsets.UTF_8).build().toString())
 				.body(resource);
 	}
 }
