@@ -1,7 +1,13 @@
 package com.spring.semi.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +29,14 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board/free")
 public class BoardController {
-	private final MediaService attachmentService;
+	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
 	
-    BoardController(MediaService attachmentService) {
-        this.attachmentService = attachmentService;
+    BoardController(MediaService mediaService) {
+        this.mediaService = mediaService;
     }
 	
 	@RequestMapping("/list")
@@ -58,7 +64,7 @@ public class BoardController {
 		boardDto.setBoardWriter(loginId);
 		
 		boardDao.insert(boardDto, 1);
-		return "redirect:/board/free/detail?boardNo=" + boardNo;
+		return "redirect:detail?boardNo=" + boardNo;
 	}
 	
 	@RequestMapping("/detail")
@@ -79,5 +85,63 @@ public class BoardController {
 		return "/WEB-INF/views/board/free/detail.jsp";
 	}
 	
+	@GetMapping("/update")
+	public String update(Model model,
+			@RequestParam int boardNo)
+	{
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if (boardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
+		model.addAttribute("boardDto", boardDto);
+		return "/WEB-INF/views/board/free/edit.jsp";
+	}
 	
+	@PostMapping("/update")
+	public String update(@ModelAttribute BoardDto boardDto) 
+	{
+		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
+		if (beforeDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
+		
+		Set<Integer> before = new HashSet<>();
+		Document beforeDocument = Jsoup.parse(beforeDto.getBoardContent());
+		Elements beforeElements = beforeDocument.select(".custom-image");
+		for(Element element : beforeElements) {
+			int mediaNo = Integer.parseInt(element.attr("data-pk"));
+			before.add(mediaNo);
+		}
+		
+		Set<Integer> after = new HashSet<>();
+		Document afterDocument = Jsoup.parse(boardDto.getBoardContent());
+		Elements afterElements = afterDocument.select(".custom-image");
+		for(Element element : afterElements) {
+			int mediaNo = Integer.parseInt(element.attr("data-pk"));
+			after.add(mediaNo);
+		}
+		
+		Set<Integer> minus= new HashSet<>(before);
+		minus.removeAll(after);
+		for(int mediaNo : minus)
+			mediaService.delete(mediaNo);
+		
+		boardDao.update(boardDto);
+		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(@RequestParam int boardNo)
+	{
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if (boardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
+		
+		Document document = Jsoup.parse(boardDto.getBoardContent());
+		Elements elements = document.select(".custom-image");
+		for(Element element : elements) {
+			int mediaNo = Integer.parseInt(element.attr("data-pk"));
+			mediaService.delete(mediaNo);		
+		}
+		boardDao.delete(boardNo);
+		return "redirect:list";
+	}	
 }

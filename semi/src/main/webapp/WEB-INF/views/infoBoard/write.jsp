@@ -62,6 +62,9 @@
   button.btn.btn-positive:hover {
     background-color: #a67849;
   }
+  .mt-20 {
+  margin-top: 20px;
+}
 </style>
 
 <form autocomplete="off" action="write" method="post">
@@ -74,16 +77,16 @@
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
       
-      <div class="cell">
+      <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>
       
-      <div class="cell">
+      <div class="cell mt-20">
           <textarea name="boardContent" class="summernote-editor"></textarea>
       </div>
       
-      <div class="cell right">
-          <button class="btn btn-positive">등록</button>
+      <div class="cell right mt-20">
+          <button class="btn btn-positive">등록하기</button>
       </div>
   </div>
 </form>

@@ -26,7 +26,7 @@ public class MemberDao {
 				memberDto.getMemberId(), memberDto.getMemberPw(),
 				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
 				memberDto.getMemberDescription(),
-				memberDto.getMemberAuth(), memberDto.getMemberAnimal()};
+				memberDto.getMemberAuth()};
 		
 		jdbcTemplate.update(sql, params);
 	}
@@ -39,7 +39,7 @@ public class MemberDao {
 	
 	public boolean updateForUser(MemberDto memberDto) {
 		String sql = "update member set member_nickname = ?, member_email = ?, "
-												+ "member_description = ?, member_auth = ? "
+												+ "member_description = ?, member_auth = ?"
 												+ "where member_id = ?";
 		Object[] params = {
 				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
