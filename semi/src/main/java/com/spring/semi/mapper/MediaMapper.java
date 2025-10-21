@@ -21,4 +21,4 @@ public class MediaMapper implements RowMapper<MediaDto> {
 				.mediaSize(rs.getLong("media_size"))
 				.build();
 	}
-}
+}//
