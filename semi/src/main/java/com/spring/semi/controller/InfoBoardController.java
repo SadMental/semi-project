@@ -36,8 +36,8 @@ public class InfoBoardController {
 	{
 		int boardNo = boardDao.sequence();
 		boardDto.setBoardNo(boardNo);		
-		String logingId = (String)session.getAttribute("loginId");
-		boardDto.setBoardWriter(logingId);
+		String loginId = (String)session.getAttribute("loginId");
+		boardDto.setBoardWriter(loginId);
 		
 		boardDao.insert(boardDto, 2);
 		return "redirect:list";
@@ -65,7 +65,30 @@ public class InfoBoardController {
 		return "/WEB-INF/views/infoBoard/detail.jsp";				
 	}
 	//삭제
+	@GetMapping("/delete")
+	public String showDeleteForm(@RequestParam int boardNo, Model model) {
+	    BoardDto boardDto = boardDao.selectOne(boardNo);
+	    model.addAttribute("boardDto", boardDto);
+	    return "/WEB-INF/views/infoBoard/delete.jsp";
+	}
+	@PostMapping("/delete")
+	public String doDelete(@RequestParam int boardNo) {
+	    boardDao.delete(boardNo);
+	    return "redirect:list";
+	}
+
 	//수정
+	@GetMapping("/edit")
+	public String edit(Model model, @RequestParam int boardNo) {
+		BoardDto boardDto = boardDao.selectOne(boardNo);//후에 예외처리를 위한
+		model.addAttribute("boardDto", boardDto);
+		return "/WEB-INF/views/infoBoard/edit.jsp";
+	}
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute BoardDto boardDto) {
+		boardDao.update(boardDto);
+		return "redirect:detail?boardNo="+boardDto.getBoardNo();
+	}
 	
 
 }

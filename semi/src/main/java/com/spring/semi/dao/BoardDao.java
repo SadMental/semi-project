@@ -58,7 +58,7 @@ public class BoardDao {
 	//수정
 	public boolean update(BoardDto boardDto) {
 		String sql = "update board "
-						+ "set board_title=?, board_content=?, "
+						+ "set board_title=?, board_content=? "
 						+ ", board_etime=systimestamp "
 						+ "where board_no=?";
 		Object[] params = {
