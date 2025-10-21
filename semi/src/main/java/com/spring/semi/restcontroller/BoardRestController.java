@@ -49,4 +49,4 @@ public class BoardRestController
 //		boardLikeVO.setCount(count);
 //		return boardLikeVO;
 //	}
-}
+}//

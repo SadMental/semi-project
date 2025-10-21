@@ -70,4 +70,4 @@ public class MediaService
 		
 		mediaDao.delete(mediaNo);
 	}
-}
+}//

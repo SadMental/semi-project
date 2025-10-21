@@ -47,4 +47,4 @@ public class MediaDao
 		Object[] params = {mediaNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-}
+}//
