@@ -1,0 +1,57 @@
+package com.spring.semi.restcontroller;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.semi.dao.CertDao;
+import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.CertDto;
+import com.spring.semi.service.EmailService;
+
+@CrossOrigin
+@RestController
+@RequestMapping("/rest/member")
+public class MemberRestController {
+	@Autowired
+	private MemberDao memberDao;
+	@Autowired
+	private EmailService emailService;
+	@Autowired
+	private CertDao certDao;
+
+	// 이메일 인증 매핑
+	@PostMapping("/certSend")
+	public void certSend(@RequestParam String certEmail) {
+		emailService.sendCertNumber(certEmail);
+	}
+
+	// 인증 체크
+	@PostMapping("/certCheck")
+	public boolean certCheck(@ModelAttribute CertDto certDto) {
+		CertDto findEmail = certDao.selectOne(certDto.getCertEmail());
+		if (findEmail == null)
+			return false;
+
+		LocalDateTime current = LocalDateTime.now();
+		LocalDateTime sent = findEmail.getCertTime().toLocalDateTime();// DB에 저장되어있던 발송 당시 시각 반환
+		Duration duration = Duration.between(current, sent);
+		if (duration.toSeconds() > 300)
+			return false;
+
+		boolean isValid = certDto.getCertNumber().trim().equals(findEmail.getCertNumber().trim());
+		if (isValid == false)
+			return false;
+
+		certDao.delete(certDto.getCertEmail());
+		return true;
+	}
+
+}

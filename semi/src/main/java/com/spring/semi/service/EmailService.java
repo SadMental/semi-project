@@ -46,23 +46,25 @@ public class EmailService {
 		DecimalFormat df = new DecimalFormat("00000");
 		String certNumber = df.format(number);
 		
+		
+		CertDto certDto = certDao.selectOne(email);
+		if(certDto == null) {
+			certDao.insert(CertDto.builder()
+					.certEmail(email).certNumber(certNumber)
+					.build());
+		}
+		else {
+			certDao.update(CertDto.builder()
+					.certEmail(email).certNumber(certNumber)
+					.build());
+		}
+		
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(email);
 		message.setSubject("[쓰담쓰담] 인증번호를 확인하세요");
 		message.setText("인증번호는 ["+certNumber+"] 입니다");
 		sender.send(message);
 		
-		CertDto certDto = certDao.selectOne(email);
-		if(certDto == null) {
-			certDao.insert(CertDto.builder()
-						.certEmail(email).certNumber(certNumber)
-					.build());
-		}
-		else {
-			certDao.update(CertDto.builder()
-						.certEmail(email).certNumber(certNumber)
-					.build());
-		}
 	}
 	
 	public void sendWelcomeMail(MemberDto memberDto) throws MessagingException, IOException {

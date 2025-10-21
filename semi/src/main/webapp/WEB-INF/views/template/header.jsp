@@ -20,6 +20,8 @@
     <!-- momentjs CDN-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script>
+    <!-- reCAPTCHA api -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     
 </head>
 
