@@ -22,7 +22,6 @@ public class MemberMapper implements RowMapper<MemberDto> {
 				.memberPoint(rs.getInt("member_point"))
 				.memberLevel(rs.getInt("member_level"))
 				.memberAuth(rs.getString("member_auth"))
-				.memberAnimal(rs.getInt("member_animal"))
 				.memberJoin(rs.getTimestamp("member_join"))
 				.memberLogin(rs.getTimestamp("member_login"))
 				.memberChange(rs.getTimestamp("member_change"))

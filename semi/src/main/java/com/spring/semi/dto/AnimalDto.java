@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 public class AnimalDto {
 	private int animalNo;
 	private String animalName;
+	private String animalContent;
 	private String animalPermission;
+	private String animalMaster;
 }

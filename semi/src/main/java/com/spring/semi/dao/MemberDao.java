@@ -19,14 +19,14 @@ public class MemberDao {
 	public void insert(MemberDto memberDto) {
 		String sql = "insert into "
 				+ "member(member_id, member_pw, member_nickname, member_email, "
-								+ "member_description, member_auth, member_animal) "
-				+ "values(?, ?, ?, ?, ?, ?, ?)";
+								+ "member_description, member_auth) "
+				+ "values(?, ?, ?, ?, ?, ?)";
 		
 		Object[] params = {
 				memberDto.getMemberId(), memberDto.getMemberPw(),
 				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
 				memberDto.getMemberDescription(),
-				memberDto.getMemberAuth(), memberDto.getMemberAnimal()};
+				memberDto.getMemberAuth()};
 		
 		jdbcTemplate.update(sql, params);
 	}
@@ -39,19 +39,19 @@ public class MemberDao {
 	
 	public boolean updateForUser(MemberDto memberDto) {
 		String sql = "update member set member_nickname = ?, member_email = ?, "
-												+ "member_description = ?, member_auth = ?, member_animal = ? "
+												+ "member_description = ?, member_auth = ?"
 												+ "where member_id = ?";
 		Object[] params = {
 				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
 				memberDto.getMemberDescription(),
-				memberDto.getMemberAuth(), memberDto.getMemberAnimal(),
+				memberDto.getMemberAuth(),
 				memberDto.getMemberId()};
 		
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
 	public boolean updateForUserPassword(String member_pw, String member_id) {
-		String sql = "update member set member_pw = ? where member_id = ?";
+		String sql = "update member set member_pw = ?, member_change = systimestamp where member_id = ?";
 		Object[] params = {
 				member_pw, member_id
 		};

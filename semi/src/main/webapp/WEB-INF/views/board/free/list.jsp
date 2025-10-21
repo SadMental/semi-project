@@ -1,16 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html>
-=======
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
@@ -41,7 +30,7 @@
 				<c:forEach var="boardDto" items="${boardList}">
 					<tr>
 						<td>${boardDto.boardNo}</td>
-						<td><a href="#">${boardDto.boardTitle}</a></td>
+						<td><a href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a></td>
 						<td>${boardDto.boardWriter}</td>
 						<td>${boardDto.boardView}</td>
 						<td>${boardDto.boardLike}</td>
