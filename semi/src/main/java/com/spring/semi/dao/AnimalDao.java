@@ -22,9 +22,14 @@ public class AnimalDao {
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	public void insert(AnimalDto animalDto) {
-		String sql = "insert into animal(animal_no, animal_name, animal_permission) "
-													+ "values(?, ?, ?)";
-		Object[] params = {animalDto.getAnimalNo(), animalDto.getAnimalName(), animalDto.getAnimalPermission()};
+		String sql = "insert into animal(animal_no, animal_name, animal_permission, animal_content, animal_master) "
+													+ "values(?, ?, ?, ?, ?)";
+		Object[] params = {
+				animalDto.getAnimalNo(), 
+				animalDto.getAnimalName(), 
+				animalDto.getAnimalPermission(),
+				animalDto.getAnimalContent(),
+				animalDto.getAnimalMaster()};
 		
 		jdbcTemplate.update(sql, params);
 	}
@@ -32,7 +37,7 @@ public class AnimalDao {
 	public List<AnimalDto> selectList(String animal_master) {
 		String sql = "select * from animal where animal_master = ?";
 		Object[] params = {animal_master};
-		
+		System.out.println("SQL : " + sql + params);
 		return jdbcTemplate.query(sql, animalMapper, params);
 	}
 	

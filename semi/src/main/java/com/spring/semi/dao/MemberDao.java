@@ -39,12 +39,12 @@ public class MemberDao {
 	
 	public boolean updateForUser(MemberDto memberDto) {
 		String sql = "update member set member_nickname = ?, member_email = ?, "
-												+ "member_description = ?, member_auth = ?, member_animal = ? "
+												+ "member_description = ?, member_auth = ? "
 												+ "where member_id = ?";
 		Object[] params = {
 				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
 				memberDto.getMemberDescription(),
-				memberDto.getMemberAuth(), memberDto.getMemberAnimal(),
+				memberDto.getMemberAuth(),
 				memberDto.getMemberId()};
 		
 		return jdbcTemplate.update(sql, params) > 0;

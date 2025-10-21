@@ -1,7 +1,6 @@
 package com.spring.semi.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import com.spring.semi.dto.AnimalDto;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/rest/animal")
 public class AnimalRestController {
@@ -21,7 +19,7 @@ public class AnimalRestController {
 	private AnimalDao animalDao;
 	
 	@PostMapping("/add")
-	public void add(
+	public int add(
 			@ModelAttribute AnimalDto animalDto,
 			HttpSession session
 			) {
@@ -30,13 +28,15 @@ public class AnimalRestController {
 		
 		animalDto.setAnimalNo(seq);
 		animalDto.setAnimalMaster(login_id);
+		System.out.println("동물 정보: " + animalDto.toString());
 		animalDao.insert(animalDto);
+		return seq;
 	}
 	
 	@PostMapping("/delete")
 	public void delete(
-			@RequestParam int animal_no
+			@RequestParam int animalNo
 			) {
-		animalDao.delete(animal_no);
+		animalDao.delete(animalNo);
 	}
 }
