@@ -33,6 +33,15 @@
 	<div class="cell">
 		<input class="field w-100p" type="text" name="memberAnimal" >
 	</div>
+	<div class="cell target">
+		<label>
+			<span>동물 등록</span>
+			<!-- <i class="fa-solid fa-asterisk red"></i> -->
+		</label>
+		<button type="button" class="btn btn-neutral btn-add-animal">
+            <span>추가</span>
+        </button>
+	</div>
 
 <button type="submit">수정하기</button>
 </form>
