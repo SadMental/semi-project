@@ -48,12 +48,23 @@ public class MemberController {
 			HttpSession session
 			) {
 		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
-		if(findDto == null) return "redirct:login?error";
-		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirct:login?error";
+		if(findDto == null) return "redirect:login?error";
+		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:login?error";
 		
-		session.setAttribute("login_id", findDto.getMemberId());
-		session.setAttribute("login_level", findDto.getMemberLevel());
+		session.setAttribute("loginId", findDto.getMemberId());
+		session.setAttribute("loginLevel", findDto.getMemberLevel());
 		
 		return "/WEB-INF/views/home.jsp";
 	}
+	
+	@GetMapping("/logout")
+	public String logout(
+			HttpSession session
+			) {
+		session.removeAttribute("loginId");
+		session.removeAttribute("loginLevel");
+		
+		return "redirect:/";
+	}
+	
 }
