@@ -41,7 +41,7 @@
 				<c:forEach var="boardDto" items="${boardList}">
 					<tr>
 						<td>${boardDto.boardNo}</td>
-						<td><a href="#">${boardDto.boardTitle}</a></td>
+						<td><a href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a></td>
 						<td>${boardDto.boardWriter}</td>
 						<td>${boardDto.boardView}</td>
 						<td>${boardDto.boardLike}</td>
