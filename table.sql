@@ -16,8 +16,6 @@ create table member(
 	member_level number default 1 not null,
     -- 회원의 이메일 인증 여부
 	member_auth char(1) default 'f' not null,
-    -- 회원의 등록된 동물 번호
-	member_animal references animal(animal_no) on delete cascade,
     -- 회원이 회원가입한 시간
 	member_join timestamp default systimestamp,
     -- 회원의 최근 로그인 시간(최초 회원가입시 로그인했던것으로 취급)
@@ -32,8 +30,12 @@ create table animal(
 	animal_no number primary key,
     -- 동물 이름
 	animal_name varchar2(1000) not null,
+    -- 동물 소개글
+    animal_cotent varchar2(2000),
     -- 동물의 분양 가능여부
-	animal_permission char(1) default 'f' not null
+	animal_permission char(1) default 'f' not null,
+    -- 동물의 소유주 id
+    animal_master references member(member_id) on delete cascade
 );
 create sequence animal_seq;
 
@@ -107,10 +109,10 @@ create table media(
 	media_type char(4) not null,
     -- 미디어의 본래 이름
 	media_name varchar2(1000) not null,
+    -- 미디어의 크기
+    media_size number not null,
     -- 미디어가 저장된 시간
 	media_wtime timestamp default systimestamp,
-    -- 미디어를 게시판, 댓글에서 불러올 축약 링크(ex. :1:, :2:)
-	media_link varchar2(10) not null
 );
 
 create sequence media_seq;
@@ -121,6 +123,8 @@ create table reply(
 	reply_category_no references category(category_no) on delete cascade,
     -- 댓글이 쓰여진 게시판 번호
 	reply_target references board(board_no) on delete cascade,
+    -- 댓글의 번호
+    reply_no number primary key,
     -- 댓글의 내용
 	reply_content varchar2(2000),
     -- 댓글의 작성자
@@ -128,9 +132,10 @@ create table reply(
     -- 댓글이 작성된 시간
 	reply_wtime timestamp default systimestamp,
     -- 댓글이 수정된 시간
-	reply_etime timestamp,
-	primary key(reply_category_no, reply_target)
+	reply_etime timestamp
 );
+
+create sequence reply_seq;
 
 -- 어드민의 활동 로그 기록용 테이블
 create table log(
