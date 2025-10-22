@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="cp" value="${pageContext.request.contextPath}" />
-@charset "UTF-8";
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -141,7 +140,7 @@
 				<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
 					class="kh-pill" href="/board/free/list">COMMUNITY</a> <a
 					class="kh-pill" href="/infoBoard/list">INFO</a> <a class="kh-pill"
-					href="/board/list">SERVICE</a>
+					href="/adoptionBoard/list">SERVICE</a>
 				<c:choose>
 			<c:when test="${sessionScope.loginId != null}">
 				<a class="kh-pill kh-pill--active" href="/">LOGOUT</a>

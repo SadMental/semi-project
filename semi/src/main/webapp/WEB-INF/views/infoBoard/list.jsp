@@ -145,6 +145,7 @@ a:hover {
 							<th>제목</th>
 							<th>작성자</th>
 							<th>조회수</th>
+							<th>추천수</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -156,6 +157,7 @@ a:hover {
 								</td>
 								<td>${boardDto.boardWriter}</td>
 								<td>${boardDto.boardView}</td>
+								<td>${boardDto.boardLike}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
