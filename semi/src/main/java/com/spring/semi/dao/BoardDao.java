@@ -1,6 +1,7 @@
 package com.spring.semi.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -43,6 +44,20 @@ public class BoardDao {
 				+ "order by board_no desc";
 		Object[] params = {boardType};
 		return jdbcTemplate.query(sql, boardListMapper, params);
+	}
+	//검색
+	public List<BoardDto> searchList(String column, String keyword)
+	{
+		Set<String> allowList = Set.of("board_title", "board_writer", "board_content");
+		if(!allowList.contains(column))
+			return List.of();
+		
+		String sql = "select * from board where instr(#1, ?) > 0 "
+				+ "order by #1 asc, board_no asc";
+		sql = sql.replace("#1", column);
+		Object[] params = { keyword };
+		return jdbcTemplate.query(sql, boardMapper, params);	
+		
 	}
 	//상세
 	public BoardDto selectOne(int boardNo) {
