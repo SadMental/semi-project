@@ -156,3 +156,15 @@ create table log(
     -- 활동한 어드민의 IP
     admin_ip varchar2(50) not null
 )
+
+-- 이메일 인증 테이블
+create table cert (
+	-- 인증 할 이메일
+	cert_email varchar2(60) primary key,
+	-- 인증 번호
+	cert_number char(5) not null,
+	-- 인증 시간
+	cert_time timestamp default systimestamp not null,
+	-- 인증번호 조건
+	check(regexp_like(cert_number, '^[0-9]{5}$'))
+);

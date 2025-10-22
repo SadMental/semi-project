@@ -66,6 +66,18 @@ public class MemberDao {
 		return list.isEmpty()? null : list.get(0);
 	}
 	
+	public void connect(String member_id, int media_no) {
+		String sql = "insert into member_profile values(?, ?)";
+		Object[] params = {member_id, media_no};
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public int findMediaNo(String member_id) {
+		String sql = "select media_no from member_profile where member_id = ?";
+		Object[] params = {member_id};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	
 
 	
 }

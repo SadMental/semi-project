@@ -4,45 +4,163 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<div class = "container w-900">
-    <div class = "cell mb-30 center">
-        <h1>자유게시판</h1>
-    </div>
+<style>
+	body {
+		background-color: #f4ede6;
+		color: #5b3a29;
+		margin: 0;
+		padding: 0;
+	}
 	
-	<div class = "cell right">
-	    <a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
+	.container.w-800 {
+		max-width: 800px;
+		margin: 40px auto;
+		padding: 30px 35px;
+		border-radius: 15px;
+		background-color: #ffffffdd;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	}
+	
+	h1 {
+		font-size: 2.8rem;
+		font-weight: 700;
+		margin-bottom: 25px;
+		text-align: center;
+	}
+	
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 1.05rem;
+	}
+	
+	table thead {
+		background-color: #e9d8c6;
+	}
+	
+	table th, table td {
+		padding: 14px 12px;
+		border-bottom: 1px solid #d3bfa6;
+		text-align: center;
+	}
+	
+	table tr:hover {
+		background-color: #f3eae1;
+	}
+	
+	a {
+		color: #5b3a29;
+		text-decoration: none;
+	}
+	
+	a:hover {
+		text-decoration: underline;
+	}
+	
+	.btn.btn-positive {
+		background-color: #7e5a3c;
+		color: #f9f6f1;
+		border: none;
+		padding: 10px 20px;
+		font-size: 1rem;
+		font-weight: 700;
+		border-radius: 10px;
+		cursor: pointer;
+		text-decoration: none;
+		display: inline-block;
+		margin-top: 20px;
+	}
+	
+	.btn.btn-positive:hover {
+		background-color: #a67849;
+	}
+	
+	.cell.right {
+		text-align: right;
+	}
+	
+	.no-posts {
+		text-align: center;
+		padding: 40px 0;
+		color: #8c6d5b;
+	}
+	
+	.mb-20 {
+		margin-bottom: 20px;
+	}
+</style>
+
+<div class="container w-800">
+
+	<div class="cell center">
+		<h1>자유 게시판</h1>	
+	</div>
+	<div class="cell center mt-30 mb-50">
+		<form action="list">
+			<div class="search-bar">
+				<select name="column">
+					<option value="board_title"
+						${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
+					<option value="board_writer"
+						${pageVO.column == 'board_writer' ? 'selected' : ''}>아이디</option>
+					<option value="member_nickname"
+						${pageVO.column == 'member_nickname' ? 'selected' : ''}>닉네임</option>
+				</select> <input type="text" name="keyword" value="${pageVO.keyword}"
+					required placeholder="검색어 입력">
+
+				<button type="submit" class="btn btn-positive">검색</button>
+			</div>
+		</form>
+
+
+		<div class="cell right">
+			<c:choose>
+				<c:when test="${sessionScope.loginId != null}">
+					<h3>
+						<a href="write" class="btn btn-positive">글쓰기</a>
+					</h3>
+				</c:when>
+				<c:otherwise>
+					<h3>
+						<a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다
+					</h3>
+				</c:otherwise>
+			</c:choose>
+		</div>
 	</div>
 
-<c:if test="${not empty boardList}">
-    <div class = "cell">
-        <table class = "table w-100p center">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>조회수</th>
-                    <th><i class="fa-solid fa-heart red"></i></th>
-                </tr>
-            </thead>
 
-            <tbody>
-				<c:forEach var="boardDto" items="${boardList}">
-					<tr>
-						<td>${boardDto.boardNo}</td>
-						<td><a href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a></td>
-						<td>${boardDto.boardWriter}</td>
-						<td>${boardDto.boardView}</td>
-						<td>${boardDto.boardLike}</td>
-					</tr>
-				</c:forEach>
-            </tbody>
-        </table>
-    </div>
-</c:if>
-        <div class = "cell right">
-	    	<a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
-		</div>
+	<c:choose>
+		<c:when test="${empty boardList}">
+			<div class="no-posts">등록된 글이 없습니다.</div>
+		</c:when>
+		<c:otherwise>
+			<div class="cell">
+				<table>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>조회수</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="boardDto" items="${boardList}">
+							<tr>
+								<td>${boardDto.boardNo}</td>
+								<td style="text-align: center;"><a
+									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
+								</td>
+								<td>${boardDto.boardWriter}</td>
+								<td>${boardDto.boardView}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</c:otherwise>
+	</c:choose>
 </div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

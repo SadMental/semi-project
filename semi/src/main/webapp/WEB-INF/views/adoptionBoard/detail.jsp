@@ -55,26 +55,24 @@ h1 {
 	display: inline-block;
 	margin-right: 10px;
 }
-.btn-edit {
-  background-color: #a67c52;
-  color: #fff5e9;
-  border: none;
-}
 
-.btn-edit:hover {
-  background-color: #ba8f65;
-}
+  .btn.btn-positive {
+    background-color: #7e5a3c;
+    color: #f9f6f1;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+  }
 
-.btn-delete {
-  background-color: #a94442;
-  color: #fff2f0;
-  border: none;
+.btn-positive:hover {
+	background-color: #a67849;
 }
-
-.btn-delete:hover {
-  background-color: #922d2b;
-}
-
 
 .btn-neutral {
 	background-color: #d9c7b3;
@@ -91,16 +89,20 @@ h1 {
 	<h1>${boardDto.boardTitle}</h1>
 
 	<div class="meta">
-		<table>
-			<tr>
-				<th>[번호] : </th>
-				<td>${boardDto.boardNo}</td>
-			</tr>
-			<tr>
-				<th>[작성자] :</th>
-				<td>${boardDto.boardWriter}</td>
-			</tr>
-		</table>
+	<table>
+		<tr>
+			<th>번호</th>
+			<td>${boardDto.boardNo}</td>
+		</tr>
+		<tr>
+			<th>제목</th>
+			<td>${boardDto.boardTitle}</td>
+		</tr>
+		<tr>
+			<th>작성자</th>
+			<td>${boardDto.boardWriter}</td>
+		</tr>
+	</table>
 	</div>
 
 	<div class="content">
@@ -108,19 +110,11 @@ h1 {
 	</div>
 
 	<div class="cell right">
-		<a href="list" class="btn btn-neutral">목록으로</a>
-		 <a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
-
-		<form method="post" action="delete"
-      onsubmit="return confirm('정말 삭제하시겠습니까?');"
-      style="display:inline;">
-
-			<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
-			<button type="submit" class="btn btn-delete">삭제하기</button>
-		</form>
-
+		<a href="list" class="btn btn-neutral">목록으로</a> <a
+			href="edit?boardNo=${boardDto.boardNo}" class="btn btn-positive">수정하기</a>
+		<a href="delete?boardNo=${boardDto.boardNo}" class="btn btn-neutral"
+			onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
 	</div>
 </div>
-
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />
