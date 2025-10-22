@@ -37,12 +37,26 @@
 					</tr>
 				</c:forEach>
             </tbody>
+            
+            <tfoot>
+				<tr>
+					<td colspan="7">
+						검색결과 : 
+						${pageVO.begin} - ${pageVO.end}
+						/
+						${pageVO.dataCount}
+					</td>
+				</tr>
+			</tfoot>
         </table>
     </div>
 </c:if>
-        <div class = "cell right">
-	    	<a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
-		</div>
+
+	<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+
+    <div class = "cell right">
+    	<a href = "write" class = "btn me-10  btn-neutral">새글 작성</a>
+	</div>
 </div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

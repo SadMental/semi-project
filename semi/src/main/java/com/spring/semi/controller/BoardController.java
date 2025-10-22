@@ -1,7 +1,6 @@
 package com.spring.semi.controller;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -23,6 +22,7 @@ import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -39,14 +39,25 @@ public class BoardController {
         this.mediaService = mediaService;
     }
 	
+//	@RequestMapping("/list")
+//	public String list(Model model) 
+//	{	
+//		List<BoardDto> boardList = boardDao.selectList(1);
+//		model.addAttribute("boardList", boardList);
+//		
+//		return "/WEB-INF/views/board/free/list.jsp";
+//	}
+	
 	@RequestMapping("/list")
-	public String list(Model model) 
-	{	
-		List<BoardDto> boardList = boardDao.selectList(1);
-		model.addAttribute("boardList", boardList);
-		
+	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
+	{		
+		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 1));
+		pageVO.setDataCount(boardDao.count(pageVO, 1));
+		model.addAttribute("pageVO", pageVO);
+			
 		return "/WEB-INF/views/board/free/list.jsp";
 	}
+
 	
 	@GetMapping("/write")
 	public String write() 

@@ -115,12 +115,11 @@
         <a class="kh-pill kh-pill--active" href="/home">HOME</a>
         <a class="kh-pill" href="/#/">COMMUNITY</a>
         <a class="kh-pill" href="/infoBoard/list">INFO</a>
-        <a class="kh-pill" href="#">SERVICE</a>
+        <a class="kh-pill" href="/board/free/list">FreeBoard</a>
         <a class="kh-pill" href="/member/login">LOGIN</a>
         <a class="kh-pill" href="#">MENU</a>
       </nav>
     </div>
-
   </div>
   
 </header>
