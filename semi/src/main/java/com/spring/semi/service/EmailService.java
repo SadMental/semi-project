@@ -60,8 +60,8 @@ public class EmailService {
 		}
 		
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(email);
-		message.setSubject("[쓰담쓰담] 인증번호를 확인하세요");
+		message.setTo(email); 
+		message.setSubject("[KH PETIQUE] 인증번호를 확인하세요");	
 		message.setText("인증번호는 ["+certNumber+"] 입니다");
 		sender.send(message);
 		
@@ -72,7 +72,7 @@ public class EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 		
 		helper.setTo(memberDto.getMemberEmail());
-		helper.setSubject("[쓰담쓰담] 가입을 환영합니다!");
+		helper.setSubject("[KH PETIQUE] 가입을 환영합니다!");
 		
 		ClassPathResource resource = new ClassPathResource("templates/joinEmail.html");
 		File target = resource.getFile();

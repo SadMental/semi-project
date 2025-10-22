@@ -6,7 +6,8 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
-<script src="/js/email-cert.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<script src="/js/email-cert.js"></script> 
 <script src="/js/member-join.js"></script>
 <script src="/summernote/custom-summernote.js"></script>
     <style>
@@ -67,17 +68,20 @@
                     </div>
                     <div class="cell">
                         <input type="text" inputmode="numeric" class="cert-input" placeholder="인증번호 입력">
+                        <button type="button" class="btn-cert-check">인증번호 확인</button>
+                    </div>
                         <span class="success-feedback">이메일 인증이 완료되었습니다</span>
                         <span class="fail-feedback">올바른 이메일 형식이 아닙니다</span>
                         <span class="fail2-feedback">인증번호가 올바르지 않거나 유효시간이 초과되었습니다</span>
-                        <button type="button" class="btn-cert-check">인증번호 확인</button>
+                    <div class="cell">
+                    	<input type="text" name="memberAuth" value="f">
                     </div>
                     <div class="cell">
-                        <label>소개글</label><br>
+                        <label>소개글</label><br> 
                         <textarea class="summernote-editor" name="memberDescription"></textarea>
                     </div>
                     <div class="cell">
-                        <label>설명란</label><br>
+                        <label>설명란</label><br> 
                         <textarea name="memberDescription"></textarea>
                     </div>
                     <div class="cell">

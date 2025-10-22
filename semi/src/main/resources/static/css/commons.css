@@ -407,29 +407,12 @@ textarea.field {
     background-color: #636e72;
 }
 
-/* 목표: .field에 .success / .fail이 추가된 상황에서의 디자인 */
-.field.success {
-    border-color: #0984e3 !important;
-    
-}
-.field.fail,
-.field.fail2 {
-    border-color: #d63031 !important;
-}
-
+/* 피드백 처리 */
 .success-feedback,
 .fail-feedback,
-.fail2-feedback {
+.fail2-feedback
+{
     display: none;
-}
-
-.field.success ~ .success-feedback {
-    display: block;
-}
-
-.field.fail ~ .fail-feedback,
-.field.fail2 ~ .fail2-feedback {
-    display: block;
 }
 
 .success-feedback {
@@ -437,6 +420,17 @@ textarea.field {
 }
 
 .fail-feedback,
-.fail2-feedback {
+.fail2-feedback
+{
     color: #d63031;
+}
+
+.field.success ~ .success-feedback {
+    display: block;
+}
+
+.field.fail ~ .fail-feedback,
+.field.fail2 ~ .fail2-feedback
+ {
+    display: block;
 }

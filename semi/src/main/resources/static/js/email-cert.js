@@ -5,7 +5,7 @@ var state = {
 $(function () {
 	
     $(".btn-cert-send").on("click", function () { //인증번호 보내기 완료
-
+		
         var email = $("[name=memberEmail]").val();
         var regex = /^(.*?)@(.*?)$/;
         var valid = regex.test(email);

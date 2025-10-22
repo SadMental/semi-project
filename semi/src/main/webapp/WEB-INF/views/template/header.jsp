@@ -112,7 +112,7 @@
       <div class="kh-brand__title">KH PETIQUE</div>
     </aside>
       <nav class="kh-nav">
-        <a class="kh-pill kh-pill--active" href="/home">HOME</a>
+        <a class="kh-pill kh-pill--active" href="/">HOME</a>
         <a class="kh-pill" href="/#/">COMMUNITY</a>
         <a class="kh-pill" href="/infoBoard/list">INFO</a>
         <a class="kh-pill" href="#">SERVICE</a>
