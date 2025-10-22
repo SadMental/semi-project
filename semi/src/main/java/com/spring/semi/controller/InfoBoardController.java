@@ -46,10 +46,17 @@ public class InfoBoardController {
 	}
 	//목록
 	@RequestMapping("/list")
-	public String list(Model model) {
+	public String list(Model model, @RequestParam(required = false) String column, 
+			@RequestParam(required = false) String keyword) {
+		boolean isSearch = column !=null && keyword !=null;
+		if(isSearch) { //검색
+			List<BoardDto> boardList = boardDao.searchList(column, keyword);
+			model.addAttribute("boardList", boardList);
+		}
+		else { // 그냥 목록
 		List<BoardDto> boardList = boardDao.selectList(2);
 		model.addAttribute("boardList", boardList);
-		
+		}
 		return "/WEB-INF/views/infoBoard/list.jsp";
 		
 	}
