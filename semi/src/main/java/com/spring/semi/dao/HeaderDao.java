@@ -26,14 +26,6 @@ public class HeaderDao {
 
     // 등록
     public void insert(HeaderDto headerDto) {
-        // 이미 존재하는 머리글이 있으면 추가하지 않음
-        String checkSql = "SELECT COUNT(*) FROM header";
-        int count = jdbcTemplate.queryForObject(checkSql, Integer.class);
-        
-        if (count > 0) {
-            throw new IllegalStateException("이미 머리글이 존재합니다.");
-        }
-        
         String sql = "insert into header(header_no, header_name) values (?, ?)";
         Object[] params = {headerDto.getHeaderNo(), headerDto.getHeaderName()};
         jdbcTemplate.update(sql, params);
@@ -83,4 +75,3 @@ public class HeaderDao {
     
    
 }
-
