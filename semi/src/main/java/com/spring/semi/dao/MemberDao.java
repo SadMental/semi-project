@@ -15,47 +15,36 @@ public class MemberDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private MemberMapper memberMapper;
-	
+
 	public void insert(MemberDto memberDto) {
-		String sql = "insert into "
-				+ "member(member_id, member_pw, member_nickname, member_email, "
-								+ "member_description, member_auth) "
-				+ "values(?, ?, ?, ?, ?, ?)";
-		
-		Object[] params = {
-				memberDto.getMemberId(), memberDto.getMemberPw(),
-				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
-				memberDto.getMemberDescription(),
-				memberDto.getMemberAuth()};
-		
+		String sql = "insert into " + "member(member_id, member_pw, member_nickname, member_email, "
+				+ "member_description, member_auth) " + "values(?, ?, ?, ?, ?, ?)";
+
+		Object[] params = { memberDto.getMemberId(), memberDto.getMemberPw(), memberDto.getMemberNickname(),
+				memberDto.getMemberEmail(), memberDto.getMemberDescription(), memberDto.getMemberAuth() };
+
 		jdbcTemplate.update(sql, params);
 	}
-	
+
 	public boolean delete(String member_id) {
 		String sql = "delete from member where member_id = ?";
-		Object[] params = {member_id};
+		Object[] params = { member_id };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	
+
 	public boolean updateForUser(MemberDto memberDto) {
 		String sql = "update member set member_nickname = ?, member_email = ?, "
-												+ "member_description = ?, member_auth = ?"
-												+ "where member_id = ?";
-		Object[] params = {
-				memberDto.getMemberNickname(), memberDto.getMemberEmail(),
-				memberDto.getMemberDescription(),
-				memberDto.getMemberAuth(),
-				memberDto.getMemberId()};
-		
+				+ "member_description = ?, member_auth = ?" + "where member_id = ?";
+		Object[] params = { memberDto.getMemberNickname(), memberDto.getMemberEmail(), memberDto.getMemberDescription(),
+				memberDto.getMemberAuth(), memberDto.getMemberId() };
+
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	
+
 	public boolean updateForUserPassword(String member_pw, String member_id) {
 		String sql = "update member set member_pw = ?, member_change = systimestamp where member_id = ?";
-		Object[] params = {
-				member_pw, member_id
-		};
-		
+		Object[] params = { member_pw, member_id };
+
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
@@ -67,23 +56,21 @@ public class MemberDao {
 	
 	public MemberDto selectOne(String member_id) {
 		String sql = "select * from member where member_id = ?";
-		Object[] params = {member_id};
+		Object[] params = { member_id };
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
-		return list.isEmpty()? null : list.get(0);
+		return list.isEmpty() ? null : list.get(0);
 	}
-	
+
 	public void connect(String member_id, int media_no) {
 		String sql = "insert into member_profile values(?, ?)";
-		Object[] params = {member_id, media_no};
+		Object[] params = { member_id, media_no };
 		jdbcTemplate.update(sql, params);
 	}
-	
+
 	public int findMediaNo(String member_id) {
 		String sql = "select media_no from member_profile where member_id = ?";
-		Object[] params = {member_id};
+		Object[] params = { member_id };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-	
 
-	
 }
