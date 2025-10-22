@@ -23,6 +23,7 @@ public class BoardMapper  implements RowMapper<BoardDto> {
 				.boardEtime(rs.getTimestamp("board_etime"))
 				.boardLike(rs.getInt("board_like"))
 				.boardView(rs.getInt("board_view"))
+				.boardReply(rs.getInt("board_reply"))
 				.boardHeader(rs.getInt("board_header"))
 				.build();
 	}

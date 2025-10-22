@@ -19,4 +19,5 @@ public class BoardDto {
 	private int boardLike;
 	private int boardView;
 	private int boardHeader;
+	private int boardReply;
 }
