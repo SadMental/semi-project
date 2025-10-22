@@ -96,8 +96,8 @@ public class BoardController {
 		return "/WEB-INF/views/board/free/detail.jsp";
 	}
 	
-	@GetMapping("/update")
-	public String update(Model model,
+	@GetMapping("/edit")
+	public String edit(Model model,
 			@RequestParam int boardNo)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
@@ -107,8 +107,8 @@ public class BoardController {
 		return "/WEB-INF/views/board/free/edit.jsp";
 	}
 	
-	@PostMapping("/update")
-	public String update(@ModelAttribute BoardDto boardDto) 
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute BoardDto boardDto) 
 	{
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
 		if (beforeDto == null) 

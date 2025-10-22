@@ -113,6 +113,13 @@ public class BoardDao {
 		String sql = "update board set board_like = ? where board_no=?";
 		Object[] params = { boardLike, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
+	public boolean updateBoardView(int boardNo) {
+		String sql = "update board set board_view=board_view+1 where board_no=?";
+		Object[] params = {boardNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+	
 
 	}
 

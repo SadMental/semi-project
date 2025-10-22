@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <div class="cell">
@@ -29,8 +31,24 @@
 			<td>${memberDto.memberPoint }</td>
 		</tr>
 		<tr>
-			<th>동물정보</th>
-			<td>${memberDto.memberAnimal }</td>
+			<c:forEach var="animalDto" items="${animalList }">
+				<th>동물정보</th>
+				<td>
+					<div class="cell" data-animal-no="${animalDto.animalNo }">
+					    <div class="cell">
+					      	<span>동물 이름 : ${animalDto.animalName }</span>
+					    </div>
+					    <div class="cell">
+					      	<span>동물 소개 : ${animalDto.animalContent }</span>
+					    </div>
+					    <div class="cell">
+					            <span>
+					            	${(animalDto.animalPermission == 'f')? "분양불가" : "분양가능"}
+					            </span>
+					    </div>
+					</div>
+				<td>
+			</c:forEach>
 		</tr>
 	</table>
 	<div class="cell">
