@@ -157,6 +157,22 @@
 							</tr>
 						</c:forEach>
 					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">
+								검색결과 : 
+								${pageVO.begin} - ${pageVO.end}
+								/
+								${pageVO.dataCount}개
+							</td>
+						</tr>
+						
+						<tr>
+					        <td colspan="7" style="text-align: center;">
+					            <jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+					        </td>
+					    </tr>
+					</tfoot>
 				</table>
 			</div>
 		</c:otherwise>
