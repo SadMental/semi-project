@@ -1,13 +1,16 @@
 package com.spring.semi.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.mapper.BoardListMapper;
 import com.spring.semi.mapper.BoardMapper;
+import com.spring.semi.vo.PageVO;
 
 @Repository
 public class BoardDao {
@@ -42,6 +45,20 @@ public class BoardDao {
 		Object[] params = {boardType};
 		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
+	//검색
+	public List<BoardDto> searchList(String column, String keyword)
+	{
+		Set<String> allowList = Set.of("board_title", "board_writer", "board_content");
+		if(!allowList.contains(column))
+			return List.of();
+		
+		String sql = "select * from board where instr(#1, ?) > 0 "
+				+ "order by #1 asc, board_no asc";
+		sql = sql.replace("#1", column);
+		Object[] params = { keyword };
+		return jdbcTemplate.query(sql, boardMapper, params);	
+		
+	}
 	//상세
 	public BoardDto selectOne(int boardNo) {
 		String sql = "select * from board where board_no=?";
@@ -67,6 +84,71 @@ public class BoardDao {
 		};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	public int count(PageVO pageVO, int pageType) 
+	{
+		if(pageVO.isList()) 
+		{
+			String sql ="select count(*) from board "
+					+ "where board_category_no=? "
+					+ "order by board_no asc";
+			Object[] params = {pageType};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+		}
+		else 
+		{
+			String sql ="select count(*) from board "
+					+ "where instr(#1, ?) > 0 "
+					+ "and board_category_no=?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword(),
+					pageType};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+		}
+	}
+	
+	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) 
+	{
+		if(pageVO.isList()) 
+		{
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select * from board "
+						+ "where board_category_no=?"						
+						+ "order by board_no desc"
+					+ ")TMP"
+				+ ") where rn between ? and ?";
+
+			Object[] params = {
+					pageType,
+					pageVO.getBegin(), 
+					pageVO.getEnd()
+			};
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
+		else 
+		{
+			String sql = "select * from ("
+								+ "select rownum rn, TMP.* from ("
+									+ "select * from board "
+									+ "where instr(#1, ?) > 0 and "
+									+ "board_category_no=?"
+									+ "order by #1 asc, board_no desc"
+								+ ")TMP"
+							+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {
+					pageVO.getKeyword(), 
+					pageType,
+					pageVO.getBegin(), 
+					pageVO.getEnd()
+			};//동적할당
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
+	}
+
+	
+	
 
 	//attachment
 	
