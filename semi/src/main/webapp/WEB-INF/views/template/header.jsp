@@ -144,7 +144,7 @@
 					href="/adoptionBoard/list">SERVICE</a>
 				<c:choose>
 			<c:when test="${sessionScope.loginId != null}">
-				<a class="kh-pill kh-pill--active" href="/">LOGOUT</a>
+				<a class="kh-pill kh-pill--active" href="/member/logout">LOGOUT</a>
 			</c:when>
 			<c:otherwise>
 				<a class="kh-pill kh-pill--active" href="/member/login">LOGIN</a>
