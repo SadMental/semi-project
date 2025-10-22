@@ -1,6 +1,7 @@
 package com.spring.semi.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.aop.AdminInterceptor;
+import com.spring.semi.dao.AnimalDao;
 import com.spring.semi.dao.MediaDao;
 import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.AnimalDto;
 import com.spring.semi.dto.MediaDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.NeedPermissionException;
@@ -33,7 +36,8 @@ public class MemberController {
 	private MediaDao mediaDao;
 	@Autowired
 	private MediaService mediaService;
-
+	@Autowired
+	private AnimalDao animalDao;
 
 	
 	@GetMapping("/join")
@@ -97,6 +101,8 @@ public class MemberController {
 			) {
 		String login_id = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(login_id);
+		List<AnimalDto> animalList = animalDao.selectList(login_id);
+		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);
 		return "/WEB-INF/views/member/edit.jsp";
 	}
@@ -143,6 +149,8 @@ public class MemberController {
 			) {
 		String login_id = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(login_id);
+		List<AnimalDto> animalList = animalDao.selectList(login_id);
+		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);
 		
 		return "/WEB-INF/views/member/mypage.jsp";
