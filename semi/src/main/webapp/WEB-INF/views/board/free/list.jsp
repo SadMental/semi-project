@@ -143,6 +143,7 @@
 							<th>제목</th>
 							<th>작성자</th>
 							<th>조회수</th>
+							<th>추천수</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -153,10 +154,27 @@
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>
 								<td>${boardDto.boardWriter}</td>
-								<td>${boardDto.boardView}</td>
+								<td>${boardDto.boardView}</td>								
+								<td>${boardDto.boardLike}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">
+								검색결과 : 
+								${pageVO.begin} - ${pageVO.end}
+								/
+								${pageVO.dataCount}개
+							</td>
+						</tr>
+						
+						<tr>
+					        <td colspan="7" style="text-align: center;">
+					            <jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+					        </td>
+					    </tr>
+					</tfoot>
 				</table>
 			</div>
 		</c:otherwise>
