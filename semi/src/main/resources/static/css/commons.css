@@ -47,9 +47,11 @@ div {
     filter: brightness(92%);
 }
 .btn.btn-positive {
-    background-color: #0984e3;
-    border-color: #0984e3;
-    color: white;
+    background-color: rgb(133, 107, 78);
+    border-color: rgb(78, 61, 42);
+    color: rgb(255, 250, 241);
+    font-weight: bold;
+    border-radius: 17px;
 }
 .btn.btn-negative {
     background-color: #e74c3c;

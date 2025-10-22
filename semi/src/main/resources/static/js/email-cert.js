@@ -1,6 +1,6 @@
-var state = {
-    memberEmailValid: false // default 인증안됨 
-};
+        var state = {
+        memberEmailValid: false // default 인증안됨 
+        };
 
 $(function () {
 	
@@ -11,6 +11,7 @@ $(function () {
         var valid = regex.test(email);
 
         $(".success-feedback, .fail-feedback, .fail2-feedback").hide();
+        $(".cell.flex-box .auth-btn").hide();
 
         if (valid == false) {
             $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
@@ -39,7 +40,7 @@ $(function () {
         var regex = /^[0-9]{5}$/;
         var valid = regex.test(certNumber);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback").hide();
+        $(".success-feedback, .fail-feedback, .fail2-feedback", ".auth-btn").hide();
 
         if (valid == false) {
             $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
@@ -61,6 +62,9 @@ $(function () {
                     $(".success-feedback").show();
                     state.memberEmailValid = true;
                     $(".btn-cert-check").hide();
+                    $(".auth-btn").show();
+                    $("[name=memberAuth]").val("t");
+                    $(".fail2-feedback").hide();
                 }
                 else {
                     $(".cert-input").removeClass("success fail fail2").addClass("fail2");
