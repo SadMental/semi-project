@@ -59,6 +59,12 @@ public class MemberDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
+	public void updateForLogin(String member_id) {
+		String sql = "update member set member_login = systimestamp where member_id = ?";
+		Object[] params = {member_id};
+		jdbcTemplate.update(sql, params);
+	}
+	
 	public MemberDto selectOne(String member_id) {
 		String sql = "select * from member where member_id = ?";
 		Object[] params = {member_id};
