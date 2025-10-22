@@ -8,6 +8,39 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
 <script src="/summernote/custom-summernote.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var origin = $(".image-profile").attr("src");
+		$("#profile-input").on("input", function(){
+			var list = $("#profile-input").prop("files")
+			if(list.length == 0) return;
+			
+			var form = new FormData(); // <form> 역할
+			form.append("media", list[0]);
+			$.ajax({
+				processData : false, // multipart로 보내기 위해 미리 정의된 전처리 제거
+				contentType : false, // multipart로 보내기 위해 미리 정의된 MINE 타입을 제거
+				url : "/rest/member/profile",
+				method : "post",
+				data : form,
+				success : function(response){
+					var new_origin = origin + "&t=" + new Date().getTime();
+					$(".image-profile").attr("src", new_origin);
+				}
+			});			
+		});
+		$("#profile-delete").on("click", function(){
+			$.ajax({
+				url : "/rest/member/delete",
+				method : "post",
+				data : {},
+				success : function(response) {
+					$(".image-profile").attr("src", "/image/error/no-image.png")
+				}
+			})
+		});
+	});
+</script>
 
 <script type="text/javascript">
        $(function(){
@@ -90,7 +123,7 @@
 </style>
 
 
-<form action="edit" method="post">
+<form action="edit" method="post" enctype="multipart/form-data" autocomplete="off">
 	<div class="cell">
 		<label>
 			<span>확인용 비밀번호</span>
@@ -114,6 +147,12 @@
 	<div class="cell">
 		<textarea class="summernote-editor" name="memberDescription">${memberDto.memberDescription }</textarea>
 	</div>
+	<div class="cell center">
+        <img class="image-profile" src="profile?member_id=${memberDto.memberId }" width="100">
+        <label for="profile-input" class="flex-box flex-center">변경</label>
+        <label id="profile-delete" class="flex-box flex-center">제거</label>
+        <input type="file" id="profile-input" name="media" style="display: none;">
+    </div>
 	<div class="cell target">
 		<label>
 			<span>동물 등록</span>

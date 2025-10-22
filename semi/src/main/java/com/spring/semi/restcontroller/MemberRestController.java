@@ -1,5 +1,6 @@
 package com.spring.semi.restcontroller;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -10,11 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.dao.CertDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.CertDto;
 import com.spring.semi.service.EmailService;
+import com.spring.semi.service.MediaService;
+
+import jakarta.mail.Session;
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin
 @RestController
@@ -26,6 +32,8 @@ public class MemberRestController {
 	private EmailService emailService;
 	@Autowired
 	private CertDao certDao;
+	@Autowired
+	private MediaService mediaService;
 
 	// 이메일 인증 매핑
 	@PostMapping("/certSend")
@@ -52,6 +60,31 @@ public class MemberRestController {
 
 		certDao.delete(certDto.getCertEmail());
 		return true;
+	}
+	
+	@PostMapping("/profile")
+	public void profile(HttpSession session, @RequestParam MultipartFile media) throws IllegalStateException, IOException {
+		// 기존파일 삭제 (없을 수도 있음)
+		String login_id = (String) session.getAttribute("loginId");
+		try {
+			int media_no = memberDao.findMediaNo(login_id);
+			mediaService.delete(media_no);
+		} catch (Exception e) {}
+		
+		// 신규파일 등록
+		if(media.isEmpty() == false) {
+			int media_no = mediaService.save(media);
+			memberDao.connect(login_id, media_no);
+		}
+	}
+	
+	@PostMapping("/delete")
+	public void delete(HttpSession session) {
+		String login_id = (String) session.getAttribute("loginId");
+		try {
+			int media_no = memberDao.findMediaNo(login_id);
+			mediaService.delete(media_no);
+		} catch (Exception e) {}
 	}
 
 }
