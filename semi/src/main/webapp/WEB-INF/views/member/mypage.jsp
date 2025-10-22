@@ -1,45 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<script type="text/javascript">
-        $(function(){
-            $(".btn-add-animal").on("click", function(){
-                var origin = $("#animal-template").text(); // 글자를 불러오고
-                var html = $.parseHTML(origin); // HTML 구조로 재해석
-                $(".target").append(html);
-            })
-            $(document).on("click", ".btn-animal", function(){
-                var animalButton = $(this).closest(".animal-wrapper").find(".btn-animal")
-                var permission = animalButton.attr('data-permission')
-                console.log(permission)
-                if(permission === 'f') {
-                    animalButton.attr("data-permission", 't')
-                    animalButton.find("span").text("분양가능")
-                } else {
-                    animalButton.attr("data-permission", 'f')
-                    animalButton.find("span").text("분양불가")
-                }
-            });
-            $(document).on("click", ".animal-cancel", function(){
-                $(this).closest(".animal-wrapper").remove();
-            });
-            $(document).on("click", ".animal-access", function(){
-                var animalName = $(this).closest(".animal-wrapper").find(".animal-name").val()
-                var animalPermission = $(this).closest(".animal-wrapper").find(".btn-animal").attr("data-permission")
-                console.log(animalName)
-                console.log(animalPermission)
-                $.ajax({
-                    url : "/rest/animal/add",
-                    method : "post",
-                    data : {animalName : animalName, animalPermission : animalPermission},
-                    success : function(response){
-                        
-                    }
-                })
-            });
-        })
-</script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <div class="cell">
 	<table class="table">
@@ -68,8 +31,24 @@
 			<td>${memberDto.memberPoint }</td>
 		</tr>
 		<tr>
-			<th>동물정보</th>
-			<td></td>
+			<c:forEach var="animalDto" items="${animalList }">
+				<th>동물정보</th>
+				<td>
+					<div class="cell" data-animal-no="${animalDto.animalNo }">
+					    <div class="cell">
+					      	<span>동물 이름 : ${animalDto.animalName }</span>
+					    </div>
+					    <div class="cell">
+					      	<span>동물 소개 : ${animalDto.animalContent }</span>
+					    </div>
+					    <div class="cell">
+					            <span>
+					            	${(animalDto.animalPermission == 'f')? "분양불가" : "분양가능"}
+					            </span>
+					    </div>
+					</div>
+				<td>
+			</c:forEach>
 		</tr>
 	</table>
 	<div class="cell">
