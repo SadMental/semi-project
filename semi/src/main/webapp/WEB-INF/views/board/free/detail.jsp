@@ -1,70 +1,126 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
+
+<style>
+body {
+	background-color: #f4ede6;
+	color: #5b3a29;
+	margin: 0;
+	padding: 0;
+}
+
+.container.w-800 {
+	max-width: 800px;
+	margin: 40px auto;
+	padding: 30px 35px;
+	border-radius: 15px;
+	background-color: #ffffffdd;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.meta {
+	font-size: 0.95rem;
+	color: #7a5a44;
+	margin-bottom: 20px;
+}
+
+.content {
+	font-size: 1.1rem;
+	line-height: 1.6;
+	min-height: 200px;
+	border-top: 1px solid #d6c2a6;
+	padding-top: 20px;
+}
+
+.cell.right {
+	text-align: right;
+	margin-top: 30px;
+}
+
+.btn {
+	padding: 10px 20px;
+	font-size: 1rem;
+	border-radius: 10px;
+	font-weight: 600;
+	text-decoration: none;
+	display: inline-block;
+	margin-right: 10px;
+}
+.btn-edit {
+  background-color: #a67c52;
+  color: #fff5e9;
+  border: none;
+}
+
+.btn-edit:hover {
+  background-color: #ba8f65;
+}
+
+.btn-delete {
+  background-color: #a94442;
+  color: #fff2f0;
+  border: none;
+}
+
+.btn-delete:hover {
+  background-color: #922d2b;
+}
 
 
+.btn-neutral {
+	background-color: #d9c7b3;
+	color: #5b3a29;
+	border: none;
+}
 
-<h1>
-	${boardDto.boardTitle} 
-	<c:if test="${boardDto.boardEtime != null}">
-	(수정됨)
-	</c:if>
-</h1>
-<div>
-<%-- 	${boardDto.boardWriter == null ? '탈퇴한사용자' : boardDto.boardWriter} --%>
+.btn-neutral:hover {
+	background-color: #cbb7a3;
+}
+</style>
 
-	<c:choose>
-		<c:when test="${memberDto == null}">탈퇴한사용자</c:when>
-		<c:otherwise>
-			<a href="/member/detail?memberId=${memberDto.memberId}">
-				${memberDto.memberNickname}
-			</a>  
-<%-- 			(${memberDto.memberLevel}) --%>
-		</c:otherwise>
-	</c:choose>
-</div>
-<div>
-	<fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm"/> 
-	조회수 ${boardDto.boardView}
-</div>
-<hr>
-<div style="min-height: 200px">
-	<pre>${boardDto.boardContent}</pre>
-</div>
-<hr>
-<div>
-	좋아요 <i id="board-like" class="fa-regular fa-heart red"></i> 
-	<span id="board-like-count">?</span>  
-<%-- 	댓글 ${boardDto.boardReply} --%>
-</div>
+<div class="container w-800">
+	<h1>${boardDto.boardTitle}</h1>
 
-<!-- 댓글 영역 -->
-<div class = "reply-list-wrapper">목록 영역</div>
-<div class = "reply-write-wrapper">
-	<textarea class="field w-100 mt-50 reply-input" rows=4 style="resize:none" placeholder="댓글"></textarea>
+	<div class="meta">
+		<table>
+			<tr>
+				<th>[번호] : </th>
+				<td>${boardDto.boardNo}</td>
+			</tr>
+			<tr>
+				<th>[작성자] :</th>
+				<td>${boardDto.boardWriter}</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="content">
+		<c:out value="${boardDto.boardContent}" escapeXml="false" />
+	</div>
+
 	<div class="cell right">
-		<button type="button" class="btn btn-positive reply-btn-write">
-			<span>댓글 작성</span>
-		</button>
+		<a href="list" class="btn btn-neutral">목록으로</a>
+		 <a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
+
+		<form method="post" action="delete"
+      onsubmit="return confirm('정말 삭제하시겠습니까?');"
+      style="display:inline;">
+
+			<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
+			<button type="submit" class="btn btn-delete">삭제하기</button>
+		</form>
+
 	</div>
 </div>
 
-<hr>
-<div>
-	<c:if test="${sessionScope.loginId != null}">
-		<c:choose>
-			<c:when test="${sessionScope.loginId == boardDto.boardWriter}">
-				<a href="update?boardNo=${boardDto.boardNo}">수정</a> 
-				<a href="delete?boardNo=${boardDto.boardNo}">삭제</a>
-			</c:when>
-			<c:when test="${sessionScope.loginLevel == 2}">
-				<a href="delete?boardNo=${boardDto.boardNo}">삭제</a>
-			</c:when>
-		</c:choose>
-	</c:if>
-</div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />
