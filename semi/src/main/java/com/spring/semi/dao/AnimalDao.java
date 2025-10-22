@@ -22,9 +22,15 @@ public class AnimalDao {
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	public void insert(AnimalDto animalDto) {
-		String sql = "insert into animal(animal_no, animal_name, animal_permission) "
-													+ "values(?, ?, ?)";
-		Object[] params = {animalDto.getAnimalNo(), animalDto.getAnimalName(), animalDto.getAnimalPermission()};
+		String sql = "insert into animal(animal_no, animal_name, animal_content ,animal_permission, animal_master) "
+													+ "values(?, ?, ?, ?, ?)";
+		Object[] params = {
+				animalDto.getAnimalNo(), 
+				animalDto.getAnimalName(), 
+				animalDto.getAnimalContent(),
+				animalDto.getAnimalPermission(),
+				animalDto.getAnimalMaster()
+		};
 		
 		jdbcTemplate.update(sql, params);
 	}
@@ -41,5 +47,27 @@ public class AnimalDao {
 		Object[] params = {animal_no};
 		
 		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+	public boolean update(AnimalDto animalDto) {
+		String sql = "update animal "
+								+ "set animal_name = ?, animal_content = ?, "
+										+ "animal_permission = ? where animal_no = ?";
+		Object[] params = {
+				animalDto.getAnimalName(),
+				animalDto.getAnimalContent(),
+				animalDto.getAnimalPermission(),
+				animalDto.getAnimalNo()
+		};
+		
+		return jdbcTemplate.update(sql, params) > 0;
+		
+	}
+	public AnimalDto selectOne(int animal_no) {
+		String sql = "select * from animal where animal_no = ?";
+		Object[] params = {animal_no};
+		List<AnimalDto> list = jdbcTemplate.query(sql, animalMapper, params);
+		
+		return list.isEmpty()? null : list.get(0);
 	}
 }

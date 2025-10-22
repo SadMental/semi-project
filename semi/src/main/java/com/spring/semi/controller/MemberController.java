@@ -80,6 +80,7 @@ public class MemberController {
 		
 		session.setAttribute("loginId", findDto.getMemberId());
 		session.setAttribute("loginLevel", findDto.getMemberLevel());
+		memberDao.updateForLogin(findDto.getMemberId());
 		
 		return "redirect:/";
 	}
