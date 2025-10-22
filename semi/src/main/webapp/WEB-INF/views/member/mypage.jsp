@@ -2,6 +2,45 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
+<script type="text/javascript">
+        $(function(){
+            $(".btn-add-animal").on("click", function(){
+                var origin = $("#animal-template").text(); // 글자를 불러오고
+                var html = $.parseHTML(origin); // HTML 구조로 재해석
+                $(".target").append(html);
+            })
+            $(document).on("click", ".btn-animal", function(){
+                var animalButton = $(this).closest(".animal-wrapper").find(".btn-animal")
+                var permission = animalButton.attr('data-permission')
+                console.log(permission)
+                if(permission === 'f') {
+                    animalButton.attr("data-permission", 't')
+                    animalButton.find("span").text("분양가능")
+                } else {
+                    animalButton.attr("data-permission", 'f')
+                    animalButton.find("span").text("분양불가")
+                }
+            });
+            $(document).on("click", ".animal-cancel", function(){
+                $(this).closest(".animal-wrapper").remove();
+            });
+            $(document).on("click", ".animal-access", function(){
+                var animalName = $(this).closest(".animal-wrapper").find(".animal-name").val()
+                var animalPermission = $(this).closest(".animal-wrapper").find(".btn-animal").attr("data-permission")
+                console.log(animalName)
+                console.log(animalPermission)
+                $.ajax({
+                    url : "/rest/animal/add",
+                    method : "post",
+                    data : {animalName : animalName, animalPermission : animalPermission},
+                    success : function(response){
+                        
+                    }
+                })
+            });
+        })
+</script>
+
 <div class="cell">
 	<table class="table">
 		<tr>
@@ -30,7 +69,7 @@
 		</tr>
 		<tr>
 			<th>동물정보</th>
-			<td>${memberDto.memberAnimal }</td>
+			<td></td>
 		</tr>
 	</table>
 	<div class="cell">

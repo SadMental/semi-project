@@ -1,5 +1,7 @@
 package com.spring.semi.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,18 +10,31 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.semi.aop.AdminInterceptor;
+import com.spring.semi.dao.MediaDao;
 import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.MediaDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.NeedPermissionException;
+import com.spring.semi.error.TargetNotfoundException;
+import com.spring.semi.service.MediaService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
+
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private MediaDao mediaDao;
+	@Autowired
+	private MediaService mediaService;
+
+
 	
 	@GetMapping("/join")
 	public String join() {
@@ -28,9 +43,14 @@ public class MemberController {
 	
 	@PostMapping("/join")
 	public String join(
-			@ModelAttribute MemberDto memberDto
-			) {
+			@ModelAttribute MemberDto memberDto,
+			@RequestParam MultipartFile media
+			) throws IllegalStateException, IOException {
 		memberDao.insert(memberDto);
+		if(media.isEmpty() == false) {
+			int media_no = mediaService.save(media);
+			memberDao.connect(memberDto.getMemberId(), media_no);
+		}
 		
 		return "redirect:joinFinish";
 	}
@@ -57,7 +77,7 @@ public class MemberController {
 		session.setAttribute("loginId", findDto.getMemberId());
 		session.setAttribute("loginLevel", findDto.getMemberLevel());
 		
-		return "/WEB-INF/views/home.jsp";
+		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")
@@ -145,6 +165,19 @@ public class MemberController {
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginLevel");
 		return "/WEB-INF/views/member/thankyou.jsp";
+	}
+	
+	@PostMapping("/profile")
+	public String profile(
+			@RequestParam String member_id
+			) {
+		try {
+			int media_no = memberDao.findMediaNo(member_id);			
+			return "redirect:/media/download/media_no=" + media_no;
+		} catch(Exception e) {
+			return "redirect:/image/error/no-image.png";
+		}
+		
 	}
 	
 }

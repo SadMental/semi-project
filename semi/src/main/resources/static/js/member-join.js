@@ -298,7 +298,7 @@ $(function(){
     //      - 장점 : 매우빠름(참조만 하기 때문) / 단점 : 메모리를 수동으로 제거해야함
     //      - 주소 생성 : URL.createObjectURL(파일)
     //      - 주소 해제 : URL.revokeObjectURL(생성된주소)
-    $("[name=attach]").on("input", function(){
+    $("[name=media]").on("input", function(){
         //this == 파일 선택창
         
         //(+추가) 만약 img 태그의 src가 blob: 로 시작한다면 해당 주소를 제거하도록 요청
