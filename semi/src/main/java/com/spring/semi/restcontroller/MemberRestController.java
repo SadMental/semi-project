@@ -16,10 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.semi.dao.CertDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.CertDto;
+import com.spring.semi.dto.MemberDto;
 import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MediaService;
 
-import jakarta.mail.Session;
 import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin
@@ -37,8 +37,14 @@ public class MemberRestController {
 
 	// 이메일 인증 매핑
 	@PostMapping("/certSend")
-	public void certSend(@RequestParam String certEmail) {
-		emailService.sendCertNumber(certEmail);
+	public boolean certSend(@RequestParam String certEmail) {
+		MemberDto findEmail = memberDao.selectForEmail(certEmail);
+		if(findEmail == null) {			
+			emailService.sendCertNumber(certEmail);
+			return true;
+		}
+		System.out.println("asd: " + findEmail.toString());
+		return false;
 	}
 
 	// 인증 체크

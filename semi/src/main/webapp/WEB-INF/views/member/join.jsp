@@ -2,9 +2,6 @@
 	pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<script src="/js/email-cert.js"></script>
-<script src="/js/member-join.js"></script>
-
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
@@ -62,37 +59,40 @@
 			<input class="w-100p" type="text" name="memberNickname">
 		</div>
 	  	<div class="cell">
-	  		<label>
-	  			<span>이메일</span>
-	  		</label>
+	  		<div class="cell">
+	  			<label>
+	  				<span>이메일</span>
+	  			</label>
 				<input class="flex-fill w-100p" type="text" inputmode="email" name="memberEmail">
-				</div>
-				<div>
+			</div>
+			<div class="cell">
 				<button type="button" class="btn-cert-send btn btn-positive w-75p">
 					<i class="fa-solid fa-paper-plane"></i>
 					<span>인증메일 전송</span>
 				</button> 
-				
-			<div class="cell">
-				<input type="text" inputmode="numeric"
-					class="cert-input w-100p" placeholder="인증번호 입력">
-			</div>
-			<div class="cell">
-				<button type="button" class="btn-cert-check btn btn-positive w-75p">
-					<i class="fa-solid fa-mail"></i>
-					<span>인증번호 확인</span>
-				</button> 
-			<div>
-				<span class="success-feedback">이메일 인증이 완료되었습니다</span>
-			  	<span class="fail-feedback">올바른 이메일 형식이 아닙니다</span>
-			  	<span class="fail2-feedback">인증번호가 올바르지 않거나 유효시간이 초과되었습니다</span>
-				<input type="hidden" name="memberAuth" value="f">
-				<button class="auth-btn btn btn-positive ms-20" type="button" style="border-radius: 50%; background-color: rgb(0, 172, 51); color: white; display: none;">
-					<i class="fa-solid fa-check"></i>
-				</button>
+				<div class="cell">
+					<div class="fail-feedback">올바른 이메일 형식이 아닙니다</div>
+					<div class="fail2-feedback">이미 등록된 이메일입니다.</div>
 				</div>
 			</div>
-
+			<div class="cell cert-input-area" style="display: none;">
+				<div class="cell">
+					<input type="text" inputmode="numeric"
+						class="cert-input w-100p" placeholder="인증번호 입력" >
+				</div>
+				<div class="cell">
+					<button type="button" class="btn-cert-check btn btn-positive w-75p">
+						<i class="fa-solid fa-mail"></i>
+						<span>인증번호 확인</span>
+					</button> 
+					<div class="success-feedback">이메일 인증이 완료되었습니다</div>
+				  	<div class="fail2-feedback">인증번호가 올바르지 않거나 유효시간이 초과되었습니다</div>
+					<input type="hidden" name="memberAuth" value="f">
+					<button class="auth-btn btn btn-positive ms-20" type="button" style="border-radius: 50%; background-color: rgb(0, 172, 51); color: white; display: none;">
+						<i class="fa-solid fa-check"></i>
+					</button>
+				</div>
+			</div>
 	  	</div>
 	  	
 		<div class="cell">
