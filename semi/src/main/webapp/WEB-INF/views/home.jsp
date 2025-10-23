@@ -169,6 +169,25 @@
 					<p>커뮤니티 4</p>	
 					<p>커뮤니티 6</p>
 					<p>커뮤니티 8</p>
+<!-- 				테이블 한 줄에 2행씩 찍는 방법 -->
+<!-- 				<table border="1"> -->
+<%-- 				    <c:forEach var="num" items="${numbers}" varStatus="st"> --%>
+<%-- 				        <c:if test="${st.index % 2 == 0}"> --%>
+<!-- 				            <tr> -->
+<%-- 				        </c:if> --%>
+				
+<%-- 				        <td>${num}</td> --%>
+				
+<%-- 				        <c:if test="${st.index % 2 == 1}"> --%>
+<!-- 				            </tr> -->
+<%-- 				        </c:if> --%>
+<%-- 				    </c:forEach> --%>
+				
+<!-- 				    홀수 개일 때 마지막 행 닫기 -->
+<%-- 				    <c:if test="${numbers.size() % 2 != 0}"> --%>
+<!-- 				        </tr> -->
+<%-- 				    </c:if> --%>
+<!-- 				</table> -->
 				</div>
 			</div>
 			<div class="cell ms-10 me-10 center">
