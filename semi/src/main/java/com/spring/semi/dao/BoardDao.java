@@ -37,10 +37,15 @@ public class BoardDao {
 
 	// 목록
 	public List<BoardDto> selectList(int boardType) {
-		String sql = "select * from board where board_category_no=? " + "order by board_no desc";
-		Object[] params = { boardType };
-		return jdbcTemplate.query(sql, boardListMapper, params);
-	}
+	    String sql = "SELECT b.*, h.header_name "
+	               + "FROM board b "
+	               + "LEFT JOIN header h "
+	               + "ON b.board_header = h.header_no "
+	               + "WHERE b.board_category_no = ? "
+	               + "ORDER BY b.board_no DESC";
+	    Object[] params = { boardType };
+	    return jdbcTemplate.query(sql, boardListMapper, params);
+	}  //헤더기능출력추가
 
 	// 검색
 	public List<BoardDto> searchList(String column, String keyword) {
