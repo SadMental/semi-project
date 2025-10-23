@@ -13,17 +13,31 @@
 	  text-overflow: ellipsis;   /* ... 표시 */
 	}
 	
+	.cell.w-100p {
+	  display: flex;
+	  justify-content: space-between; /* 제목 왼쪽, 시간 오른쪽 */
+	  align-items: center;            /* 수직 가운데 정렬 */
+	}
+	
 	.new-board-title {
-        float: left;
-    }
-
-    .new-board-time {
-        float: right;
-    }
+	  display: inline-block;
+	  width: 130px;              /* 길이 제한 */
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;   /* ... 처리 */
+	  text-align: left;
+	}
+	
+	.new-board-time {
+	  flex-shrink: 0;             /* 시간 줄어들지 않게 */
+	  color: #e67e22;
+	  font-size: 0.9em;
+	  text-align: right;
+	}
 </style>
 
 <script type="text/template" id="ranking-template">
-	<div class="cell w-100p flex-box">
+	<div class="cell w-100p flex-box ranking-wrapper">
         <span class="number me-10">1</span>
         <img src="#" style="width:32px" class="ranking-profile ms-10">
 
@@ -39,15 +53,15 @@
     </div>
 </script>
 <script type="text/template" id="new-board-template">
-    <div class="cell w-100">
-        <span class="new-board-title">제목</span>
-        <span class="new-board-time" style="color:#e67e22;">시간</span>
+    <div class="cell w-100p new-board-wrapper">
+        <span class="new-board-title w-50p">제목</span>
+        <span class="new-board-time w-50p" style="color:#e67e22;">시간</span>
     </div>
 </script>
 
 <script type="text/javascript">
 	$(function(){
-		//newboard_list();
+		newboard_list();
 		ranking_list();
 		
 		function newboard_list() {
@@ -58,20 +72,18 @@
 				success:function(response){
 					$(".new-board-list-wrapper").empty();
 					
-//					for(var i=0; i < response.length; i++) {
-//						console.log(response);
-// 						var newboard = response[i];
+					for(var i=0; i < response.length; i++) {
+						var newboard = response[i];
+						console.log("i:"+newboard.getFormattedWtime);
 						
-// 						return;
+						var origin = $("#new-board-template").text();
+						var html = $.parseHTML(origin);
 						
-// 						var origin = $("#new-board-template").text();
-// 						var html = $.parseHTML(origin);
+						$(html).find(".new-board-title").text(newboard.boardTitle);
+						$(html).find(".new-board-time").text(newboard.formattedWtime);
 						
-// 						$(html).find(".new-board-title").text(newboard.boardTitle);
-// 						$(html).find(".new-board-time").text(newboard.boardTime);
-						
-// 						$(".new-board-list-wrapper").append(html);
-//					}
+						$(".new-board-list-wrapper").append(html);
+					}
 				}
 			});
 		}
@@ -87,6 +99,7 @@
 					var number = 1;
 					for(var i=0; i < response.length; i++) {
 						var ranking = response[i];
+						console.log("i:"+ranking);
 						
 						var origin = $("#ranking-template").text();
 						var html = $.parseHTML(origin);
