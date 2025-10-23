@@ -66,28 +66,40 @@ $(function () {
         var regex = /^(.*?)@(.*?)$/;
         var valid = regex.test(email);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback").hide();
+        $(".success-feedback, .fail-feedback, .fail2-feedback, .fail3-feedback").hide();
         $(".cell.flex-box .auth-btn").hide();
 
         if (valid == false) {
-            $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
+            $("[name=memberEmail]").removeClass("success fail fail2 fail3").addClass("fail");
             $(".fail-feedback").show();
             state.memberEmailValid = false;
             return;
         }
 
-        $.ajax({
-            url: "http://localhost:8080/rest/member/certSend",
+        $.ajax({ //이메일 중복 확인 먼저
+            url: "http://localhost:8080/rest/member/checkEmail",
             method: "post",
-            data: { certEmail: email },
+            data: { memberEmail : email },
             success: function (response) {
-                $(".cert-input").show();
+                if(response) {
+                    $(".fail3-feedback").show();
+                }
+                else {
+                    $(".fail3-feedback").hide();
+
+                    // 중복 없을 시 certSend 실행
+                    $.ajax({ 
+                        url: "http://localhost:8080/rest/member/certSend",
+                        method: "post",
+                        data: { certEmail: email },
+                        success: function (response) {
+                            $(".cert-input").show();
+                        },
+                    });
+                }
             },
-
-            // beforeSend:function() {
-
-            // }
         });
+        
     });
     
     //인증번호 확인
@@ -97,10 +109,10 @@ $(function () {
         var regex = /^[0-9]{5}$/;
         var valid = regex.test(certNumber);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback", ".auth-btn").hide();
+        $(".success-feedback, .fail-feedback, .fail2-feedback, .fail3-feedback, .auth-btn").hide();
 
         if (valid == false) {
-            $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
+            $("[name=memberEmail]").removeClass("success fail fail2 fail3").addClass("fail");
             $(".fail2-feedback").show();
             state.memberEmailValid = false;
             return;
@@ -113,8 +125,8 @@ $(function () {
             data: { certEmail: certEmail, certNumber: certNumber },
             success: function (response) {
                 if (response) {
-                    $(".cert-input").removeClass("success fail fail2").val("").hide();
-                    $("[name=memberEmail]").removeClass("success fail fail2").addClass("success")
+                    $(".cert-input").removeClass("success fail fail2 fail3").val("").hide();
+                    $("[name=memberEmail]").removeClass("success fail fail2 fail3").addClass("success")
                         .prop("readonly", true);
                     $(".success-feedback").show();
                     state.memberEmailValid = true;
@@ -125,7 +137,7 @@ $(function () {
                     $(".btn-cert-send").hide();
                 }
                 else {
-                    $(".cert-input").removeClass("success fail fail2").addClass("fail2");
+                    $(".cert-input").removeClass("success fail fail2 fail3").addClass("fail2");
                     $(".fail2-feedback").show();
                     state.memberEmailValid = false;
                 }

@@ -424,7 +424,7 @@ textarea.field {
 .fail-feedback,
 .fail2-feedback
 {
-    color: #d63031;
+    color: red;
 }
 
 .field.success ~ .success-feedback {
