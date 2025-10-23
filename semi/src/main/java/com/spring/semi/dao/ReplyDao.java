@@ -74,9 +74,9 @@ public class ReplyDao {
             replyDto.getReplyContent(),
             replyDto.getReplyNo()
         };
- 
+
         return jdbcTemplate.update(sql, params) > 0;
-    } 
+    }
 
     // 7. 댓글 단건 조회
     public ReplyDto selectOne(int replyNo) {
@@ -85,5 +85,5 @@ public class ReplyDao {
 
         List<ReplyDto> list = jdbcTemplate.query(sql, replyMapper, params);
         return list.isEmpty() ? null : list.get(0);
-    }
+    }  
 }
