@@ -95,49 +95,23 @@ public class BoardDao {
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		}
 	}
-//페이징 수정 기능오류ㅇㅇ
+
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
-	    if (pageVO.isList()) {
-	        String sql = 
-	            "select * from (" +
-	            "  select rownum rn, TMP.* from (" +
-	            "    select b.*, h.header_name " +
-	            "    from board b " +
-	            "    left join header h on b.board_header = h.header_no " +
-	            "    where b.board_category_no=? " +
-	            "    order by b.board_no desc" +
-	            "  ) TMP" +
-	            ") where rn between ? and ?";
+		if (pageVO.isList()) {
+			String sql = "select * from (" + "select rownum rn, TMP.* from (" + "select * from board "
+					+ "where board_category_no=?" + "order by board_no desc" + ")TMP" + ") where rn between ? and ?";
 
-	        Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
-	        return jdbcTemplate.query(sql, boardListMapper, params);
-	    } else {
-	        String sql = 
-	            "select * from (" +
-	            "  select rownum rn, TMP.* from (" +
-	            "    select b.*, h.header_name " +
-	            "    from board b " +
-	            "    left join header h on b.board_header = h.header_no " +
-	            "    where instr(#1, ?) > 0 " +
-	            "    and b.board_category_no=? " +
-	            "    order by #1 asc, b.board_no desc" +
-	            "  ) TMP" +
-	            ") where rn between ? and ?";
-
-	        sql = sql.replace("#1", pageVO.getColumn());
-	        Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
-	        return jdbcTemplate.query(sql, boardListMapper, params);
-	    }
+			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		} else {
+			String sql = "select * from (" + "select rownum rn, TMP.* from (" + "select * from board "
+					+ "where instr(#1, ?) > 0 and " + "board_category_no=?" + "order by #1 asc, board_no desc" + ")TMP"
+					+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };// 동적할당
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
 	}
-<<<<<<< HEAD
-	//좋아요 관련
-	public boolean updateBoardLike(int boardNo, int boardLike) {
-		String sql = "update board set board_like = ? where board_no=?";
-		Object[] params = { boardLike, boardNo };
-		return jdbcTemplate.update(sql, params) > 0;
-	}
-=======
->>>>>>> refs/remotes/origin/main
 	public boolean updateBoardView(int boardNo) {
 		String sql = "update board set board_view=board_view+1 where board_no=?";
 		Object[] params = {boardNo};
