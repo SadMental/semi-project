@@ -62,7 +62,7 @@
                 <div class="pw-feedback" style="color: red;">* 비밀번호: 필수 정보입니다.</div>
                 <div class="pw2-feedback" style="color: red;">* 비밀번호: 8~20자의 영문 대/소문자, 숫자, 특수문자(!@#$)를 사용해 주세요.</div>
             </div>
-            <br>
+            <br> 
 		<div class="cell">
 			<label>
 				<span>닉네임</span>
