@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dao.ReplyDao;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
+
 import com.spring.semi.error.NeedPermissionException;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
@@ -40,7 +42,8 @@ public class AdoptionBoardController {
     private MemberDao memberDao;
     @Autowired
     private ReplyDao replyDao;
-
+  @Autowired
+  private HeaderDao headerDao;
     AdoptionBoardController(MediaService attachmentService) {
         this.attachmentService = attachmentService;
     }
@@ -52,21 +55,23 @@ public class AdoptionBoardController {
     }
 
     @PostMapping("/write")
-    public String write(@ModelAttribute BoardDto boardDto, @ModelAttribute HeaderDto headerDto, HttpSession session) throws NeedPermissionException {
+    public String write(@ModelAttribute BoardDto boardDto,
+                        @ModelAttribute HeaderDto headerDto,
+                        HttpSession session) {
         String loginId = (String) session.getAttribute("loginId");
         boardDto.setBoardWriter(loginId);
 
-        Integer loginLevel = (Integer) session.getAttribute("loginLevel");
+        int boardNo = boardDao.sequence();
+        boardDto.setBoardNo(boardNo);
 
-        // 공지글 작성 권한 체크
-    //  int limit = 2;  // 예를 들어, 2레벨 이상의 권한을 가진 사용자만 공지글을 작성 가능
-      //if (loginLevel < limit && headerDto.getHeaderName().equals("공지"))
-     // throw new NeedPermissionException("공지글을 작성할 권한이 없습니다");
-        
-        int boardNo = boardDao.sequence(); // 번호를 생성해서
-        boardDto.setBoardNo(boardNo); // 게시글 정보에 합친다.
-        boardDao.insert(boardDto, 3); // 등록
+        int headerNo = headerDao.sequence();
+        headerDto.setHeaderNo(headerNo);
+        headerDao.insert(headerDto);
 
+        //  board와 header 연결
+        boardDto.setBoardHeader(headerNo);
+
+        boardDao.insert(boardDto, 3);
         return "redirect:detail?boardNo=" + boardNo;
     }
 
