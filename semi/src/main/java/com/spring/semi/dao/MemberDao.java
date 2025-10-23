@@ -72,7 +72,7 @@ public class MemberDao {
 		Object[] params = { member_id };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-  
+	
 	// member_point가 가장 높은 10명의 회원들
 	public List<MemberDto> selectListByMemberPoint(int min, int max)
 	{
