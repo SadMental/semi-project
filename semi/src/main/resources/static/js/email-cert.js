@@ -77,11 +77,16 @@ $(function () {
         }
 
         $.ajax({
-            url: "http://localhost:8080/rest/member/certSend",
+            url: "/rest/member/certSend",
             method: "post",
             data: { certEmail: email },
             success: function (response) {
-                $(".cert-input").show();
+				if(response){					
+                	$(".cert-input-area").show();
+				} else {
+					$("[name=memberEmail]").removeClass("success fail fail2").addClass("fail2");
+					$(".fail2-feedback").show();
+				}
             },
 
             // beforeSend:function() {
@@ -101,14 +106,14 @@ $(function () {
 
         if (valid == false) {
             $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
-            $(".fail2-feedback").show();
+            $(".fail-feedback").show();
             state.memberEmailValid = false;
             return;
         }
 
         var certEmail = $("[name=memberEmail]").val();
         $.ajax({
-            url: "http://localhost:8080/rest/member/certCheck",
+            url: "/rest/member/certCheck",
             method: "post",
             data: { certEmail: certEmail, certNumber: certNumber },
             success: function (response) {

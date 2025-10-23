@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.spring.semi.dao.CertDao;
+import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.CertDto;
 import com.spring.semi.dto.MemberDto;
 
@@ -31,6 +32,10 @@ public class EmailService {
 	private JavaMailSender sender;
 	@Autowired
 	private CertDao certDao;
+	@Autowired
+	private MemberDao memberDao;
+	@Autowired
+	private PasswordService passwordService;
 	
 	public void sendEmail(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -94,6 +99,80 @@ public class EmailService {
 		String url = ServletUriComponentsBuilder
 				.fromCurrentContextPath()
 				.path("/")
+				.build().toUriString();
+		targetLink.attr("href", url);
+		
+		helper.setText(document.toString(), true);
+		
+		sender.send(message);
+	}
+
+	public void sendEmailForFindId(MemberDto memberDto) throws MessagingException, IOException {
+		MimeMessage message = sender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+		
+		helper.setTo(memberDto.getMemberEmail());
+		helper.setSubject("[KH PETIQUE] 아이디 찾기 결과");
+		
+		ClassPathResource resource = new ClassPathResource("templates/findId.html");
+		File target = resource.getFile();
+		
+		StringBuffer buffer = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new FileReader(target));
+		while(true) {
+			String line = reader.readLine();
+			if(line == null) break;
+			buffer.append(line);
+		}
+		reader.close();
+		
+		Document document = Jsoup.parse(buffer.toString());
+		Element targetId = document.selectFirst("#target");
+		Element targetLink = document.selectFirst("#link");
+		targetId.text(memberDto.getMemberId());
+		
+		String url = ServletUriComponentsBuilder
+				.fromCurrentContextPath()
+				.path("/member/login")
+				.build().toUriString();
+		targetLink.attr("href", url);
+		
+		helper.setText(document.toString(), true);
+		
+		sender.send(message);
+	}
+	
+	public void sendEmailForFindPw(MemberDto memberDto) throws MessagingException, IOException {
+		MimeMessage message = sender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+		
+		helper.setTo(memberDto.getMemberEmail());
+		helper.setSubject("[KH PETIQUE] 비밀번호 재설정 결과");
+		
+		ClassPathResource resource = new ClassPathResource("templates/findPw.html");
+		File target = resource.getFile();
+		
+		StringBuffer buffer = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new FileReader(target));
+		while(true) {
+			String line = reader.readLine();
+			if(line == null) break;
+			buffer.append(line);
+		}
+		reader.close();
+		
+		String newPassword = passwordService.passwordGenerator();
+		
+		memberDao.updateForUserPassword(newPassword, memberDto.getMemberId());
+		
+		Document document = Jsoup.parse(buffer.toString());
+		Element targetPw = document.selectFirst("#target");
+		Element targetLink = document.selectFirst("#link");
+		targetPw.text(newPassword);
+		
+		String url = ServletUriComponentsBuilder
+				.fromCurrentContextPath()
+				.path("/member/login")
 				.build().toUriString();
 		targetLink.attr("href", url);
 		

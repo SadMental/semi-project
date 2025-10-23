@@ -39,8 +39,14 @@ public class MemberRestController {
 
 	// 이메일 인증 매핑
 	@PostMapping("/certSend")
-	public void certSend(@RequestParam String certEmail) {
-		emailService.sendCertNumber(certEmail);
+	public boolean certSend(@RequestParam String certEmail) {
+		MemberDto findEmail = memberDao.selectForEmail(certEmail);
+		if(findEmail == null) {			
+			emailService.sendCertNumber(certEmail);
+			return true;
+		}
+		System.out.println("asd: " + findEmail.toString());
+		return false;
 	}
 
 	// 인증 체크
