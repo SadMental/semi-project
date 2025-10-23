@@ -20,8 +20,8 @@ public class MainController
 	@RequestMapping("/")
 	public String home(Model model)
 	{
-		List<MemberDto> memberList = memberDao.selectListByMemberPoint(1, 10);
-		model.addAttribute("memberList", memberList);
+		List<MemberDto> rankingList = memberDao.selectListByMemberPoint(1, 10);
+		model.addAttribute("rankingList", rankingList);
 		
 		return "/WEB-INF/views/home.jsp";
 	}

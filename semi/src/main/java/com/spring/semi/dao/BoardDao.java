@@ -12,6 +12,7 @@ import com.spring.semi.mapper.BoardListMapper;
 import com.spring.semi.mapper.BoardMapper;
 import com.spring.semi.vo.PageVO;
 
+
 @Repository
 public class BoardDao {
 	@Autowired
@@ -28,11 +29,20 @@ public class BoardDao {
 
 	// 등록
 	public void insert(BoardDto boardDto, int boardType) {
-		String sql = "insert into board (board_category_no, board_no, " + "board_writer, board_title, board_content) "
-				+ "values (?, ?, ?, ?, ?)";
-		Object[] params = { boardType, boardDto.getBoardNo(), boardDto.getBoardWriter(), boardDto.getBoardTitle(),
-				boardDto.getBoardContent() };
-		jdbcTemplate.update(sql, params);
+	    String sql = "insert into board (" +
+	                 "board_category_no, board_no, board_writer, board_title, board_content, board_header" +
+	                 ") values (?, ?, ?, ?, ?, ?)";
+	    
+	    Object[] params = {
+	        boardType,
+	        boardDto.getBoardNo(),
+	        boardDto.getBoardWriter(),
+	        boardDto.getBoardTitle(),
+	        boardDto.getBoardContent(),
+	        boardDto.getBoardHeader() // 
+	    };
+	    
+	    jdbcTemplate.update(sql, params);
 	}
 
 	// 목록
@@ -60,14 +70,26 @@ public class BoardDao {
 
 	}
 
-	// 상세
+	// BoardDao.java 내 selectOne 메서드 수정
 	public BoardDto selectOne(int boardNo) {
-		String sql = "select * from board where board_no=?";
-		Object[] params = { boardNo };
-		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
-		return list.isEmpty() ? null : list.get(0);
+	    
+	    // 1. board 테이블과 header 테이블을 LEFT JOIN하여 header_name을 함께 가져옵니다.
+	    String sql = "SELECT b.*, h.header_name "
+	               + "FROM board b "
+	               + "LEFT JOIN header h ON b.board_header = h.header_no "
+	               + "WHERE b.board_no=?";
+	               
+	    Object[] params = { boardNo };
+	    
+	    // 2. 이 쿼리는 'board' 테이블의 모든 컬럼(b.*)과 'header_name'을 반환합니다.
+	    //    따라서 이 모든 컬럼을 처리할 수 있는 매퍼(아마도 boardListMapper)를 사용해야 합니다.
+	    //    *주의*: boardMapper가 header_name을 처리하지 못할 수 있습니다.
+	    
+	    // 이전 대화 내용을 볼 때, 헤더 이름을 가져오는 쿼리에는 'boardListMapper'를 사용하는 것이 안전합니다.
+	    List<BoardDto> list = jdbcTemplate.query(sql, boardListMapper, params); 
+	    
+	    return list.isEmpty() ? null : list.get(0);
 	}
-
 	// 삭제
 	public boolean delete(int boardNo) {
 		String sql = "delete board where board_no = ?";
@@ -95,23 +117,48 @@ public class BoardDao {
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		}
 	}
-
+//페이징수정
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
-		if (pageVO.isList()) {
-			String sql = "select * from (" + "select rownum rn, TMP.* from (" + "select * from board "
-					+ "where board_category_no=?" + "order by board_no desc" + ")TMP" + ") where rn between ? and ?";
+	    if (pageVO.isList()) {
+	        String sql = 
+	            "select * from (" +
+	            "  select rownum rn, TMP.* from (" +
+	            "    select b.*, h.header_name " +
+	            "    from board b " +
+	            "    left join header h on b.board_header = h.header_no " +
+	            "    where b.board_category_no=? " +
+	            "    order by b.board_no desc" +
+	            "  ) TMP" +
+	            ") where rn between ? and ?";
 
-			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
-			return jdbcTemplate.query(sql, boardListMapper, params);
-		} else {
-			String sql = "select * from (" + "select rownum rn, TMP.* from (" + "select * from board "
-					+ "where instr(#1, ?) > 0 and " + "board_category_no=?" + "order by #1 asc, board_no desc" + ")TMP"
-					+ ") where rn between ? and ?";
-			sql = sql.replace("#1", pageVO.getColumn());
-			Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };// 동적할당
-			return jdbcTemplate.query(sql, boardListMapper, params);
-		}
+	        Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, boardListMapper, params);
+	    } else {
+	        String sql = 
+	            "select * from (" +
+	            "  select rownum rn, TMP.* from (" +
+	            "    select b.*, h.header_name " +
+	            "    from board b " +
+	            "    left join header h on b.board_header = h.header_no " +
+	            "    where instr(#1, ?) > 0 " +
+	            "    and b.board_category_no=? " +
+	            "    order by #1 asc, b.board_no desc" +
+	            "  ) TMP" +
+	            ") where rn between ? and ?";
+
+	        sql = sql.replace("#1", pageVO.getColumn());
+	        Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, boardListMapper, params);
+	    }
 	}
+  
+	//좋아요 관련
+	public boolean updateBoardLike(int boardNo, int boardLike) {
+		String sql = "update board set board_like = ? where board_no=?";
+		Object[] params = { boardLike, boardNo };
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+  
 	public boolean updateBoardView(int boardNo) {
 		String sql = "update board set board_view=board_view+1 where board_no=?";
 		Object[] params = {boardNo};
@@ -124,6 +171,15 @@ public class BoardDao {
 		Object[] params = { boardLike, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	
 
+  public List<BoardDto> selectListByWriteTime(int min, int max)
+	{
+		String sql = "select * from ("
+		           + "select rownum rn, TMP.board_no, TMP.board_title, TMP.board_writer, TMP.board_wtime, TMP.board_view "
+		           + "from (select board_no, board_title, board_writer, board_wtime, board_view "
+		           + "      from board order by board_wtime desc) TMP) "
+		           + "where rn between ? and ?";
+		Object[] params = {min, max};
+		return jdbcTemplate.query(sql, boardMapper, params);
+	}
 }
