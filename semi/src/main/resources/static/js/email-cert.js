@@ -76,11 +76,16 @@ $(function () {
             return;
         }
 
+
         $.ajax({ //이메일 중복 확인 먼저
             url: "http://localhost:8080/rest/member/checkEmail",
+=======
+        $.ajax({
+            url: "/rest/member/certSend",
             method: "post",
             data: { memberEmail : email },
             success: function (response) {
+ sooyeon-10/20
                 if(response) {
                     $(".fail3-feedback").show();
                 }
@@ -97,6 +102,14 @@ $(function () {
                         },
                     });
                 }
+
+				if(response){					
+                	$(".cert-input-area").show();
+				} else {
+					$("[name=memberEmail]").removeClass("success fail fail2").addClass("fail2");
+					$(".fail2-feedback").show();
+				}
+
             },
         });
         
@@ -112,15 +125,15 @@ $(function () {
         $(".success-feedback, .fail-feedback, .fail2-feedback, .fail3-feedback, .auth-btn").hide();
 
         if (valid == false) {
-            $("[name=memberEmail]").removeClass("success fail fail2 fail3").addClass("fail");
-            $(".fail2-feedback").show();
+            $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
+            $(".fail-feedback").show();
             state.memberEmailValid = false;
             return;
         }
 
         var certEmail = $("[name=memberEmail]").val();
         $.ajax({
-            url: "http://localhost:8080/rest/member/certCheck",
+            url: "/rest/member/certCheck",
             method: "post",
             data: { certEmail: certEmail, certNumber: certNumber },
             success: function (response) {

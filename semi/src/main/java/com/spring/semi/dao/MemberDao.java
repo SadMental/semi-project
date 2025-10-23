@@ -60,6 +60,20 @@ public class MemberDao {
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
+	
+	public MemberDto selectForEmail(String memberEmail) {
+		String sql = "select * from member where member_email = ?";
+		Object[] params = {memberEmail};
+		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+	}
+	
+	public MemberDto selectForNickname(String memberNickname) {
+		String sql = "select * from member where member_nickname = ?";
+		Object[] params = {memberNickname};
+		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+	}
 
 	public void connect(String member_id, int media_no) {
 		String sql = "insert into member_profile values(?, ?)";
@@ -72,5 +86,15 @@ public class MemberDao {
 		Object[] params = { member_id };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-
+	
+	// member_point가 가장 높은 10명의 회원들
+	public List<MemberDto> selectListByMemberPoint(int min, int max)
+	{
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from ("
+				+ "select * from member order by member_point desc"
+				+ ")TMP) where rn between ? and ?";
+		Object[] params = {min, max};
+		return jdbcTemplate.query(sql, memberMapper, params);
+	}
 }

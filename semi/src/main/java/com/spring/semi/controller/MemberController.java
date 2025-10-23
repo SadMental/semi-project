@@ -13,17 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.semi.aop.AdminInterceptor;
 import com.spring.semi.dao.AnimalDao;
-import com.spring.semi.dao.MediaDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
-import com.spring.semi.dto.MediaDto;
 import com.spring.semi.dto.MemberDto;
-import com.spring.semi.error.NeedPermissionException;
 import com.spring.semi.error.TargetNotfoundException;
+import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MediaService;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -33,11 +31,11 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
-	private MediaDao mediaDao;
-	@Autowired
 	private MediaService mediaService;
 	@Autowired
 	private AnimalDao animalDao;
+	@Autowired
+	private EmailService emailService;
 
 	
 	@GetMapping("/join")
@@ -112,17 +110,10 @@ public class MemberController {
 	public String edit(
 			HttpSession session,
 			@ModelAttribute MemberDto memberDto
-//			@RequestParam MultipartFile media
 			) throws IllegalStateException, IOException {
 		String login_id = (String) session.getAttribute("loginId");
 		MemberDto originDto = memberDao.selectOne(login_id);
 		if(originDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:edit?error";
-//		if(media.isEmpty() == false) {
-//			int media_no = memberDao.findMediaNo(login_id);
-//			mediaService.delete(media_no);
-//			int new_media = mediaService.save(media);
-//			memberDao.connect(login_id, new_media);
-//		}
 		
 		
 		memberDto.setMemberId(login_id);
@@ -194,6 +185,58 @@ public class MemberController {
 		} catch(Exception e) {
 			return "redirect:/image/error/no-image.png";
 		}
+	}
+	
+	@GetMapping("/detail")
+	public String detail(
+			Model model,
+			@RequestParam String memberNickname
+			) {
+		MemberDto findDto = memberDao.selectForNickname(memberNickname);
+		if(findDto == null) throw new TargetNotfoundException("존재하지않는 회원");
+		List<AnimalDto> animalList = animalDao.selectList(findDto.getMemberId());
+		model.addAttribute("memberDto", findDto);
+		model.addAttribute("animalList", animalList);
+		
+		return "/WEB-INF/views/member/detail.jsp";
+	}
+	
+	@GetMapping("/findId")
+	public String findId() {
+		return "/WEB-INF/views/member/findId.jsp";
+	}
+	
+	@PostMapping("/findId")
+	public String findId(
+			@RequestParam String memberEmail
+			) throws MessagingException, IOException {
+		MemberDto findDto = memberDao.selectForEmail(memberEmail);
+		if(findDto == null) throw new TargetNotfoundException("해당 이메일이 등록된 회원이 없습니다.");
+		emailService.sendEmailForFindId(findDto);
+		
+		return "redirect:findResult";
+	}
+	
+	@GetMapping("/findResult")
+	public String findIdResult() {
+		return "/WEB-INF/views/member/findResult.jsp";
+	}
+	
+	@GetMapping("/findPw")
+	public String findPw() {
+		return "/WEB-INF/views/member/findPw.jsp";
+	}
+	
+	@PostMapping("/findPw")
+	public String findPw(
+			@RequestParam String memberEmail
+			) throws MessagingException, IOException {
+		MemberDto findDto = memberDao.selectForEmail(memberEmail);
+		if(findDto == null) throw new TargetNotfoundException("해당 이메일이 등록된 회원이 없습니다.");
+		
+		emailService.sendEmailForFindPw(findDto);
+		
+		return "redirect:findResult";
 	}
 	
 }
