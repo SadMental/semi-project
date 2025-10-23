@@ -83,7 +83,6 @@
                var animalPermission = wrapper.find(".btn-animal").attr("data-permission")
                var animalContent = wrapper.find(".animal-content").val()
                var animalNo = wrapper.attr("data-animal-no")
-               console.log(animalNo)
                if(animalNo == "new"){
 	               $.ajax({
 	                   url : "/rest/animal/add",
@@ -94,7 +93,6 @@
                				animalContent : animalContent	
 	                   },
 	                   success : function(response){
-	                	   console.log("add")
 	                	   wrapper.attr("data-animal-no", response)
 	                	   wrapper.find(".animal-access").toggle();
 	                	   wrapper.find(".animal-edit").toggle();
@@ -115,7 +113,6 @@
 							animalContent : animalContent	
 	                   },
 	                   success : function(response){
-	                	   console.log("edit")
 	                	   wrapper.find(".animal-access").toggle();
 	                	   wrapper.find(".animal-edit").toggle();
 	                	   wrapper.find(".animal-name").attr("readonly", "readonly")

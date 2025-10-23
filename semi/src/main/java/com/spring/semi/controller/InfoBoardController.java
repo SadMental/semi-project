@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
+import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,39 +29,44 @@ public class InfoBoardController {
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
+	  @Autowired
+	  private HeaderDao headerDao;
 	//등록
 	@GetMapping("/write")
 	public String write()
 	{
       return "/WEB-INF/views/infoBoard/write.jsp";
 	}
-	@PostMapping("/write")
-	public String write(@ModelAttribute BoardDto boardDto, HttpSession session)
-	{
-		int boardNo = boardDao.sequence();
-		boardDto.setBoardNo(boardNo);		
-		String loginId = (String)session.getAttribute("loginId");
-		boardDto.setBoardWriter(loginId);
+    @PostMapping("/write")
+    public String write(@ModelAttribute BoardDto boardDto,
+                        @ModelAttribute HeaderDto headerDto,
+                        HttpSession session) {
+        String loginId = (String) session.getAttribute("loginId");
+        boardDto.setBoardWriter(loginId);
+
+        int boardNo = boardDao.sequence();
+        boardDto.setBoardNo(boardNo);
+
+        int headerNo = headerDao.sequence();
+        headerDto.setHeaderNo(headerNo);
+        headerDao.insert(headerDto);
+
+        //  board와 header 연결
+        boardDto.setBoardHeader(headerNo);
 		
 		boardDao.insert(boardDto, 2);
 		return "redirect:list";
 		
 	}
-	//목록
+    //목록
 	@RequestMapping("/list")
-	public String list(Model model, @RequestParam(required = false) String column, 
-			@RequestParam(required = false) String keyword) {
-		boolean isSearch = column !=null && keyword !=null;
-		if(isSearch) { //검색
-			List<BoardDto> boardList = boardDao.searchList(column, keyword);
-			model.addAttribute("boardList", boardList);
-		}
-		else { // 그냥 목록
-		List<BoardDto> boardList = boardDao.selectList(2);
-		model.addAttribute("boardList", boardList);
-		}
+	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
+	{		
+		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 2));
+		pageVO.setDataCount(boardDao.count(pageVO, 2));
+		model.addAttribute("pageVO", pageVO);
+			
 		return "/WEB-INF/views/infoBoard/list.jsp";
-		
 	}
 	//상세
 	@RequestMapping("/detail")
