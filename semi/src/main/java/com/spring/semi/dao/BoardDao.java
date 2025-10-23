@@ -95,7 +95,7 @@ public class BoardDao {
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		}
 	}
-
+//페이징
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
 	    if (pageVO.isList()) {
 	        String sql = 
