@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.spring.semi.dao.CategoryDao;
 import com.spring.semi.dto.CategoryDto;
 import com.spring.semi.error.TargetNotfoundException;
+import com.spring.semi.service.CategoryService;
+import com.spring.semi.vo.CategoryDetailVO;
 
 @Controller
 @RequestMapping("/admin/category")
@@ -21,6 +23,10 @@ public class CategoryController {
 
 	@Autowired
 	private CategoryDao categoryDao;
+
+    @Autowired
+    private CategoryService categoryService;
+
 
 	// 등록
 	@GetMapping("/add")
@@ -67,7 +73,6 @@ public class CategoryController {
 	public String update(@ModelAttribute CategoryDto categoryDto) {
 		categoryDao.update(categoryDto);
 		return "redirect:list";
-//		return "redirect:detail?categoryNo=" + categoryDto.getCategoryNo();
 
 	}
 
@@ -80,5 +85,14 @@ public class CategoryController {
 		categoryDao.delete(categoryNo);
 		return "redirect:list";
 	}
+	
+	// 상세	
+	  @GetMapping("/stats")
+	    public String categoryStats(@RequestParam String categoryName, Model model) {
+	        CategoryDetailVO detail = categoryService.getCategoryDetailByName(categoryName);
+	        model.addAttribute("categoryDetail", detail);
+	        return "/WEB-INF/views/admin/category/stats.jsp";
+	    }
+
 
 }
