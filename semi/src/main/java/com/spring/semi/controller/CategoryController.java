@@ -23,7 +23,6 @@ public class CategoryController {
 
 	@Autowired
 	private CategoryDao categoryDao;
-
     @Autowired
     private CategoryService categoryService;
 
@@ -77,14 +76,15 @@ public class CategoryController {
 	}
 
 	// 삭제
-	@GetMapping("/delete")
-	public String delete(@RequestParam int categoryNo) {
-		CategoryDto categoryDto = categoryDao.selectOne(categoryNo);
-		if (categoryDto == null)
-			throw new TargetNotfoundException("존재하지 않는 게시판");
-		categoryDao.delete(categoryNo);
-		return "redirect:list";
+	@PostMapping("/delete")
+	public String deletePost(@RequestParam int categoryNo) {
+	    CategoryDto categoryDto = categoryDao.selectOne(categoryNo);
+	    if (categoryDto == null)
+	        throw new TargetNotfoundException("존재하지 않는 게시판");
+	    categoryDao.delete(categoryNo);
+	    return "redirect:list";
 	}
+
 	
 	// 상세	
 	  @GetMapping("/stats")

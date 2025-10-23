@@ -1,6 +1,7 @@
 package com.spring.semi.controller;
 
-import java.util.List;
+
+import java.util.Locale.Category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.CategoryDao;
 import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.BoardDto;
+import com.spring.semi.dto.CategoryDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.vo.PageVO;
@@ -23,19 +26,21 @@ import com.spring.semi.vo.PageVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/infoBoard")
+@RequestMapping("/board/info")
 public class InfoBoardController {
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
-	  @Autowired
-	  private HeaderDao headerDao;
+	 @Autowired
+	 private HeaderDao headerDao;
+	 @Autowired
+	 private CategoryDao categoryDao;
 	//등록
 	@GetMapping("/write")
 	public String write()
 	{
-      return "/WEB-INF/views/infoBoard/write.jsp";
+      return "/WEB-INF/views/board/info/write.jsp";
 	}
     @PostMapping("/write")
     public String write(@ModelAttribute BoardDto boardDto,
@@ -59,15 +64,24 @@ public class InfoBoardController {
 		
 	}
     //목록
-	@RequestMapping("/list")
-	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
-	{		
-		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 2));
-		pageVO.setDataCount(boardDao.count(pageVO, 2));
-		model.addAttribute("pageVO", pageVO);
-			
-		return "/WEB-INF/views/infoBoard/list.jsp";
-	}
+    @RequestMapping("/list")
+    public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) {		
+        int categoryNo = 2; 
+        
+        // categoryNo에 해당하는 카테고리 정보 조회
+        CategoryDto category = categoryDao.selectOne(categoryNo);
+        if (category == null)
+            throw new TargetNotfoundException("존재하지 않는 게시판입니다.");
+        
+        model.addAttribute("category", category);
+        model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, categoryNo));
+        
+        pageVO.setDataCount(boardDao.count(pageVO, categoryNo));
+        model.addAttribute("pageVO", pageVO);
+        
+        return "/WEB-INF/views/board/info/list.jsp";
+    }
+
 	//상세
 	@RequestMapping("/detail")
 	public String detail(Model model, @RequestParam int boardNo) {
@@ -79,7 +93,7 @@ public class InfoBoardController {
 			MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter()); 
 			model.addAttribute("memberDto", memberDto);
 		}		
-		return "/WEB-INF/views/infoBoard/detail.jsp";				
+		return "/WEB-INF/views/board/info/detail.jsp";				
 	}
 	//삭제
 	@RequestMapping("/delete")
@@ -96,7 +110,7 @@ public class InfoBoardController {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if(boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
 		model.addAttribute("boardDto", boardDto);
-		return "/WEB-INF/views/infoBoard/edit.jsp";
+		return "/WEB-INF/views/board/info/edit.jsp";
 	}
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute BoardDto boardDto) {
