@@ -18,8 +18,10 @@ import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
+import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MediaService;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -32,6 +34,8 @@ public class MemberController {
 	private MediaService mediaService;
 	@Autowired
 	private AnimalDao animalDao;
+	@Autowired
+	private EmailService emailService;
 
 	
 	@GetMapping("/join")
@@ -195,6 +199,44 @@ public class MemberController {
 		model.addAttribute("animalList", animalList);
 		
 		return "/WEB-INF/views/member/detail.jsp";
+	}
+	
+	@GetMapping("/findId")
+	public String findId() {
+		return "/WEB-INF/views/member/findId.jsp";
+	}
+	
+	@PostMapping("/findId")
+	public String findId(
+			@RequestParam String memberEmail
+			) throws MessagingException, IOException {
+		MemberDto findDto = memberDao.selectForEmail(memberEmail);
+		if(findDto == null) throw new TargetNotfoundException("해당 이메일이 등록된 회원이 없습니다.");
+		emailService.sendEmailForFindId(findDto);
+		
+		return "redirect:findResult";
+	}
+	
+	@GetMapping("/findResult")
+	public String findIdResult() {
+		return "/WEB-INF/views/member/findResult.jsp";
+	}
+	
+	@GetMapping("/findPw")
+	public String findPw() {
+		return "/WEB-INF/views/member/findPw.jsp";
+	}
+	
+	@PostMapping("/findPw")
+	public String findPw(
+			@RequestParam String memberEmail
+			) throws MessagingException, IOException {
+		MemberDto findDto = memberDao.selectForEmail(memberEmail);
+		if(findDto == null) throw new TargetNotfoundException("해당 이메일이 등록된 회원이 없습니다.");
+		
+		emailService.sendEmailForFindPw(findDto);
+		
+		return "redirect:findResult";
 	}
 	
 }

@@ -60,6 +60,7 @@ public class MemberDao {
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
+	
 	public MemberDto selectForEmail(String memberEmail) {
 		String sql = "select * from member where member_email = ?";
 		Object[] params = {memberEmail};
