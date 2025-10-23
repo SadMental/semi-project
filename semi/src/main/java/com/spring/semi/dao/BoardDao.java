@@ -77,14 +77,22 @@ public class BoardDao {
 
 	// BoardDao.java 내 selectOne 메서드 수정
 	public BoardDto selectOne(int boardNo) {
-
+	    
+	    // 1. board 테이블과 header 테이블을 LEFT JOIN하여 header_name을 함께 가져옵니다.
 	    String sql = "SELECT b.*, h.header_name "
 	               + "FROM board b "
 	               + "LEFT JOIN header h ON b.board_header = h.header_no "
 	               + "WHERE b.board_no=?";
 	               
-	    Object[] params = { boardNo };	
-	    List<BoardDto> list = jdbcTemplate.query(sql, boardListMapper, params); 	    
+	    Object[] params = { boardNo };
+	    
+	    // 2. 이 쿼리는 'board' 테이블의 모든 컬럼(b.*)과 'header_name'을 반환합니다.
+	    //    따라서 이 모든 컬럼을 처리할 수 있는 매퍼(아마도 boardListMapper)를 사용해야 합니다.
+	    //    *주의*: boardMapper가 header_name을 처리하지 못할 수 있습니다.
+	    
+	    // 이전 대화 내용을 볼 때, 헤더 이름을 가져오는 쿼리에는 'boardListMapper'를 사용하는 것이 안전합니다.
+	    List<BoardDto> list = jdbcTemplate.query(sql, boardListMapper, params); 
+	    
 	    return list.isEmpty() ? null : list.get(0);
 	}
 	// 삭제
@@ -148,25 +156,27 @@ public class BoardDao {
 	        return jdbcTemplate.query(sql, boardListMapper, params);
 	    }
 	}
-
-
+  
 	//좋아요 관련
 	public boolean updateBoardLike(int boardNo, int boardLike) {
 		String sql = "update board set board_like = ? where board_no=?";
 		Object[] params = { boardLike, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	
+  
 	public boolean updateBoardView(int boardNo) {
 		String sql = "update board set board_view=board_view+1 where board_no=?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
-	public boolean updateBoardLike(int boardNo) {
-		String sql = "update board " + "set board_like = (select count(*) from board_like where board_no = ?) "
-				+ "where board_no = ?";
-		Object[] params = { boardNo, boardNo };
-		return jdbcTemplate.update(sql, params) > 0;
+	public List<BoardDto> selectListByWriteTime(int min, int max)
+	{
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from ("
+				+ "select * from board order by board_wtime desc"
+				+ ")TMP) where rn between ? and ?";
+		Object[] params = {min, max};
+		return jdbcTemplate.query(sql, boardMapper, params);
 	}
 }

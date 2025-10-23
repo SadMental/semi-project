@@ -1,6 +1,8 @@
 package com.spring.semi.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +22,20 @@ public class BoardDto {
 	private int boardView;
 	private int boardHeader;
 	private int boardReply;
+	private String headerName;
+	
+
+    public String getFormattedWtime() {
+        LocalDateTime wtime = boardWtime.toLocalDateTime();
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
+            return wtime.format(timeFmt);
+        } else {
+            return wtime.format(dateFmt);
+        }
+    }
 }

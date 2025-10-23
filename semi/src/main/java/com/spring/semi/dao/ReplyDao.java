@@ -85,5 +85,5 @@ public class ReplyDao {
 
         List<ReplyDto> list = jdbcTemplate.query(sql, replyMapper, params);
         return list.isEmpty() ? null : list.get(0);
-    }
+    }  
 }
