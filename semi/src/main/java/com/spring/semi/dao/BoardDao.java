@@ -151,28 +151,28 @@ public class BoardDao {
 	        return jdbcTemplate.query(sql, boardListMapper, params);
 	    }
 	}
-
-
+  
 	//좋아요 관련
 	public boolean updateBoardLike(int boardNo, int boardLike) {
 		String sql = "update board set board_like = ? where board_no=?";
 		Object[] params = { boardLike, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	
+  
 	public boolean updateBoardView(int boardNo) {
 		String sql = "update board set board_view=board_view+1 where board_no=?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
-	public boolean updateBoardLike(int boardNo) {
-		String sql = "update board " + "set board_like = (select count(*) from board_like where board_no = ?) "
-				+ "where board_no = ?";
-		Object[] params = { boardNo, boardNo };
+	//실시간 좋아요 관련
+	public boolean updateBoardLike(int boardNo, int boardLike) {
+		String sql = "update board set board_like = ? where board_no=?";
+		Object[] params = { boardLike, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-public List<BoardDto> selectListByWriteTime(int min, int max)
+
+  public List<BoardDto> selectListByWriteTime(int min, int max)
 	{
 		String sql = "select * from ("
 		           + "select rownum rn, TMP.board_no, TMP.board_title, TMP.board_writer, TMP.board_wtime, TMP.board_view "

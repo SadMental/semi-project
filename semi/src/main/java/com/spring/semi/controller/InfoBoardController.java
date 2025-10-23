@@ -18,6 +18,7 @@ import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
+import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -57,21 +58,15 @@ public class InfoBoardController {
 		return "redirect:list";
 		
 	}
-	//목록
+    //목록
 	@RequestMapping("/list")
-	public String list(Model model, @RequestParam(required = false) String column, 
-			@RequestParam(required = false) String keyword) {
-		boolean isSearch = column !=null && keyword !=null;
-		if(isSearch) { //검색
-			List<BoardDto> boardList = boardDao.searchList(column, keyword);
-			model.addAttribute("boardList", boardList);
-		}
-		else { // 그냥 목록
-		List<BoardDto> boardList = boardDao.selectList(2);
-		model.addAttribute("boardList", boardList);
-		}
+	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
+	{		
+		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 2));
+		pageVO.setDataCount(boardDao.count(pageVO, 2));
+		model.addAttribute("pageVO", pageVO);
+			
 		return "/WEB-INF/views/infoBoard/list.jsp";
-		
 	}
 	//상세
 	@RequestMapping("/detail")
