@@ -80,6 +80,7 @@ public class MemberController {
 		
 		session.setAttribute("loginId", findDto.getMemberId());
 		session.setAttribute("loginLevel", findDto.getMemberLevel());
+		memberDao.updateForLogin(findDto.getMemberId());
 		
 		return "redirect:/";
 	}
@@ -111,10 +112,18 @@ public class MemberController {
 	public String edit(
 			HttpSession session,
 			@ModelAttribute MemberDto memberDto
-			) {
+//			@RequestParam MultipartFile media
+			) throws IllegalStateException, IOException {
 		String login_id = (String) session.getAttribute("loginId");
 		MemberDto originDto = memberDao.selectOne(login_id);
 		if(originDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:edit?error";
+//		if(media.isEmpty() == false) {
+//			int media_no = memberDao.findMediaNo(login_id);
+//			mediaService.delete(media_no);
+//			int new_media = mediaService.save(media);
+//			memberDao.connect(login_id, new_media);
+//		}
+		
 		
 		memberDto.setMemberId(login_id);
 		memberDao.updateForUser(memberDto);
@@ -175,17 +184,16 @@ public class MemberController {
 		return "/WEB-INF/views/member/thankyou.jsp";
 	}
 	
-	@PostMapping("/profile")
+	@GetMapping("/profile")
 	public String profile(
 			@RequestParam String member_id
 			) {
 		try {
-			int media_no = memberDao.findMediaNo(member_id);			
-			return "redirect:/media/download/media_no=" + media_no;
+			int media_no = memberDao.findMediaNo(member_id);
+			return "redirect:/media/download?mediaNo=" + media_no;
 		} catch(Exception e) {
 			return "redirect:/image/error/no-image.png";
 		}
-		
 	}
 	
 }
