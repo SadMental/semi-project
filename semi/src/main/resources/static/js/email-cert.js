@@ -59,70 +59,49 @@ $(function () {
         }
     });
 
-    //인증번호 보내기 완료
-    $(".btn-cert-send").on("click", function () { 
-
+	
+    $(".btn-cert-send").on("click", function () { //인증번호 보내기 완료
+		
         var email = $("[name=memberEmail]").val();
         var regex = /^(.*?)@(.*?)$/;
         var valid = regex.test(email);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback, .fail3-feedback").hide();
+        $(".success-feedback, .fail-feedback, .fail2-feedback").hide();
         $(".cell.flex-box .auth-btn").hide();
 
         if (valid == false) {
-            $("[name=memberEmail]").removeClass("success fail fail2 fail3").addClass("fail");
+            $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
             $(".fail-feedback").show();
             state.memberEmailValid = false;
             return;
         }
 
-
-        $.ajax({ //이메일 중복 확인 먼저
-            url: "http://localhost:8080/rest/member/checkEmail",
-=======
         $.ajax({
             url: "/rest/member/certSend",
             method: "post",
-            data: { memberEmail : email },
+            data: { certEmail: email },
             success: function (response) {
- sooyeon-10/20
-                if(response) {
-                    $(".fail3-feedback").show();
-                }
-                else {
-                    $(".fail3-feedback").hide();
-
-                    // 중복 없을 시 certSend 실행
-                    $.ajax({ 
-                        url: "http://localhost:8080/rest/member/certSend",
-                        method: "post",
-                        data: { certEmail: email },
-                        success: function (response) {
-                            $(".cert-input").show();
-                        },
-                    });
-                }
-
 				if(response){					
                 	$(".cert-input-area").show();
 				} else {
 					$("[name=memberEmail]").removeClass("success fail fail2").addClass("fail2");
 					$(".fail2-feedback").show();
 				}
-
             },
+
+            // beforeSend:function() {
+
+            // }
         });
-        
     });
-    
-    //인증번호 확인
-    $(".btn-cert-check").on("click", function () {
+
+    $(".btn-cert-check").on("click", function () { //인증번호 확인
 
         var certNumber = $(".cert-input").val();
         var regex = /^[0-9]{5}$/;
         var valid = regex.test(certNumber);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback, .fail3-feedback, .auth-btn").hide();
+        $(".success-feedback, .fail-feedback, .fail2-feedback", ".auth-btn").hide();
 
         if (valid == false) {
             $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
@@ -138,8 +117,8 @@ $(function () {
             data: { certEmail: certEmail, certNumber: certNumber },
             success: function (response) {
                 if (response) {
-                    $(".cert-input").removeClass("success fail fail2 fail3").val("").hide();
-                    $("[name=memberEmail]").removeClass("success fail fail2 fail3").addClass("success")
+                    $(".cert-input").removeClass("success fail fail2").val("").hide();
+                    $("[name=memberEmail]").removeClass("success fail fail2").addClass("success")
                         .prop("readonly", true);
                     $(".success-feedback").show();
                     state.memberEmailValid = true;
@@ -147,10 +126,9 @@ $(function () {
                     $(".auth-btn").show();
                     $("[name=memberAuth]").val("t");
                     $(".fail2-feedback").hide();
-                    $(".btn-cert-send").hide();
                 }
                 else {
-                    $(".cert-input").removeClass("success fail fail2 fail3").addClass("fail2");
+                    $(".cert-input").removeClass("success fail fail2").addClass("fail2");
                     $(".fail2-feedback").show();
                     state.memberEmailValid = false;
                 }
