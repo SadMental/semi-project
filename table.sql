@@ -25,18 +25,18 @@ create table member(
 );
 
 -- 회원 아이디/비번 체크조건
-	-- 아이디 영어 대소문자, 1~20자리까지 가능
+	-- 아이디 영어 대소문자, 숫자 1~20자리까지 가능
 	alter table member
-	add constraint member_id check (REGEXP_LIKE(member_id, '^[A-Za-z]{1,20}$'))
+	add constraint member_id check (REGEXP_LIKE(member_id, '^[A-Za-z][A-Za-z0-9]{1,20}$'))
 	enable novalidate;
 
 	-- 비밀번호 영어 대소문자, 숫자, !@#$ 특수문자 포함 8~20자리까지 가능
 	alter table member
 	add constraint member_pw_chk check 
-	(regexp_like(member_pw, '^[A-Za-z0-9\!\@\#\$]{8,20}$') and 
+	(regexp_like(member_pw, '^[A-Za-z0-9!@#$]{8,20}$') and 
 	regexp_like(member_pw, '[A-Za-z]+') and
 	regexp_like(member_pw, '[0-9]+') and 
-	regexp_like(member_pw, '[\!\@\#\$]+'))
+	regexp_like(member_pw, '[!@#$]+'))
 	enable novalidate;
 
 
