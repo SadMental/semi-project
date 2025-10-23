@@ -78,6 +78,15 @@ public class MemberDao {
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	
-
 	
+	// member_point가 가장 높은 10명의 회원들
+	public List<MemberDto> selectListByMemberPoint(int min, int max)
+	{
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from ("
+				+ "select * from member order by member_point desc"
+				+ ")TMP) where rn between ? and ?";
+		Object[] params = {min, max};
+		return jdbcTemplate.query(sql, memberMapper, params);
+	}
 }
