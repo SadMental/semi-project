@@ -17,7 +17,7 @@ public class AnimalMapper  implements RowMapper<AnimalDto> {
 				.animalNo(rs.getInt("animal_no"))
 				.animalName(rs.getString("animal_name"))
 				.animalContent(rs.getString("animal_content"))
-				.animalPermission(rs.getString("animal_permision"))
+				.animalPermission(rs.getString("animal_permission"))
 				.animalMaster(rs.getString("animal_master"))
 				.build();
 	}

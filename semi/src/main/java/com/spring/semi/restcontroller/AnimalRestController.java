@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.semi.dao.AnimalDao;
 import com.spring.semi.dto.AnimalDto;
+import com.spring.semi.error.NeedPermissionException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,8 +36,22 @@ public class AnimalRestController {
 	
 	@PostMapping("/delete")
 	public void delete(
-			@RequestParam int animal_no
+			@RequestParam int animalNo
 			) {
-		animalDao.delete(animal_no);
+		AnimalDto findDto = animalDao.selectOne(animalNo);
+		if(findDto != null) {			
+			animalDao.delete(animalNo);
+		}
+	}
+	
+	@PostMapping("/edit")
+	public void edit(
+			@ModelAttribute AnimalDto animalDto,
+			HttpSession session
+			) {
+		String login_id = (String) session.getAttribute("loginId");
+		if(login_id == null) throw new NeedPermissionException("권한 부족");
+		animalDto.setAnimalMaster(login_id);
+		animalDao.update(animalDto);
 	}
 }
