@@ -1,4 +1,4 @@
-package com.spring.semi.dao;
+	package com.spring.semi.dao;
 
 import java.util.List;
 import java.util.Set;
@@ -45,17 +45,22 @@ public class BoardDao {
 	    jdbcTemplate.update(sql, params);
 	}
 
-	// 목록
 	public List<BoardDto> selectList(int boardType) {
-	    String sql = "SELECT b.*, h.header_name "
-	               + "FROM board b "
-	               + "LEFT JOIN header h "
-	               + "ON b.board_header = h.header_no "
-	               + "WHERE b.board_category_no = ? "
-	               + "ORDER BY b.board_no DESC";
+	    String sql = "SELECT b.*, h.header_name " +
+	                 "FROM board b " +
+	                 "LEFT JOIN header h ON b.board_header = h.header_no " +
+	                 "WHERE b.board_category_no = ? " +
+	                 "ORDER BY CASE h.header_name " +
+	                 "           WHEN '공지사항(필독)' THEN 1 " +
+	                 "           WHEN 'FAQ(자주 묻는 질문)' THEN 2 " +
+	                 "           WHEN '이벤트' THEN 3 " +
+	                 "           ELSE 4 " +
+	                 "         END, " +
+	                 "         b.board_no DESC";
 	    Object[] params = { boardType };
 	    return jdbcTemplate.query(sql, boardListMapper, params);
-	}  //헤더기능출력추가
+	}
+
 
 	// 검색
 	public List<BoardDto> searchList(String column, String keyword) {

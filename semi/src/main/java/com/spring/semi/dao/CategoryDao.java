@@ -53,10 +53,15 @@ public class CategoryDao {
 	}
 
 	// 삭제
-	public boolean delete(int categoryNo) {
-	    String sql = "delete from category where category_no = ?";
-	    Object[] params = { categoryNo };
+	public boolean delete(String categoryName) {
+	    String sql = "delete from category where category_name = ?";
+	    Object[] params = { categoryName };
 	    return jdbcTemplate.update(sql, params) > 0;
+	}
+	public boolean delete(int categoryNo) {
+		String sql = "delete from category where category_no = ?";
+		Object[] params = { categoryNo };
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 
@@ -67,6 +72,12 @@ public class CategoryDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
+	public CategoryDto selectOne(String categoryName) {
+		String sql = "select * from category where category_name = ?";
+		Object[] params = { categoryName };
+		List<CategoryDto> list = jdbcTemplate.query(sql, categoryMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+	}
 	public CategoryDto selectOne(int categoryNo) {
 		String sql = "select * from category where category_no = ?";
 		Object[] params = { categoryNo };
@@ -104,10 +115,17 @@ public class CategoryDao {
 	        "  where board_category_no = ? " +
 	        "  order by last_time desc " +
 	        ") where rownum = 1";
-	    return jdbcTemplate.queryForObject(sql, String.class, categoryNo);
+	    List<String> result = jdbcTemplate.queryForList(sql, String.class, categoryNo);
+	    return result.isEmpty() ? null : result.get(0);
 	}
 
 
+
+	public CategoryDto selectOneByName(String categoryName) {
+	    String sql = "select * from category where category_name = ?";
+	    List<CategoryDto> list = jdbcTemplate.query(sql, categoryMapper, categoryName);
+	    return list.isEmpty() ? null : list.get(0);
+	}
 
 
 

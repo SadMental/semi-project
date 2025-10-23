@@ -24,7 +24,6 @@ public class BoardListMapper  implements RowMapper<BoardDto> {
 				.boardLike(rs.getInt("board_like"))
 				.boardView(rs.getInt("board_view"))
 				.boardHeader(rs.getInt("board_header"))
-				.headerName(rs.getString("header_name"))
 				.build();
 	}
 }

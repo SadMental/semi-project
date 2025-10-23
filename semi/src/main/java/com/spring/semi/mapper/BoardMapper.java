@@ -25,7 +25,6 @@ public class BoardMapper  implements RowMapper<BoardDto> {
 				.boardView(rs.getInt("board_view"))
 				.boardReply(rs.getInt("board_reply"))
 				.boardHeader(rs.getInt("board_header"))
-				.headerName(rs.getString("header_name"))
 				.build();
 	}
 }

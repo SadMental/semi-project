@@ -150,7 +150,7 @@
 				<a class="kh-pill kh-pill--active" href="/member/login">LOGIN</a>
 			</c:otherwise>
 		</c:choose>
-				<a class="kh-pill" href="#">MENU</a>
+				<a class="kh-pill" href="/admin/category/list">MENU</a>
 			</nav>
 		</div>
 
