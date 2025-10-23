@@ -22,7 +22,7 @@ public class AnimalRestController {
 	private AnimalDao animalDao;
 	
 	@PostMapping("/add")
-	public void add(
+	public int add(
 			@ModelAttribute AnimalDto animalDto,
 			HttpSession session
 			) {
@@ -32,6 +32,7 @@ public class AnimalRestController {
 		animalDto.setAnimalNo(seq);
 		animalDto.setAnimalMaster(login_id);
 		animalDao.insert(animalDto);
+		return seq;
 	}
 	
 	@PostMapping("/delete")

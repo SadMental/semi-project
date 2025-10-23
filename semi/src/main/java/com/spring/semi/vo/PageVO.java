@@ -1,8 +1,5 @@
 package com.spring.semi.vo;
 
-import java.sql.Timestamp;
-
-import com.spring.semi.dto.BoardDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
