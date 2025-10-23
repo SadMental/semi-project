@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,3 +19,4 @@
     <a href="list">목록으로</a>
 </body>
 </html>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
