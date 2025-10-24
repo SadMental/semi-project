@@ -44,7 +44,7 @@ public class MemberRestController {
 			emailService.sendCertNumber(certEmail);
 			return true;
 		}
-		System.out.println("asd: " + findEmail.toString());
+		System.out.println("certSend: " + findEmail.toString());
 		return false;
 	}
 

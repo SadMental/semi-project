@@ -91,14 +91,12 @@
 				<div class="cell">
 					<input type="text" inputmode="numeric"
 						class="cert-input w-100p" placeholder="인증번호 입력" >
-				</div>
-				<div class="cell">
 					<button type="button" class="btn-cert-check btn btn-positive w-75p">
-						<i class="fa-solid fa-mail"></i>
+						<i class="fa-solid fa-envelope"></i>
 						<span>인증번호 확인</span>
 					</button> 
-					<div class="success-feedback">이메일 인증이 완료되었습니다</div>
-				  	<div class="fail2-feedback">인증번호가 올바르지 않거나 유효시간이 초과되었습니다</div>
+					<div class="success-feedback w-100p">이메일 인증이 완료되었습니다</div>
+				  	<div class="fail2-feedback w-100p">인증번호가 올바르지 않거나 유효시간이 초과되었습니다</div>
 					<input type="hidden" name="memberAuth" value="f">
 					<button class="auth-btn btn btn-positive ms-20" type="button" style="border-radius: 50%; background-color: rgb(0, 172, 51); color: white; display: none;">
 						<i class="fa-solid fa-check"></i>
