@@ -111,6 +111,12 @@ h1 {
 				<th>[작성자] :</th>
 				<td>${boardDto.boardWriter}</td>
 			</tr>
+			<c:if test="${not empty headerDto}">
+    <tr>
+        <th>[머리글] :</th>
+        <td>${headerDto.headerName}</td>
+    </tr>
+</c:if>
 		</table>
 	</div>
 
