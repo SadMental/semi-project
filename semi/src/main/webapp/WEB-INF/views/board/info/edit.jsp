@@ -107,7 +107,12 @@
       <label for="content">내용 <i class="fa-solid fa-asterisk red"></i></label>
       <textarea name="boardContent" id="content" class="summernote-editor">${boardDto.boardContent}</textarea>
     </div>
-    
+    <select name="headerName" class="field w-100" required>
+	      <option value="">-- 머리글 선택 --</option>
+	      <c:forEach var="headerDto" items="${headerList}">
+	          <option value="${headerDto.headerName}">${headerDto.headerName}</option>
+	      </c:forEach>
+	  </select>
     <div class="cell mt-40">
       <button type="submit" class="btn btn-positive w-100">
         <i class="fa-solid fa-edit"></i>

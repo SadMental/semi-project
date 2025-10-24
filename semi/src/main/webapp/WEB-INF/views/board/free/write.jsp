@@ -77,15 +77,12 @@
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
         <div class="cell">
-	      <select name="headerName" class="field w-100">
-	          <option value="">-- 머리글 선택 --</option>
-	          <option value="공지">공지</option>
-	          <option value="강아지">강아지</option>
-	          <option value="고양이">고양이</option>
-	          <option value="토끼">토끼</option>
-	          <option value="햄스터">햄스터</option>
-	          <option value="새">새</option>
-	      </select>
+		<select name="boardHeader" class="field w-100" required>
+    <option value="">-- 머리글 선택 --</option>
+    <c:forEach var="headerDto" items="${headerList}">
+        <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+    </c:forEach>
+	  </select>
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>

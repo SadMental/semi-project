@@ -139,6 +139,7 @@ a:hover {
 					<thead>
 						<tr>
 							<th>No</th>
+							   <th>머리글</th>
 <!-- 							<th>분류</th> -->
 							<th>제목</th>
 							<th>작성자</th>
@@ -150,6 +151,7 @@ a:hover {
 						<c:forEach var="boardDto" items="${boardList}">
 							<tr>
 								<td>${boardDto.boardNo}</td>
+								     <td>${headerMap[boardDto.boardNo].headerName}</td>
 <%-- 								  <td>${boardDto.headerName}</td>  --%>
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>

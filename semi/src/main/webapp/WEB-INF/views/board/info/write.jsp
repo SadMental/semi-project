@@ -84,7 +84,12 @@
       <div class="cell mt-20">
           <textarea name="boardContent" class="summernote-editor"></textarea>
       </div>
-      
+      	<select name="boardHeader" class="field w-100" required>
+    <option value="">-- 머리글 선택 --</option>
+    <c:forEach var="headerDto" items="${headerList}">
+        <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+    </c:forEach>
+	  </select>
       <div class="cell right mt-20">
           <button class="btn btn-positive">등록하기</button>
       </div>

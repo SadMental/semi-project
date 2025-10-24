@@ -82,7 +82,12 @@ button.btn.btn-positive:hover {
 			<em>작은 정보라도 공유하면 큰 가치를 만듭니다.</em>
 		</div>
 		<div class="cell">
-
+   	<select name="boardHeader" class="field w-100" required>
+    <option value="">-- 머리글 선택 --</option>
+    <c:forEach var="headerDto" items="${headerList}">
+        <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+    </c:forEach>
+	  </select>
 			<div class="cell mt-20">
 				<input type="text" name="boardTitle" class="field w-100"
 					placeholder="제목을 입력하세요.">
