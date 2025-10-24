@@ -110,14 +110,14 @@
 </style>
 
 <div class="container w-800">
-  <h1>카테고리 목록</h1>
+  <h1>게시판 목록</h1>
 
   <table>
     <thead>
       <tr>
         <th>번호</th>
         <th>이름</th>
-        <th>작업</th>
+        <th>가능한 작업</th>
       </tr>
     </thead>
     <tbody>
@@ -139,7 +139,7 @@
   </table>
 
   <div style="text-align: center;">
-  <a href="add" class="add-category">카테고리 등록</a>
+  <a href="add" class="add-category">새로운 카테고리 등록</a>
 </div>
 
 </div>

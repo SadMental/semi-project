@@ -60,7 +60,7 @@
   }
   
   button.btn.btn-positive:hover {
-    background-color: #a67849;
+    background-color: #a67849;	
   }
   .mt-20 {
   margin-top: 20px;
@@ -76,15 +76,7 @@
           이 글은 정보게시판에 업로드 됩니다.<br>
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
-        <div class="cell">
-	      <select name="headerName" class="field w-100">
-	          <option value="">-- 머리글 선택 --</option>
-	          <option value="공지사항(필독)">공지사항</option>
-	          <option value="FAQ(자주 묻는 질문)">자주 묻는 질문</option>
-	          <option value="팁/가이드">팁/가이드</option>
-	          <option value="이벤트">이벤트</option>
-	      
-	      </select>
+
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>

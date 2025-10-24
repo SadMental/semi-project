@@ -15,6 +15,7 @@ public class ReplyDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
     private ReplyMapper replyMapper;
 
     // 1. 특정 작성자 댓글 목록 조회
