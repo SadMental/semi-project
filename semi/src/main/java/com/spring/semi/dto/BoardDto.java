@@ -22,7 +22,7 @@ public class BoardDto {
 	private int boardView;
 	private int boardHeader;
 	private int boardReply;
-	private String headerName;
+	// private String headerName; 제거
 	
 
     public String getFormattedWtime() {
