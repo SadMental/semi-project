@@ -20,6 +20,8 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.NeedPermissionException;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MailService;
+import com.spring.semi.vo.MailDetailVO;
+import com.spring.semi.vo.MailVO;
 import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -79,7 +81,7 @@ public class MailController {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		if(memberDto == null) throw new TargetNotfoundException("존재하지 않는 회원");
-		List<MailDto> mailList = new ArrayList<>();
+		List<MailVO> mailList = new ArrayList<>();
 		if(type.equals("send")) {
 			mailList = mailDao.selectListForSenderWithPaging(pageVO, memberDto.getMemberId());
 		} else if(type.equals("receive")){
@@ -104,12 +106,11 @@ public class MailController {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		if(memberDto == null) throw new TargetNotfoundException("존재하지 않는 회원");
-		MailDto mailDto = mailDao.selectOne(mailNo);
+		MailDetailVO mailDto = mailDao.selectForDetail(mailNo);
 		boolean isSender = mailDto.getMailSender().equals(memberDto.getMemberId());
 		boolean isTarget = mailDto.getMailTarget().equals(memberDto.getMemberId());
 		if(isSender == false && isTarget == false) throw new NeedPermissionException("권한 부족");
 		model.addAttribute("mailDto", mailDto);
-		
 		return "/WEB-INF/views/mail/detail.jsp";
 	}
 	

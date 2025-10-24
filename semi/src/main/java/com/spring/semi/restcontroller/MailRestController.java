@@ -27,7 +27,7 @@ public class MailRestController {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectForNickname(memberNickname);
 		if(memberDto == null) return false;
-		if(memberDto.getMemberNickname().equals(loginId)) return false;
+		if(memberDto.getMemberId().equals(loginId)) return false;
 		
 		return true;
 	}
