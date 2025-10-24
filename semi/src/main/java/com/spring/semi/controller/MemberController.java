@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.dao.AnimalDao;
+import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.BoardListVO;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +38,8 @@ public class MemberController {
 	private AnimalDao animalDao;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private BoardDao boardDao;
 
 	
 	@GetMapping("/join")
@@ -150,9 +154,14 @@ public class MemberController {
 		String login_id = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(login_id);
 		List<AnimalDto> animalList = animalDao.selectList(login_id);
+		
+		//작성글 리스트
+		List<BoardListVO> boardListVO = boardDao.selectByMemberId(login_id);
+		
 		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);
-		
+		model.addAttribute("boardListVO", boardListVO);
+				
 		return "/WEB-INF/views/member/mypage.jsp";
 	}
 	
