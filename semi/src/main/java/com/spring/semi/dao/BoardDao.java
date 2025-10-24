@@ -75,26 +75,16 @@ public class BoardDao {
 
 	}
 
-	// BoardDao.java 내 selectOne 메서드 수정
 	public BoardDto selectOne(int boardNo) {
-	    
-	    // 1. board 테이블과 header 테이블을 LEFT JOIN하여 header_name을 함께 가져옵니다.
-	    String sql = "SELECT b.*, h.header_name "
-	               + "FROM board b "
-	               + "LEFT JOIN header h ON b.board_header = h.header_no "
-	               + "WHERE b.board_no=?";
-	               
-	    Object[] params = { boardNo };
-	    
-	    // 2. 이 쿼리는 'board' 테이블의 모든 컬럼(b.*)과 'header_name'을 반환합니다.
-	    //    따라서 이 모든 컬럼을 처리할 수 있는 매퍼(아마도 boardListMapper)를 사용해야 합니다.
-	    //    *주의*: boardMapper가 header_name을 처리하지 못할 수 있습니다.
-	    
-	    // 이전 대화 내용을 볼 때, 헤더 이름을 가져오는 쿼리에는 'boardListMapper'를 사용하는 것이 안전합니다.
-	    List<BoardDto> list = jdbcTemplate.query(sql, boardListMapper, params); 
-	    
-	    return list.isEmpty() ? null : list.get(0);
-	}
+        String sql = "SELECT board_no, board_category_no, board_writer, "
+                   + "board_title, board_content, board_view, board_like, "
+                   + "board_wtime, board_etime, board_header, board_reply "
+                   + "FROM board "
+                   + "WHERE board_no=?";
+        Object[] params = { boardNo };
+        List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
+        return list.isEmpty() ? null : list.get(0);
+    }
 	// 삭제
 	public boolean delete(int boardNo) {
 		String sql = "delete board where board_no = ?";
@@ -122,6 +112,7 @@ public class BoardDao {
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		}
 	}
+
 //페이징수정
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
 	    if (pageVO.isList()) {

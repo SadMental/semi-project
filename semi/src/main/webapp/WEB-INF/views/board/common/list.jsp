@@ -1,126 +1,180 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-<jsp:include page="/WEB-INF/views/template/header.jsp" />
-
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <style>
-    body {
-        background-color: #f4ede6;
-        color: #5b3a29;
-        margin: 0;
-        padding: 0;
-    }
+body {
+	background-color: #f4ede6;
+	color: #5b3a29;
+	margin: 0;
+	padding: 0;
+}
 
-    .container.w-800 {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 30px 35px;
-        border-radius: 15px;
-        background-color: #ffffffdd;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+.container.w-800 {
+	max-width: 800px;
+	margin: 40px auto;
+	padding: 30px 35px;
+	border-radius: 15px;
+	background-color: #ffffffdd;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 
-    h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 25px;
-    }
+h1 {
+	font-size: 2.8rem;
+	font-weight: 700;
+	margin-bottom: 25px;
+	text-align: center;
+}
 
-    a.write-btn {
-        display: inline-block;
-        background-color: #a67c52;
-        color: #fff5e9;
-        padding: 10px 20px;
-        border-radius: 10px;
-        text-decoration: none;
-        font-weight: 600;
-        margin-bottom: 20px;
-        transition: background-color 0.3s ease;
-    }
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 1.05rem;
+}
 
-    a.write-btn:hover {
-        background-color: #ba8f65;
-    }
+table thead {
+	background-color: #e9d8c6;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+table th, table td {
+	padding: 14px 12px;
+	border-bottom: 1px solid #d3bfa6;
+	text-align: center;
+}
 
-    th, td {
-        border: 1px solid #d6c2a6;
-        padding: 10px 15px;
-        text-align: center;
-        color: #5b3a29;
-    }
+table tr:hover {
+	background-color: #f3eae1;
+}
 
-    th {
-        background-color: #e9d9c5;
-        font-weight: 700;
-    }
+a {
+	color: #5b3a29;
+	text-decoration: none;
+}
 
-    td a {
-        color: #a67c52;
-        text-decoration: none;
-        font-weight: 600;
-    }
+a:hover {
+	text-decoration: underline;
+}
 
-    td a:hover {
-        text-decoration: underline;
-    }
+.btn.btn-positive {
+	background-color: #7e5a3c;
+	color: #f9f6f1;
+	border: none;
+	padding: 10px 20px;
+	font-size: 1rem;
+	font-weight: 700;
+	border-radius: 10px;
+	cursor: pointer;
+	text-decoration: none;
+	display: inline-block;
+	margin-top: 20px;
+}
 
-    .no-posts {
-        text-align: center;
-        font-style: italic;
-        color: #7a5a44;
-    }
+.btn.btn-positive:hover {
+	background-color: #a67849;
+}
 
-    .pagination-info {
-        font-size: 1rem;
-        color: #5b3a29;
-        font-weight: 600;
-    }
+.cell.right {
+	text-align: right;
+}
+
+.no-posts {
+	text-align: center;
+	padding: 40px 0;
+	color: #8c6d5b;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
 </style>
 
 <div class="container w-800">
-    <h1>${category.categoryName}</h1>
 
-    <a href="${pageContext.request.contextPath}/board/${category.categoryName}/write" class="write-btn">글쓰기</a>
+	<div class="cell center">
+		<h1>${category.categoryName}</h1>
+	</div>
+	<div class="cell center mt-30 mb-50">
+		<form action="list">
+			<div class="search-bar">
+				<select name="column">
+					<option value="board_title"
+						${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
+					<option value="board_writer"
+						${pageVO.column == 'board_writer' ? 'selected' : ''}>아이디</option>
+					<option value="member_nickname"
+						${pageVO.column == 'member_nickname' ? 'selected' : ''}>닉네임</option>
+				</select> <input type="text" name="keyword" value="${pageVO.keyword}"
+					required placeholder="검색어 입력">
 
-    <table>
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="board" items="${boardList}">
-                <tr>
-                    <td>${board.boardNo}</td>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/board/${category.categoryName}/detail?boardNo=${board.boardNo}">
-                            ${board.boardTitle}
-                        </a>
-                    </td>
-                    <td>${board.boardWriter}</td>
-                    <td><fmt:formatDate value="${board.boardWtime}" pattern="yyyy-MM-dd"/></td>
-                </tr>
-            </c:forEach>
-            <c:if test="${empty boardList}">
-                <tr><td colspan="4" class="no-posts">게시글이 없습니다.</td></tr>
-            </c:if>
-        </tbody>
-    </table>
+				<button type="submit" class="btn btn-positive">검색</button>
+			</div>
+		</form>
 
-    <div class="pagination-info">
-        전체 게시물: ${pageVO.dataCount}건
-    </div>
+
+		<div class="cell right">
+			<c:choose>
+				<c:when test="${sessionScope.loginId != null}">
+					<h3>
+						<a href="write" class="btn btn-positive">글쓰기</a>
+					</h3>
+				</c:when>
+				<c:otherwise>
+					<h3>
+						<a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다
+					</h3>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+
+
+	<c:choose>
+		<c:when test="${empty boardList}">
+			<div class="no-posts">등록된 글이 없습니다.</div>
+		</c:when>
+		<c:otherwise>
+			<div class="cell">
+				<table>
+					<thead>
+						<tr>
+							<th>No</th>
+<!-- 							<th>분류</th> -->
+							<th>제목</th>
+							<th>작성자</th>
+							<th>조회수</th>
+							<th>추천수</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="boardDto" items="${boardList}">
+							<tr>
+								<td>${boardDto.boardNo}</td>
+<%-- 								  <td>${boardDto.headerName}</td>  --%>
+								<td style="text-align: center;"><a
+									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
+								</td>
+								<td>${boardDto.boardWriter}</td>
+								<td>${boardDto.boardView}</td>
+								<td>${boardDto.boardLike}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">검색결과 : ${pageVO.begin} - ${pageVO.end} /
+								${pageVO.dataCount}개</td>
+						</tr>
+
+						<tr>
+							<td colspan="7" style="text-align: center;"><jsp:include
+									page="/WEB-INF/views/template/pagination.jsp"></jsp:include></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</c:otherwise>
+	</c:choose>
 </div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp" />
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
