@@ -152,7 +152,7 @@
 						<c:forEach var="boardDto" items="${boardList}">
 							<tr>
 								<td>${boardDto.boardNo}</td>
-								<td>${boardDto.headerName}</td>
+								<td>${boardDto.boardHeader}</td>
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>

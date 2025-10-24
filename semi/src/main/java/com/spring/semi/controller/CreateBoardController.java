@@ -152,7 +152,7 @@ public class CreateBoardController {
             throw new TargetNotfoundException("삭제 권한이 없습니다.");
         }
 
-        boardDao.delete(boardNo);
+        boardDao.delete(category.getCategoryNo(), boardNo);
         // 한글 URL 인코딩 적용
         String encodedCategory = UriUtils.encodePathSegment(categoryName, StandardCharsets.UTF_8);
         return "redirect:/board/" + encodedCategory + "/list";
