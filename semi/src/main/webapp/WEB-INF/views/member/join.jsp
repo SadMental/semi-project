@@ -45,8 +45,8 @@
                 <input class="w-100p" type="text" name="memberId">
             </div>
             <div class="cell">
-                <div class="id-feedback" style="color: red;">* 아이디: 1~20자의 영문 대/소문자, 숫자만 사용 가능합니다.</div>
-                <div class="id2-feedback" style="color: red;">* 아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.</div>
+                <div class="id-feedback red">* 아이디: 1~20자의 영문 대/소문자, 숫자만 사용 가능합니다.</div>
+                <div class="id2-feedback red">* 아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.</div>
             </div>
             <br>
             <div class="cell"> 
@@ -59,8 +59,8 @@
                 <!-- 비밀번호 보이게 설정, 나중에 시간되면 추가구현 -->
             </div>
             <div class="cell">
-                <div class="pw-feedback" style="color: red;">* 비밀번호: 필수 정보입니다.</div>
-                <div class="pw2-feedback" style="color: red;">* 비밀번호: 8~20자의 영문 대/소문자, 숫자, 특수문자(!@#$)를 사용해 주세요.</div>
+                <div class="pw-feedback red">* 비밀번호: 필수 정보입니다.</div>
+                <div class="pw2-feedback red">* 비밀번호: 8~20자의 영문 대/소문자, 숫자, 특수문자(!@#$)를 사용해 주세요.</div>
             </div>
             <br> 
 		<div class="cell">

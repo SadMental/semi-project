@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.mapper.BoardListMapper;
+import com.spring.semi.mapper.BoardListVOMapper;
 import com.spring.semi.mapper.BoardMapper;
+import com.spring.semi.vo.BoardListVO;
 import com.spring.semi.vo.PageVO;
 
 
@@ -21,6 +23,9 @@ public class BoardDao {
 	private BoardMapper boardMapper;
 	@Autowired
 	private BoardListMapper boardListMapper;
+	@Autowired
+	private BoardListVOMapper boardListVOMapper;
+
 
 	public int sequence() {
 		String sql = "select board_seq.nextval from dual";
@@ -182,4 +187,13 @@ public class BoardDao {
 		Object[] params = {min, max};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
+
+  //마이페이지  내글 보기 관련
+  public List<BoardListVO> selectByMemberId(String login_id) {
+	String sql = "select board_no, board_title, board_wtime, board_view from board "
+			+ "where board_writer = ? "
+			+ "order by board_wtime desc";
+	Object[] params = {login_id};
+	return jdbcTemplate.query(sql, boardListVOMapper, params);
+  }
 }
