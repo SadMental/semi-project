@@ -95,7 +95,7 @@ a:hover {
 		<h2>우편함</h2>
 	</div>
 	<div class="cell right">
-		<a class="btn btn-positive" href="send">우편 보내기</a>
+		<a class="btn btn-positive" href="/mail/send">우편 보내기</a>
 	</div>
 	<div class="cell flex-box">
 		<a class="btn btn-neutral w-50p" href="send">보낸 우편함</a> <a
@@ -141,10 +141,10 @@ a:hover {
 
 									<c:choose>
 										<c:when test="${type == 'send'}">
-											<td>${mailDto.mailTarget}</td>
+											<td>${mailDto.targetNickname}</td>
 										</c:when>
 										<c:otherwise>
-											<td>${mailDto.mailSender}</td>
+											<td>${mailDto.senderNickname}</td>
 										</c:otherwise>
 									</c:choose>
 

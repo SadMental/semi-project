@@ -98,7 +98,7 @@ h1 {
 			</tr> --%>
 			<tr>
 				<th>[작성자] :</th>
-				<td>${mailDto.mailSender}</td>
+				<td>${mailDto.senderNickname}</td>
 			</tr>
 		</table>
 	</div>
