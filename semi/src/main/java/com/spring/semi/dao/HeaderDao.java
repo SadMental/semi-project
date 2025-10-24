@@ -24,13 +24,35 @@ public class HeaderDao {
         return jdbcTemplate.queryForObject(sql, int.class);
     }
 
-    // 등록
-    public void insert(HeaderDto headerDto) {
-        String sql = "insert into header(header_no, header_name) values (?, ?)";
-        Object[] params = {headerDto.getHeaderNo(), headerDto.getHeaderName()};
-        jdbcTemplate.update(sql, params);
-    }
+    public int insertAndReturnNo(String headerName) {
+        // 1️⃣ 이미 존재하면 해당 번호 반환
+        String findSql = "select header_no from header where header_name = ?";
+        List<Integer> list = jdbcTemplate.query(findSql, (rs, rowNum) -> rs.getInt("header_no"), headerName);
 
+        if (!list.isEmpty()) {
+            return list.get(0); // 중복 존재 시 기존 번호 반환
+        }
+
+        // 2️⃣ 없으면 새로 추가
+        String insertSql = "insert into header(header_no, header_name) values(header_seq.nextval, ?)";
+        jdbcTemplate.update(insertSql, headerName);
+
+        // 3️⃣ 새로 추가된 header_no 반환
+        String getSql = "select header_no from header where header_name = ?";
+        return jdbcTemplate.queryForObject(getSql, Integer.class, headerName);
+    }
+    // 등록
+    public void insert(String headerName) {
+        String checkSql = "select count(*) from header where header_name = ?";
+        int count = jdbcTemplate.queryForObject(checkSql, Integer.class, headerName);
+
+        if (count == 0) {
+            String insertSql = "insert into header(header_no, header_name) values(header_seq.nextval, ?)";
+            jdbcTemplate.update(insertSql, headerName);
+        } else {
+            System.out.println("이미 존재하는 header_name: " + headerName);
+        }
+    }
     // 수정
     public boolean update(HeaderDto headerDto) {
         String sql = "UPDATE Header SET header_name = ? WHERE header_no = ?";
@@ -54,16 +76,15 @@ public class HeaderDao {
     }
 
     // 같은 Header이름 조회
-    public List<HeaderDto> selectByHeaderName(String headerName) {
-        String sql = "SELECT * FROM header WHERE header_name = ?";
-        Object[] params = {headerName};
-        return jdbcTemplate.query(sql, headerMapper, params);  // 조건에 맞는 모든 레코드 조회
+    public HeaderDto selectByName(String headerName) {
+        String sql = "select * from header where header_name = ?";
+        List<HeaderDto> list = jdbcTemplate.query(sql, headerMapper, headerName);
+        return list.isEmpty() ? null : list.get(0);
     }
-    
     // 전체 조회
     public List<HeaderDto> selectAll() {
-        String sql = "SELECT * FROM header";  // 전체 조회 쿼리
-        return jdbcTemplate.query(sql, headerMapper);  // mapper를 통해 결과 매핑
+        String sql = "SELECT header_no, header_name FROM header ORDER BY header_no ASC"; 
+        return jdbcTemplate.query(sql, headerMapper);
     }
     // 단건 조회
     public HeaderDto selectOne(int headerNo) {
@@ -72,6 +93,7 @@ public class HeaderDao {
         List<HeaderDto> list = jdbcTemplate.query(sql, headerMapper, params);
         return list.isEmpty() ? null : list.get(0);
     }
-    
    
+    
 }
+
