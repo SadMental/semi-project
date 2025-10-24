@@ -6,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.spring.semi.dao.MemberDao;
-import com.spring.semi.dto.MemberDto;
+import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dto.BoardDto;
 
 @Controller
 public class MainController 
 {
 	@Autowired
-	private MemberDao memberDao;
+	private BoardDao boardDao;
 	
 	@RequestMapping("/")
 	public String home(Model model)
 	{
-		List<MemberDto> rankingList = memberDao.selectListByMemberPoint(1, 10);
-		model.addAttribute("rankingList", rankingList);
+		List<BoardDto> free_board_list = boardDao.selectListWithPagingForMailPage(1, 1, 8);		
+		
+		model.addAttribute("free_board_list", free_board_list);
 		
 		return "/WEB-INF/views/home.jsp";
 	}
