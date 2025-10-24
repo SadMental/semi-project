@@ -65,7 +65,7 @@ public class MailController {
 		mailService.sendMail(mailDto);
 		
 		
-		return "redirect:list";
+		return "redirect:list/send";
 	}
 	
 	@GetMapping("/list/{type}")

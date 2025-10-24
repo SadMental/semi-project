@@ -51,7 +51,7 @@
 </script>
 
 <div class="container w-600">
-	<form action="send" method="post" class="check-send">
+	<form action="send" method="post" enctype="multipart/form-data" autocomplete="off" class="check-send">
 		<div class="cell">
 			<label>
 				<span>제목</span>
