@@ -19,7 +19,7 @@ public class MainController
 	@RequestMapping("/")
 	public String home(Model model)
 	{
-		List<BoardDto> free_board_list = boardDao.selectListWithPagingForMailPage(1, 1, 8);		
+		List<BoardDto> free_board_list = boardDao.selectListWithPagingForMainPage(1, 1, 8);		
 		
 		model.addAttribute("free_board_list", free_board_list);
 		
