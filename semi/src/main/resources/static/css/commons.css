@@ -50,18 +50,22 @@ div {
     background-color: rgb(133, 107, 78);
     border-color: rgb(78, 61, 42);
     color: rgb(255, 250, 241);
-    font-weight: bold;
-    border-radius: 17px;
+    border-radius: 15px;
+    font-weight: 700;
 }
 .btn.btn-negative {
     background-color: #d63031;
     border-color: #d63031;
-    color: white;
+    color: white !important;
+    border-radius: 15px;
+    font-weight: 700;
 }
 .btn.btn-neutral {
     background-color:#7f8c8d;
     border-color: #7f8c8d;
-    color: white;
+    color: white !important;
+    border-radius: 15px;
+    font-weight: 700;
 }
 
 .field {
@@ -85,7 +89,12 @@ textarea.field {
 .w-15p{width: 15% !important;}
 .w-20p{width: 20% !important;}
 .w-25p{width: 25% !important;}
+.w-30p{width: 30% !important;}
+.w-35p{width: 35% !important;}
+.w-40p{width: 40% !important;}
+.w-45p{width: 45% !important;}
 .w-50p{width: 50% !important;}
+.w-55p{width: 55% !important;}
 .w-60p{width: 60% !important;}
 .w-65p{width: 65% !important;}
 .w-70p{width: 70% !important;}
