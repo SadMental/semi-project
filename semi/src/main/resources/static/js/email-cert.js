@@ -3,6 +3,22 @@ var state = {
 };
 
 $(function () {
+	
+	var authBtn = $("[name=memberAuth]")
+   	if(authBtn.val() == 'f'){
+   		$("[name=memberEmail]").removeAttr("readonly")
+   		$(".btn-cert-send").show()
+	   	$(".auth-btn").removeClass("bggreen bgred").addClass("bgred")
+   	} else {
+	  	$(".auth-edit-btn").show()
+	  	$(".auth-btn").removeClass("bggreen bgred").addClass("bggreen")
+   	}
+   	$(".auth-edit-btn").on("click", function () {
+		$("[name=memberEmail]").removeAttr("readonly").focus()
+		$(".auth-edit-btn").hide()
+		$(".btn-cert-send").show()
+	})
+	
     //아이디 피드백
     $(".id-feedback, .id2-feedback, .pw-feedback, .pw2-feedback").hide();
 
@@ -101,11 +117,10 @@ $(function () {
         var regex = /^[0-9]{5}$/;
         var valid = regex.test(certNumber);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback", ".auth-btn").hide();
 
         if (valid == false) {
             $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
-            $(".fail-feedback").show();
+			$(".cert-input").removeClass("success fail fail2").addClass("fail2");
             state.memberEmailValid = false;
             return;
         }
@@ -120,19 +135,18 @@ $(function () {
                     $(".cert-input").removeClass("success fail fail2").val("").hide();
                     $("[name=memberEmail]").removeClass("success fail fail2").addClass("success")
                         .prop("readonly", true);
-                    $(".success-feedback").show();
                     state.memberEmailValid = true;
                     $(".btn-cert-check").hide();
                     $(".auth-btn").show();
                     $("[name=memberAuth]").val("t");
-                    $(".fail2-feedback").hide();
+					$(".auth-btn").addClass("bggreen");
                 }
                 else {
                     $(".cert-input").removeClass("success fail fail2").addClass("fail2");
-                    $(".fail2-feedback").show();
                     state.memberEmailValid = false;
                 }
             }
         });
     });
+	
 });
