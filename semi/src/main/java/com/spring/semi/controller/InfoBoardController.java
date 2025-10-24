@@ -100,7 +100,7 @@ public class InfoBoardController {
 	public String delete(@RequestParam int boardNo) {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if(boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
-		boardDao.delete(boardNo);
+		boardDao.delete(2, boardNo);
 		return "redirect:list";
 	}
 

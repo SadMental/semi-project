@@ -96,9 +96,9 @@ public class BoardDao {
 	    return list.isEmpty() ? null : list.get(0);
 	}
 	// 삭제
-	public boolean delete(int boardNo) {
-		String sql = "delete board where board_no = ?";
-		Object[] params = { boardNo };
+	public boolean delete(int pageType, int boardNo) {
+		String sql = "delete board where board_category_no=? and board_no = ?";
+		Object[] params = { pageType, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
@@ -125,17 +125,15 @@ public class BoardDao {
 //페이징수정
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
 	    if (pageVO.isList()) {
-	        String sql = 
-	            "select * from (" +
-	            "  select rownum rn, TMP.* from (" +
-	            "    select b.*, h.header_name " +
-	            "    from board b " +
-	            "    left join header h on b.board_header = h.header_no " +
-	            "    where b.board_category_no=? " +
-	            "    order by b.board_no desc" +
-	            "  ) TMP" +
-	            ") where rn between ? and ?";
-
+	        String sql = "select * from (" +
+		            "  select rownum rn, TMP.* from (" +
+		            "    select b.*, h.header_name " +
+		            "    from board b " +
+		            "    left join header h on b.board_header = h.header_no " +
+		            "    where b.board_category_no=? " +
+		            "    order by b.board_no desc" +
+		            "  ) TMP" +
+		            ") where rn between ? and ?";
 	        Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
 	        return jdbcTemplate.query(sql, boardListMapper, params);
 	    } else {
@@ -178,5 +176,22 @@ public class BoardDao {
 				+ ")TMP) where rn between ? and ?";
 		Object[] params = {min, max};
 		return jdbcTemplate.query(sql, boardMapper, params);
+	}
+	
+	public void connect(int boardNo, int mediaNo) 
+	{
+		String sql = "insert into board_image (board_no, media_no) values (?, ?)";
+		Object[] params = {
+				boardNo, 
+				mediaNo
+		};
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public int findMedia(int boardNo) 
+	{
+		String sql = "select media_no from board_image where board_no = ?";
+		Object[] params = {boardNo};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 }

@@ -141,7 +141,7 @@ public class AdoptionBoardController {
         }
 
         // 글 삭제
-        boardDao.delete(boardNo);
+        boardDao.delete(4, boardNo);
 
         return "redirect:list";
     }
