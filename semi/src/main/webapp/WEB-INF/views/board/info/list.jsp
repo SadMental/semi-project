@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <style>
 body {
 	background-color: #f4ede6;
@@ -141,7 +139,7 @@ a:hover {
 					<thead>
 						<tr>
 							<th>No</th>
-							<th>분류</th>
+<!-- 							<th>분류</th> -->
 							<th>제목</th>
 							<th>작성자</th>
 							<th>조회수</th>
@@ -152,7 +150,7 @@ a:hover {
 						<c:forEach var="boardDto" items="${boardList}">
 							<tr>
 								<td>${boardDto.boardNo}</td>
-								  <td>${boardDto.headerName}</td> 
+<%-- 								  <td>${boardDto.headerName}</td>  --%>
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>

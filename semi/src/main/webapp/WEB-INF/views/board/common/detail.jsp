@@ -5,8 +5,8 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-
 <style>
+
 body {
 	background-color: #f4ede6;
 	color: #5b3a29;
@@ -87,13 +87,19 @@ h1 {
 .btn-neutral:hover {
 	background-color: #cbb7a3;
 }
+.like-button {
+  font-size: 1.2rem; /* 버튼 내 텍스트 크기 */
+}
+
+.like-button .fa-thumbs-up {
+  font-size: 1.8rem; /* 아이콘 크기 */
+}
+
+
 </style>
 
 <div class="container w-800">
-	<!-- categoryName 추가 -->
-	<h1>${category.categoryName}</h1>
-
-	<h2 style="margin-bottom: 30px;">${boardDto.boardTitle}</h2>
+	<h1>${boardDto.boardTitle}</h1>
 
 	<div class="meta">
 		<table>
@@ -105,10 +111,6 @@ h1 {
 				<th>[작성자] :</th>
 				<td>${boardDto.boardWriter}</td>
 			</tr>
-			<tr>
-				<th>[작성일] :</th>
-				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-			</tr>
 		</table>
 	</div>
 
@@ -116,28 +118,34 @@ h1 {
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
 
-	<div class="cell right" style="margin-top: 10px;">
-		<i id="board-like" class="fa-regular fa-thumbs-up" style="font-size: 1.8rem; cursor: pointer; color: #a67c52;"></i>
-		<span id="board-like-count" style="font-size: 1.2rem; margin-left: 8px; color: #5b3a29;">0</span>
-	</div>
+<div class="cell right" style="margin-top: 10px;">
+    <i id="board-like" class="fa-regular fa-thumbs-up" style="font-size: 1.8rem; cursor: pointer; color: #a67c52;"></i>
+    <span id="board-like-count" style="font-size: 1.2rem; margin-left: 8px; color: #5b3a29;">0</span>
+</div>
+
 
 	<div class="cell right">
-		<a href="list" class="btn btn-neutral">목록으로</a> 
-		<a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
+	
+		<a href="list" class="btn btn-neutral">목록으로</a> <a
+			href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
 
-		<form method="post" action="delete" onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display: inline;">
+		<form method="post" action="delete"
+			onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display: inline;">
+
 			<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
 			<button type="submit" class="btn btn-delete">삭제하기</button>
 		</form>
+
 	</div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 $(function(){
     var params = new URLSearchParams(location.search);
     var boardNo = params.get("boardNo");
 
+    // 좋아요 상태 확인
     $.ajax({
         url:"/rest/board/check?boardNo=" + boardNo,
         method:"get",
@@ -151,6 +159,8 @@ $(function(){
         }
     });
 
+    // 로그인한 사용자만 좋아요 클릭 가능하도록 조건 추가 (jsp EL이용)
+    <%-- 로그인 아이디가 없으면 좋아요 클릭 막기 위해 flag 생성 --%>
     var isLoggedIn = <%= (session.getAttribute("loginId") != null ? "true" : "false") %>;
 
     if(isLoggedIn) {
@@ -174,11 +184,14 @@ $(function(){
             });
         });
     } else {
+        // 로그인 안 된 사용자에겐 클릭 시 경고 메시지 띄우기
         $("#board-like").css("cursor", "default").on("click", function(){
             alert("좋아요를 누르려면 로그인하세요.");
         });
     }
 });
 </script>
+
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

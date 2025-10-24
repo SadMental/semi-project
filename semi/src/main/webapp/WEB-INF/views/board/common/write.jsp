@@ -1,104 +1,102 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8"%>
 
-<jsp:include page="/WEB-INF/views/template/header.jsp" />
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<!-- summernote -->
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/summernote/custom-summernote.css">
+<script src="/summernote/custom-summernote.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
 
 <style>
-    body {
-        background-color: #f4ede6;
-        color: #5b3a29;
-        margin: 0;
-        padding: 0;
-    }
+body {
+	background-color: #f4ede6;
+	color: #5b3a29;
+	margin: 0;
+	padding: 0;
+}
 
-    .container.w-600 {
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 30px 35px;
-        border-radius: 15px;
-        background-color: #ffffffdd;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+.container.w-800 {
+	max-width: 800px;
+	margin: 40px auto;
+	padding: 30px 35px;
+	border-radius: 15px;
+}
 
-    h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-    }
+h1 {
+	font-size: 2.8rem;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
 
-    label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 8px;
-        margin-top: 20px;
-    }
+input.field.w-100 {
+	width: 100%;
+	padding: 12px 15px;
+	border: 2px solid #c9a66b;
+	border-radius: 10px;
+	font-size: 1.1rem;
+	color: #5b3a29;
+}
 
-    input[type="text"], textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #d6c2a6;
-        border-radius: 8px;
-        font-size: 1rem;
-        color: #5b3a29;
-        box-sizing: border-box;
-        background-color: #fefcf8;
-        resize: vertical;
-    }
+input.field.w-100:focus {
+	outline: none;
+	border-color: #7e5a3c;
+	box-shadow: 0 0 8px #a57a50;
+}
 
-    textarea {
-        min-height: 150px;
-    }
+.cell.right {
+	text-align: right;
+}
 
-    .button-group {
-        margin-top: 25px;
-        text-align: right;
-    }
+button.btn.btn-positive {
+	background-color: #7e5a3c;
+	color: #f9f6f1;
+	border: none;
+	padding: 12px 28px;
+	font-size: 1.1rem;
+	font-weight: 700;
+	border-radius: 12px;
+	cursor: pointer;
+}
 
-    button {
-        background-color: #a67c52;
-        border: none;
-        color: #fff5e9;
-        font-weight: 700;
-        padding: 10px 20px;
-        font-size: 1rem;
-        border-radius: 10px;
-        cursor: pointer;
-        margin-left: 10px;
-        transition: background-color 0.3s ease;
-    }
+button.btn.btn-positive:hover {
+	background-color: #a67849;
+}
 
-    button:hover {
-        background-color: #ba8f65;
-    }
-
-    button.cancel-btn {
-        background-color: #d9c7b3;
-        color: #5b3a29;
-    }
-
-    button.cancel-btn:hover {
-        background-color: #cbb7a3;
-    }
+.mt-20 {
+	margin-top: 20px;
+}
 </style>
 
-<div class="container w-600">
-    <h1>${category.categoryName} 글쓰기</h1>
+<form autocomplete="off" action="write" method="post">
+	<div class="container w-800">
+		<div class="cell center">
+			<h1>글 작성</h1>
+		</div>
+		<div class="cell center">
+			<em>작은 정보라도 공유하면 큰 가치를 만듭니다.</em>
+		</div>
+		<div class="cell">
 
-    <form action="${pageContext.request.contextPath}/board/${category.categoryName}/write" method="post">
-        <input type="hidden" name="categoryNo" value="${category.categoryNo}" />
+			<div class="cell mt-20">
+				<input type="text" name="boardTitle" class="field w-100"
+					placeholder="제목을 입력하세요.">
+			</div>
 
-        <label for="boardTitle">제목</label>
-        <input type="text" id="boardTitle" name="boardTitle" required>
+			<div class="cell mt-20">
+				<textarea name="boardContent" id="content" class="summernote-editor"></textarea>
+			</div>
+			<div class="cell right mt-20">
+				<button class="btn btn-positive">등록하기</button>
+			</div>
+		</div>
+		</div>
+		
+</form>
 
-        <label for="boardContent">내용</label>
-        <textarea id="boardContent" name="boardContent" required></textarea>
-
-        <div class="button-group">
-            <button type="submit">등록</button>
-            <button type="button" class="cancel-btn" onclick="history.back()">취소</button>
-        </div>
-    </form>
-</div>
-
-<jsp:include page="/WEB-INF/views/template/footer.jsp" />
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
