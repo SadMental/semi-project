@@ -81,7 +81,7 @@
 </style>
 
 <div class="container w-400">
-  <h1>카테고리 등록</h1>
+  <h1>새로운 게시판 등록</h1>
 
   <form action="add" method="post">
     <label for="categoryName">카테고리 이름:</label>
