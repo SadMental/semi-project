@@ -15,6 +15,7 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
 .container.w-800 {
 	max-width: 800px;
 	margin: 40px auto;
@@ -23,16 +24,19 @@ body {
 	background-color: #ffffffdd;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
 h1 {
 	font-size: 2rem;
 	font-weight: 700;
 	margin-bottom: 15px;
 }
+
 .meta {
 	font-size: 0.95rem;
 	color: #7a5a44;
 	margin-bottom: 20px;
 }
+
 .content {
 	font-size: 1.1rem;
 	line-height: 1.6;
@@ -45,6 +49,7 @@ h1 {
 	text-align: right;
 	margin-top: 30px;
 }
+
 .btn {
 	padding: 10px 20px;
 	font-size: 1rem;
@@ -96,6 +101,7 @@ h1 {
 	margin-left: 10px;
 	vertical-align: middle;
 }
+
 .reply-editor {
 	width: 100%;
 	resize: none;
