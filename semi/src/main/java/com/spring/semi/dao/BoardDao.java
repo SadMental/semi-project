@@ -118,7 +118,6 @@ public class BoardDao {
 		}
 	}
 
-//페이징수정
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
 	    if (pageVO.isList()) {
 	        String sql = "select * from (" +
@@ -174,7 +173,7 @@ public class BoardDao {
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
 
-	public void connect(int boardNo, int mediaNo) 
+public void connect(int boardNo, int mediaNo) 
 	{
 		String sql = "insert into board_image (board_no, media_no) values (?, ?)";
 		Object[] params = {
@@ -184,11 +183,27 @@ public class BoardDao {
 		jdbcTemplate.update(sql, params);
 	}
 	
-	public int findMedia(int boardNo) 
-	{
+	public int findMedia(int boardNo){
 		String sql = "select media_no from board_image where board_no = ?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
+  }
+  
+	// 메인페이지에서 바로 보이는 free_board는 검색이 없고 PageVO가 없다
+	public List<BoardDto> selectListWithPagingForMainPage(int pageType, int min, int max) {
+	        String sql = 
+	            "select * from (" +
+	            "  select rownum rn, TMP.* from (" +
+	            "    select b.*, h.header_name " +
+	            "    from board b " +
+	            "    left join header h on b.board_header = h.header_no " +
+	            "    where b.board_category_no=? " +
+	            "    order by b.board_no desc" +
+	            "  ) TMP" +
+	            ") where rn between ? and ?";
+
+	        Object[] params = { pageType, min, max };
+	        return jdbcTemplate.query(sql, boardListMapper, params);
 	}
 
   //마이페이지  내글 보기 관련
