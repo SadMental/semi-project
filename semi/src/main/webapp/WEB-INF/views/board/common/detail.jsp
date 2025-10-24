@@ -28,13 +28,11 @@ h1 {
 	font-weight: 700;
 	margin-bottom: 15px;
 }
-
 .meta {
 	font-size: 0.95rem;
 	color: #7a5a44;
 	margin-bottom: 20px;
 }
-
 .content {
 	font-size: 1.1rem;
 	line-height: 1.6;
