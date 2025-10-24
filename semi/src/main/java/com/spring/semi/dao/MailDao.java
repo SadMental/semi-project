@@ -55,7 +55,7 @@ public class MailDao {
 		jdbcTemplate.update(sql, params);
 	}
 	// 우편 내용 보기 용도
-	public MailDto selectOne(String mailNo) {
+	public MailDto selectOne(int mailNo) {
 		String sql = "select * from mail where mail_no = ?";
 		Object[] params = {mailNo};
 		
@@ -125,6 +125,70 @@ public class MailDao {
 
 	        sql = sql.replace("#1", pageVO.getColumn());
 	        Object[] params = { pageVO.getKeyword(), mailOwner, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, mailListMapper, params);
+	    }
+	}
+	
+	public List<MailDto> selectListForSenderWithPaging(PageVO pageVO, String mailSender) {
+	    if (pageVO.isList()) {
+	        String sql = 
+	        		"select * from (" 
+	            		+"select rownum rn, TMP.* from (" 
+	            			+"select mail_no, mail_owner, mail_sender, mail_target, mail_title, mail_wtime " 
+	            			+"from mail " 
+	            				+"where mail_sender = ? and mail_sender = mail_owner " 
+	            					+"order by mail_no desc" 
+            					+") TMP" 
+        					+") where rn between ? and ?";
+
+	        Object[] params = { mailSender, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, mailListMapper, params);
+	    } else {
+	        String sql = 
+		            "select * from (" 
+				        + "select rownum rn, TMP.* from (" 
+					        + "select mail_no, mail_owner, mail_sender, mail_target, mail_title, mail_wtime "
+								+ "from mauk " 
+									+ "where instr(#1, ?) > 0 " 
+									+ "and mail_sender=? and mail_sender = mail_owner " 
+									+ "order by #1 asc, mail_no desc" 
+								+ ") TMP" 
+				            + ") where rn between ? and ?";
+
+	        sql = sql.replace("#1", pageVO.getColumn());
+	        Object[] params = { pageVO.getKeyword(), mailSender, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, mailListMapper, params);
+	    }
+	}
+	
+	public List<MailDto> selectListForTargetWithPaging(PageVO pageVO, String mailTarget) {
+	    if (pageVO.isList()) {
+	        String sql = 
+	        		"select * from (" 
+	            		+"select rownum rn, TMP.* from (" 
+	            			+"select mail_no, mail_owner, mail_sender, mail_target, mail_title, mail_wtime " 
+	            			+"from mail " 
+	            				+"where mail_target = ? and mail_sender != mail_owner " 
+	            					+"order by mail_no desc" 
+            					+") TMP" 
+        					+") where rn between ? and ?";
+
+	        Object[] params = { mailTarget, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, mailListMapper, params);
+	    } else {
+	        String sql = 
+		            "select * from (" 
+				        + "select rownum rn, TMP.* from (" 
+					        + "select mail_no, mail_owner, mail_sender, mail_target, mail_title, mail_wtime "
+								+ "from mauk " 
+									+ "where instr(#1, ?) > 0 " 
+									+ "and mail_target=? and mail_sender != mail_owner " 
+									+ "order by #1 asc, mail_no desc" 
+								+ ") TMP" 
+				            + ") where rn between ? and ?";
+
+	        sql = sql.replace("#1", pageVO.getColumn());
+	        Object[] params = { pageVO.getKeyword(), mailTarget, pageVO.getBegin(), pageVO.getEnd() };
 	        return jdbcTemplate.query(sql, mailListMapper, params);
 	    }
 	}
