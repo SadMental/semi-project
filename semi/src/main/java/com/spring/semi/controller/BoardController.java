@@ -166,5 +166,6 @@ public class BoardController {
 		}
 		boardDao.delete(boardNo);
 		return "redirect:list";
-	}	
+	}
+	
 }
