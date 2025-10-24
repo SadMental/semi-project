@@ -75,9 +75,8 @@ public class MailController {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		if(memberDto == null) throw new TargetNotfoundException("존재하지 않는 회원");
-		List<MailDto> mailList = mailDao.selectList(memberDto.getMemberId());
-		model.addAttribute("mailList", mailDao.selectListWithPaging(pageVO, 1));
-		pageVO.setDataCount(mailDao.count(pageVO, 1));
+		model.addAttribute("mailList", mailDao.selectListWithPaging(pageVO, memberDto.getMemberId()));
+		pageVO.setDataCount(mailDao.count(pageVO, memberDto.getMemberId()));
 		model.addAttribute("pageVO", pageVO);
 
 		
