@@ -48,7 +48,7 @@ create table animal(
     -- 동물 이름
 	animal_name varchar2(1000) not null,
     -- 동물 소개글
-    animal_cotent varchar2(2000),
+    animal_content varchar2(2000),
     -- 동물의 분양 가능여부
 	animal_permission char(1) default 'f' not null,
     -- 동물의 소유주 id
@@ -95,7 +95,7 @@ create table board(
 	board_content varchar2(4000) not null,
     -- 게시글의 작성자
 	board_writer references member(member_id) on delete set null,
-    -- 게시글의 작성시간
+    -- 게시글의 작성시간    
 	board_wtime timestamp default systimestamp,
     -- 게시글의 수정시간
 	board_etime timestamp,
@@ -123,7 +123,7 @@ create table media(
     -- 미디어(이미지, 영상)의 번호
 	media_no number primary key,
     -- 미디어의 종류(확장자)
-	media_type char(4) not null,
+	media_type varchar2(10) not null,
     -- 미디어의 본래 이름
 	media_name varchar2(1000) not null,
     -- 미디어의 크기
@@ -154,7 +154,7 @@ create table reply(
 
 create sequence reply_seq;
 
--- 어드민의 활동 로그 기록용 테이블
+-- 어드민의 활동 로그 기록용 테이블 아직 안만듬
 create table log(
     -- 로그 번호
     log_no number primary key,
