@@ -73,7 +73,7 @@
 </style>
 <div class="container w-800">
    <div class="cell center">
-       <h1> 자유 게시판</h1>
+       <h1> 분양 게시판</h1>
    </div>
 	<div class="cell center mt-30 mb-50">
 			<form action="list">

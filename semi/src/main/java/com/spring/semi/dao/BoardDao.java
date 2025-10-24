@@ -43,16 +43,13 @@ public class BoardDao {
                    + ") values (?, ?, ?, ?, ?, ?)";
 
         Object[] params = {
-            boardType,
-            boardDto.getBoardNo(),
-            boardDto.getBoardWriter(),
-            boardDto.getBoardTitle(),
-            boardDto.getBoardContent(),
-            (boardDto.getBoardHeader() == null || boardDto.getBoardHeader().toString().trim().isEmpty())
-                ? null
-                : boardDto.getBoardHeader()
-        };
-
+        	    boardType,
+        	    boardDto.getBoardNo(),
+        	    boardDto.getBoardWriter(),
+        	    boardDto.getBoardTitle(),
+        	    boardDto.getBoardContent(),
+        	    boardDto.getBoardHeader()  
+        	};
         jdbcTemplate.update(sql, params);
     }
 

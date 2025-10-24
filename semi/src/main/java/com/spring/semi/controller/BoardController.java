@@ -73,7 +73,7 @@ public class BoardController {
        model.addAttribute("boardList", boardList);
        model.addAttribute("headerMap", headerMap); // JSP에서 사용
        model.addAttribute("pageVO", pageVO);
-       return "/WEB-INF/views/adoptionBoard/list.jsp";
+       return "/WEB-INF/views/board/free/list.jsp";
    }
 	
    // 글 등록

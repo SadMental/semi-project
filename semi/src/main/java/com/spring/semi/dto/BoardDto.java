@@ -20,7 +20,7 @@ public class BoardDto {
 	private Timestamp boardEtime;
 	private int boardLike;
 	private int boardView;
-	private Integer boardHeader;
+	private int boardHeader;
 	private int boardReply;
 
 	
