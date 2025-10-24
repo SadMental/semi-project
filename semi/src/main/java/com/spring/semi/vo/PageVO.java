@@ -80,4 +80,10 @@ public class PageVO
 	{
 		return getBlockFinish() + 1;
 	}
+	
+	public void fixPageRange() {
+	    int total = getTotalPage();
+	    if (page < 1) page = 1;
+	    if (page > total) page = total;
+	}
 }

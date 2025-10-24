@@ -164,7 +164,7 @@ public class BoardController {
 			int mediaNo = Integer.parseInt(element.attr("data-pk"));
 			mediaService.delete(mediaNo);		
 		}
-		boardDao.delete(boardNo);
+		boardDao.delete(1, boardNo);
 		return "redirect:list";
 	}
 	
