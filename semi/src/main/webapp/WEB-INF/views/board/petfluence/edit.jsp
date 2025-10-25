@@ -98,6 +98,13 @@
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
       <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
     </div>
+	  <select name="boardHeader" required>
+	          <option value="">-- 선택 --</option>
+	          <c:forEach var="headerDto" items="${headerList}">
+	              <option value="${headerDto.headerNo}">
+	                  ${headerDto.headerName}
+	              </option>
+	          </c:forEach>
     
     <div class="cell">
       <label for="title">제목 <i class="fa-solid fa-asterisk red"></i></label>
