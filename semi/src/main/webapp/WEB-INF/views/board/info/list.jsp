@@ -105,7 +105,7 @@ a:hover {
 					<option value="member_nickname">
 						${pageVO.column == 'member_nickname' ? 'selected' : ''}닉네임</option>
 					<option value="header_name">
-						${pageVO.column == 'member_nickname' ? 'selected' : ''}분류</option>	
+						${pageVO.column == 'header_name' ? 'selected' : ''}분류</option>	
 						
 				</select> <input type="text" name="keyword" value="${pageVO.keyword}"
 					required placeholder="검색어 입력">
