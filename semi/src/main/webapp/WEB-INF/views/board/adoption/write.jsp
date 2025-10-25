@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <!-- summernote -->
@@ -75,11 +76,16 @@
       </div>
       
       <div class="cell">
+		
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
-      </div>
-<div class="cell">
-    <input type="text" name="headerName" class="field w-100">
-</div>
+		  <select name="boardHeader" class="field w-100 mt-2">
+		         <option value="">-- 분류 선택 --</option>
+		         <c:forEach var="headerDto" items="${headerList}">
+		             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+		         </c:forEach>
+		     </select>
+	  
+
       <div class="cell">
           <textarea name="boardContent" class="summernote-editor"></textarea>
       </div>

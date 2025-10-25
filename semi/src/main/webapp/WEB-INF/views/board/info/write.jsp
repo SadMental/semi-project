@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <!-- summernote -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
@@ -76,7 +76,12 @@
           이 글은 정보게시판에 업로드 됩니다.<br>
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
-
+	  <select name="boardHeader" class="field w-100 mt-2">
+	         <option value="">-- 분류 선택 --</option>
+	         <c:forEach var="headerDto" items="${headerList}">
+	             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+	         </c:forEach>
+	     </select>
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>

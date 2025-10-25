@@ -88,20 +88,39 @@ h1 {
 </style>
 
 <div class="container w-800">
-	<h1>${boardDto.boardTitle}</h1>
+<c:if test="${not empty headerDto}">
+    <tr>
+       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
+    </tr>
+</c:if>
+
 
 	<div class="meta">
 		<table>
 			<tr>
-				<th>[번호] : </th>
+				<th>[번호] :</th>
 				<td>${boardDto.boardNo}</td>
 			</tr>
 			<tr>
 				<th>[작성자] :</th>
 				<td>${boardDto.boardWriter}</td>
 			</tr>
-		</table>
-	</div>
+			<tr>
+				<th>[작성일] :</th>
+				<td>${boardDto.boardWtime}</td>
+			</tr>
+			<tr>
+			    <th>[수정일] :</th>
+			    <td>
+			        <c:choose>
+			            <c:when test="${not empty boardDto.boardEtime}">
+			                <fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm"/>
+			            </c:when>
+			            <c:otherwise>
+			                
+			            </c:otherwise>
+			        </c:choose>
+			    </td>
 
 	<div class="content">
 		<img src = "/board/petfluence/image?boardNo=${boardDto.boardNo}">
