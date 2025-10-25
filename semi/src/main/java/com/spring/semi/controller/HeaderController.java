@@ -22,9 +22,7 @@ public class HeaderController {
 	public String list(Model model) {
 	    List<HeaderDto> headerList = headerDao.selectAll();
 	   
-	    // 확인용 출력
-	    System.out.println("headerList.size() = " + headerList.size());
-	    for(HeaderDto header : headerList) {
+	 	    for(HeaderDto header : headerList) {
 	        System.out.println(header.getHeaderNo() + " / " + header.getHeaderName());
 	    }
 	    model.addAttribute("headerList", headerList);
@@ -50,14 +48,16 @@ public class HeaderController {
    @GetMapping("/edit")
    public String editPage(@RequestParam int headerNo, Model model) {
        HeaderDto headerDto = headerDao.selectOne(headerNo);
+
        model.addAttribute("headerDto", headerDto);
        return "/WEB-INF/views/admin/header/edit.jsp";
    }
    /** 수정 처리 */
    @PostMapping("/edit")
    public String edit(@ModelAttribute HeaderDto headerDto) {
+     
        headerDao.update(headerDto);
-       return "redirect:list";
+       return "redirect:/admin/header/list";
    }
    @PostMapping("/delete")
    public String delete(@RequestParam int headerNo) {
