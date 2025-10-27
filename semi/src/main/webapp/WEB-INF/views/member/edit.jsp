@@ -9,7 +9,9 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
 <script src="/summernote/custom-summernote.js"></script>
-<script src="/js/email-cert.js"></script>
+<script src="/js/member-check.js"></script>
+<script src="/js/add-animal.js"></script>
+
 <script type="text/javascript">
 	$(function(){
 		var origin = $(".image-profile").attr("src");
@@ -43,98 +45,6 @@
 		});
 	});
 </script>
-
-<script type="text/javascript">
-       $(function(){
-    	   $(".btn-add-animal").on("click", function(){
-    	       	var origin = $("#animal-template").text(); // 글자를 불러오고
-    	       	var html = $.parseHTML(origin); // HTML 구조로 재해석
-    	       	$(".target").append(html);
-    	   	});
-           $(document).on("click", ".btn-animal", function(){
-               var animalButton = $(this).closest(".animal-wrapper").find(".btn-animal")
-               var permission = animalButton.attr('data-permission')
-               if(permission === 'f') {
-                   animalButton.attr("data-permission", 't')
-                   animalButton.find("span").text("분양가능")
-               } else {
-                   animalButton.attr("data-permission", 'f')
-                   animalButton.find("span").text("분양불가")
-               }
-           });
-           $(document).on("click", ".animal-cancel", function(){
-        	   var wrapper = $(this).closest(".animal-wrapper")
-        	   var animalNo = wrapper.attr("data-animal-no")
-        	   console.log(animalNo)
-        	   if(animalNo == "new"){
-        		   wrapper.remove();
-        		   return;
-        	   }
-        	   $.ajax({
-        		   url : '/rest/animal/delete',
-        		   method : 'post',
-        		   data : {animalNo : animalNo},
-        		   success : function () {
-        			   wrapper.remove();
-					}
-        	   })		
-           });
-           $(document).on("click", ".animal-access", function(){
-        	   var wrapper = $(this).closest(".animal-wrapper")
-               var animalName = wrapper.find(".animal-name").val()
-               var animalPermission = wrapper.find(".btn-animal").attr("data-permission")
-               var animalContent = wrapper.find(".animal-content").val()
-               var animalNo = wrapper.attr("data-animal-no")
-               if(animalNo == "new"){
-	               $.ajax({
-	                   url : "/rest/animal/add",
-	                   method : "post",
-	                   data : {
-                	   		animalName : animalName, 
-               	   			animalPermission : animalPermission,
-               				animalContent : animalContent	
-	                   },
-	                   success : function(response){
-	                	   wrapper.attr("data-animal-no", response)
-	                	   wrapper.find(".animal-access").toggle();
-	                	   wrapper.find(".animal-edit").toggle();
-	                	   wrapper.find(".animal-name").attr("readonly", "readonly")
-	                	   wrapper.find(".animal-content").attr("readonly", "readonly")
-	                	   wrapper.find(".btn-animal").attr("disabled", "disabled")
-	                	   
-	                   }
-	               })
-               } else {
-            	   $.ajax({
-	                   url : "/rest/animal/edit",
-	                   method : "post",
-	                   data : {
-	                	   animalNo : animalNo,
-							animalName : animalName, 
-							animalPermission : animalPermission,
-							animalContent : animalContent	
-	                   },
-	                   success : function(response){
-	                	   wrapper.find(".animal-access").toggle();
-	                	   wrapper.find(".animal-edit").toggle();
-	                	   wrapper.find(".animal-name").attr("readonly", "readonly")
-	                	   wrapper.find(".animal-content").attr("readonly", "readonly")
-	                	   wrapper.find(".btn-animal").attr("disabled", "disabled")
-	                   }
-	               })
-               }
-           });
-           $(document).on("click", ".animal-edit", function() {
-        	   var wrapper = $(this).closest(".animal-wrapper")
-        	   wrapper.find(".animal-access").toggle();
-           	   wrapper.find(".animal-edit").toggle();
-           	   wrapper.find(".animal-name").removeAttr("readonly")
-           	   wrapper.find(".animal-content").removeAttr("readonly")
-           	   wrapper.find(".btn-animal").removeAttr("disabled")
-			});
-           
-		});
-   </script>
 <script type="text/template" id="animal-template">
         <div class="cell animal-wrapper" data-animal-no="new">
             <div class="cell">
@@ -160,17 +70,6 @@
             <button class="btn btn-positive animal-edit" type="button" style="display: none;">수정하기</button>
         </div>
 </script>
-<style>
-       /* 외곽선을 field와 같이 변경 */
-       .note-editor {
-           border: 1px solid #636e72 !important;
-       }
-       /* 전체화면일 떄 뒤가 비치지 않도록 변경 */
-       .note-editable{
-           background-color: white;
-       }
-</style>
-
 
 <form action="edit" method="post" enctype="multipart/form-data" autocomplete="off">
 	<div class="container w-600">
@@ -219,7 +118,7 @@
 			</button>
 		</div>
 		<div class="cell">
-			<textarea class="summernote-editor" name="memberDescription">${memberDto.memberDescription }</textarea>
+			<textarea class="text-summernote-editor" name="memberDescription">${memberDto.memberDescription }</textarea>
 		</div>
 		<div class="cell center">
 	        <img class="image-profile" src="profile?member_id=${memberDto.memberId }" width="100">

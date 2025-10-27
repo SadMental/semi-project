@@ -1,5 +1,11 @@
 var state = {
-    memberEmailValid: false // default 인증안됨 
+	memberIdValid : false,
+    memberPwValid : false,
+	memberNicknameValid : false,
+	memberEmailValid: true, // default 인증안됨
+	ok : function (){
+		return this.memberIdValid && this.memberPwValid && this.memberNicknameValid && this.memberEmailValid
+	},
 };
 
 $(function () {
@@ -18,18 +24,15 @@ $(function () {
 		$(".auth-edit-btn").hide()
 		$(".btn-cert-send").show()
 	})
-	
-    //아이디 피드백
-    $(".id-feedback, .id2-feedback, .pw-feedback, .pw2-feedback").hide();
 
     $("[name=memberId]").on("blur", function () {
         var idVal = $(this).val();
-        var regex = /^[A-Za-z0-9]{1,20}$/;
-        if (!regex.test(idVal)) {
-            $(".id-feedback").show();
-        }
-        else {
-            $(".id-feedback").hide();
+        var regex = /^[A-Za-z][A-Za-z0-9]{1,19}$/;
+
+        if (!regex.test(idVal) || idVal.length == 0) {
+            $(this).removeClass("success fail fail2").addClass("fail")
+			state.memberIdValid = false
+			return;
         }
 
         //아이디 중복인 경우
@@ -39,24 +42,18 @@ $(function () {
             data: {memberId: idVal},
             success: function(response) {
                 if(response) {
-                    $(".id2-feedback").show();
-                    $(".id-feedback").hide();
+                   $("[name=memberId]").removeClass("success fail fail2").addClass("fail2")
+				   state.memberIdValid = false
+				   return;
                 }
-                else {
-                    $(".id2-feedback").hide();
-                }
+				$("[name=memberId]").removeClass("success fail fail2").addClass("success")
+				state.memberIdValid = true
             }
         });
     });
 
     //비번 피드백
     $("[name=memberPw]").on("blur", function () {
-        var pwVal = $(this).val();
-        if(pwVal.length == 0) {
-            $(".pw-feedback").show();
-            return;
-        }
-
         var pwVal = $(this).val();
         var regexAll = /^[A-Za-z0-9!@#$]{8,20}$/;
         var regex1 = /[A-Za-z]+/;
@@ -66,28 +63,63 @@ $(function () {
                     && regex1.test(pwVal)
                     && regex2.test(pwVal)
                     && regex3.test(pwVal);
-        if(!valid) {
-            $(".pw2-feedback").show();
-            $(".pw-feedback").hide();
+        if(!valid || pwVal.length == 0) {
+			$(this).removeClass("success fail fail2").addClass("fail")
+			state.memberPwValid = false
+			return
         }
-        else {
-            $(".pw2-feedback").hide();
-        }
+        $(this).removeClass("success fail fail2").addClass("success");
+		state.memberPwValid = true
     });
-
 	
+	// 비밀번호 text 여부
+	$(".fa-eye-slash, .fa-eye").on("click", function(){
+		$(".fa-eye-slash, .fa-eye").toggle()
+		var input =$(this).closest(".cell").find("input")
+		if(input.attr("type") === "password"){
+			input.attr("type", "text")
+		} else {
+			input.attr("type", "password")
+		}
+	});
+
+	// 닉네임 피드백
+	$("[name=memberNickname]").on("blur", function(){
+		var nickVal = $(this).val();
+		var regex = /^(?! )[A-Za-z0-9가-힣 ]{3,16}(?<! )$/;
+		var valid = regex.test(nickVal)
+		if(valid == false || nickVal.trim().length === 0){
+			$(this).removeClass("success fail fail2").addClass("fail");
+			state.memberNicknameValid = false
+			return;
+		}
+		$.ajax({
+			url : "/rest/member/checkNickname",
+			method : "post",
+			data : {memberNickname : nickVal},
+			success : function(response){
+				if(response){
+					$("[name=memberNickname]").removeClass("success fail fail2").addClass("fail2");
+					state.memberNicknameValid = false
+					return
+				}
+				$("[name=memberNickname]").removeClass("success fail fail2").addClass("success");
+				state.memberNicknameValid = true
+			}
+		})
+	})
+	
+	// 이메일 인증 관련 피드백
     $(".btn-cert-send").on("click", function () { //인증번호 보내기 완료
 		
         var email = $("[name=memberEmail]").val();
         var regex = /^(.*?)@(.*?)$/;
         var valid = regex.test(email);
 
-        $(".success-feedback, .fail-feedback, .fail2-feedback").hide();
         $(".cell.flex-box .auth-btn").hide();
 
         if (valid == false) {
             $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
-            $(".fail-feedback").show();
             state.memberEmailValid = false;
             return;
         }
@@ -99,15 +131,21 @@ $(function () {
             success: function (response) {
 				if(response){					
                 	$(".cert-input-area").show();
-				} else {
-					$("[name=memberEmail]").removeClass("success fail fail2").addClass("fail2");
-					$(".fail2-feedback").show();
+					$("[name=memberEmail]").removeClass("success fail fail2").addClass("success");
+					return;
 				}
+				$("[name=memberEmail]").removeClass("success fail fail2").addClass("fail2");
             },
-
-            // beforeSend:function() {
-
-            // }
+			beforeSend:function(){
+				$(".btn-cert-send").prop("disabled", true);
+				$(".btn-cert-send").find("i").removeClass("fa-paper-plane").addClass("fa-spinner fa-spin");
+				$(".btn-cert-send").find("span").text("인증메일 발송중");
+			},
+			complete:function(){
+				$(".btn-cert-send").prop("disabled", false);
+				$(".btn-cert-send").find("i").removeClass("fa-spinner fa-spin").addClass("fa-paper-plane");
+				$(".btn-cert-send").find("span").text("인증메일 전송");
+			}
         });
     });
 
@@ -119,8 +157,7 @@ $(function () {
 
 
         if (valid == false) {
-            $("[name=memberEmail]").removeClass("success fail fail2").addClass("fail");
-			$(".cert-input").removeClass("success fail fail2").addClass("fail2");
+			$(".cert-input").removeClass("success fail fail2").addClass("fail");
             state.memberEmailValid = false;
             return;
         }
@@ -142,11 +179,17 @@ $(function () {
 					$(".auth-btn").addClass("bggreen");
                 }
                 else {
-                    $(".cert-input").removeClass("success fail fail2").addClass("fail2");
+                    $(".cert-input").removeClass("success fail fail2").addClass("fail");
                     state.memberEmailValid = false;
                 }
             }
         });
     });
-	
+	$(".check-form").on("submit", function(){
+		if(state.ok() == false){
+			alert("입력 항목에 오류가 존재합니다.")
+			return false
+		}
+		return true
+	})
 });
