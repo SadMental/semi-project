@@ -232,7 +232,7 @@
 						        <td>
 						        	<a href="detail?boardNo=${boardDto.boardNo}">
 						        		<div class="cell card">
-									        <img src="/board/petfluence/image?boardNo=${boardDto.boardNo}">
+									        <img src="/board/petfluencer/image?boardNo=${boardDto.boardNo}">
 									        <button class="overlay-btn"><i class="fa fa-camera"></i></button>
 									        <div class="like-badge"><i class="fa fa-heart"></i> ${boardDto.boardLike}</div>
 									        <div class="card-container">

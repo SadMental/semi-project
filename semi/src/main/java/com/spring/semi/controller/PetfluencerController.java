@@ -26,7 +26,7 @@ import com.spring.semi.vo.PageVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board/petfluence")
+@RequestMapping("/board/petfluencer")
 public class PetfluencerController {
 	private final MediaService mediaService;
 	@Autowired
@@ -213,7 +213,7 @@ public class PetfluencerController {
 		}
 		catch(Exception e) 
 		{
-			return "redirect:/images/error/no-image.png";
+			return "redirect:/image/error/no-image.png";
 		}
 	}
 }

@@ -123,7 +123,7 @@ h1 {
 			    </td>
 
 	<div class="content">
-		<img src = "/board/petfluence/image?boardNo=${boardDto.boardNo}">
+		<img src = "/board/petfluencer/image?boardNo=${boardDto.boardNo}">
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
 	
