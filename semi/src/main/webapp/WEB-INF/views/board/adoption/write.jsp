@@ -83,7 +83,7 @@
 		         <c:forEach var="headerDto" items="${headerList}">
 		             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
 		         </c:forEach>
-		     </select>
+		  </select>
 	  
 
       <div class="cell">

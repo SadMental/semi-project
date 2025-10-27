@@ -85,16 +85,16 @@ $(function () {
     });
 
     //클릭했을 때 작성댓글 리스트 화면
-    $(".write-reply").on("click", function () {
-        $(".write-reply-code").show();
-        $(".write-board-code, .reply-board-code, .like-board-code").hide();
-    });
+//     $(".write-reply").on("click", function () {
+//         $(".write-reply-code").show();
+//         $(".write-board-code, .reply-board-code, .like-board-code").hide();
+//     });
 
     //클릭했을 떄 댓글단 글 리스트 화면
-    $(".reply-board").on("click", function () {
-        $(".reply-board-code").show();
-        $(".write-board-code, .write-reply-code, .like-board-code").hide();
-    });
+//     $(".reply-board").on("click", function () {
+//         $(".reply-board-code").show();
+//         $(".write-board-code, .write-reply-code, .like-board-code").hide();
+//     });
 
     //클릭했을 떄 좋아요한 글 리스트 화면
     $(".like-board").on("click", function () {
@@ -116,7 +116,35 @@ $(function () {
     })
     
     //게시글 삭제
-    $(".check")
+    $(".mypage-delete").on("click",function(){
+    	var checked = $('input[name="boardNo"]:checked');
+    	
+    	if(checked.length == 0) {
+    		alert("삭제할 게시글을 선택해주세요.");
+    		return;
+    	}
+    	
+    	if(!confirm("선택한 게시글을 삭제하시겠습니까?")) {
+    		return;
+    	}
+    	
+    	var boardNos = [];
+    	checked.each(function() {
+    		boardNos.push($(this).val());
+    	});
+    
+    $.ajax({
+    	url:"/board/free/mypageDelete",
+    	method:"post",
+    	data:{boardNo: boardNos},
+    	success: function(response) {
+    		if(response == "success") {
+    			alert("삭제가 완료되었습니다.");
+    			location.reload();
+    		}
+    	}
+    });
+   });
 });
 </script>
 
@@ -176,8 +204,8 @@ $(function () {
             <br><br>
             <div class="cell flex-box">
                 <div class="w-15p center head write-board">작성글</div>
-                <div class="w-15p center head write-reply">작성댓글</div>
-                <div class="w-15p center head reply-board">댓글단 글</div>
+<!--                 <div class="w-15p center head write-reply">작성댓글</div> -->
+<!--                 <div class="w-15p center head reply-board">댓글단 글</div> -->
                 <div class="w-15p center head like-board">좋아요한 글</div>
                 <div class="w-15p center head" style="margin-left: auto;">삭제한 게시글</div>
             </div>
@@ -190,7 +218,7 @@ $(function () {
             <hr class="hr-details">
             <c:forEach var="board" items="${boardListVO}">
                 <div class="cell flex-box content write-board-code">
-                    <input class="w-5p center content one-check" type="checkbox">
+                    <input class="w-5p center content one-check" type="checkbox" name="boardNo" value="${board.boardNo}">
                     <div class="w-10p center content no">
                         ${board.boardNo }
                     </div>
@@ -230,7 +258,7 @@ $(function () {
                     <label style="font-weight: bold;">전체선택</label>
                 </div>
                 <div class="w-65p"></div>
-                <button class="w-10p center btn btn-positive me-10">삭제</button>
+                <button class="w-10p center btn btn-positive me-10 mypage-delete">삭제</button>
                 <button class="w-10p center btn btn-positive">글쓰기</button>
                 <!-- 글쓰기 버튼 클릭 시, 게시판 선택 후 작성한 글이 해당 게시판에 자동 등록되도록 하면 좋겠습니다. -->
             </div>

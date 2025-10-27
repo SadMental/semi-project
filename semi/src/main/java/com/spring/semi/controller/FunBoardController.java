@@ -26,8 +26,8 @@ import com.spring.semi.vo.PageVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board/petfluencer")
-public class PetfluencerController {
+@RequestMapping("/board/fun")
+public class FunBoardController {
 	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
@@ -35,33 +35,32 @@ public class PetfluencerController {
 	private MemberDao memberDao;
 	@Autowired
 	private HeaderDao headerDao;
-	
-	PetfluencerController(MediaService mediaService) {
+
+	FunBoardController(MediaService mediaService) {
         this.mediaService = mediaService;
     }
-	
+
 	@RequestMapping("/list")
 	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
 	{
-		pageVO.setSize(12);
 		pageVO.fixPageRange(); // ★ 페이지 범위 보정
-		
-		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 3));
-		pageVO.setDataCount(boardDao.count(pageVO, 3));
+
+		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 24));
+		pageVO.setDataCount(boardDao.count(pageVO, 24));
 		model.addAttribute("pageVO", pageVO);
-			
-		return "/WEB-INF/views/board/petfluence/list.jsp";
+
+		return "/WEB-INF/views/board/fun/list.jsp";
 	}
 
-	
-		  @GetMapping("/write")
-		   public String writeForm(Model model) {
+
+	@GetMapping("/write")
+	public String writeForm(Model model) {
 		       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
 		       model.addAttribute("headerList", headerList);
-		     
-		return "/WEB-INF/views/board/petfluence/write.jsp";
+
+		return "/WEB-INF/views/board/fun/write.jsp";
 	}
-	
+
     @PostMapping("/write")
     public String write(@ModelAttribute BoardDto boardDto,
                         HttpSession session,
@@ -74,20 +73,20 @@ public class PetfluencerController {
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
 
-      
+
         //  board와 header 연결
-      
-        boardDao.insert(boardDto, 3);
-        
+
+        boardDao.insert(boardDto, 24);
+
 		if(!media.isEmpty()) 
 		{
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardNo, mediaNo);
 		}
-		
+
 		return "redirect:detail?boardNo=" + boardNo;
 	}
-	
+
 	@RequestMapping("/detail")
 	public String detail(HttpSession session,
 			Model model, 
@@ -107,9 +106,9 @@ public class PetfluencerController {
 	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
 	           model.addAttribute("memberDto", memberDto);
 	       }
-		return "/WEB-INF/views/board/petfluence/detail.jsp";
+		return "/WEB-INF/views/board/fun/detail.jsp";
 	}
-	
+
 	  @GetMapping("/edit")
 	   public String edit(Model model, @RequestParam int boardNo) {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
@@ -117,9 +116,9 @@ public class PetfluencerController {
 	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
 	       model.addAttribute("headerList", headerList);
 	       model.addAttribute("boardDto", boardDto);
-		return "/WEB-INF/views/board/petfluence/edit.jsp";
+		return "/WEB-INF/views/board/fun/edit.jsp";
 	}
-	
+
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute BoardDto boardDto,
 			@RequestParam MultipartFile media,
@@ -133,7 +132,7 @@ public class PetfluencerController {
 				mediaService.delete(mediaNo);
 			}
 			catch(Exception e) {}
-			
+
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardDto.getBoardNo(), mediaNo);
 		}
@@ -149,7 +148,7 @@ public class PetfluencerController {
 				catch(Exception e) { /*아무것도 안함*/ }
 			}				
 		}
-		
+
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
 		if (beforeDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
@@ -179,14 +178,14 @@ public class PetfluencerController {
 		boardDao.update(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}
-	
+
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int boardNo)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
-		
+
 //		if (boardDto.getBoardContent() == null)
 //			throw new TargetNotfoundException("게시글에 Content가 없음");		
 //		
@@ -202,7 +201,7 @@ public class PetfluencerController {
 		boardDao.delete(boardNo);
 		return "redirect:list";
 	}
-	
+
 	@GetMapping("/image")
 	public String image(@RequestParam int boardNo) 
 	{

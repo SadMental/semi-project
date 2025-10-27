@@ -139,7 +139,7 @@
 			</aside>
 			<nav class="kh-nav">
 				<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
-					class="kh-pill" href="/board/free/list">COMMUNITY</a> <a
+					class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
 					class="kh-pill" href="/board/info/list">INFO</a> <a class="kh-pill"
 					href="/board/adoption/list">SERVICE</a>
 				<%-- <c:choose>

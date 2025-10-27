@@ -18,7 +18,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 	public void addInterceptors(InterceptorRegistry registry) // 인터셉터 등록메소드
 	{
 		registry.addInterceptor(boardViewIntercepter)
-		.addPathPatterns("/board/free/detail", "/infoBoard/detail", "/board/petfluence/detail")
+		.addPathPatterns("/board/community/detail", "/infoBoard/detail", "/board/petfluence/detail",
+				"/board/fun/detail", "/board/**/detail")
 		.order(10);
 	}
 }

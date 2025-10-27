@@ -11,7 +11,6 @@ body {
 	margin: 0;
 	padding: 0;
 }
-
 .container.w-800 {
 	max-width: 800px;
 	margin: 40px auto;
@@ -20,19 +19,16 @@ body {
 	background-color: #ffffffdd;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-
 h1 {
 	font-size: 2rem;
 	font-weight: 700;
 	margin-bottom: 15px;
 }
-
 .meta {
 	font-size: 0.95rem;
 	color: #7a5a44;
 	margin-bottom: 20px;
 }
-
 .content {
 	font-size: 1.1rem;
 	line-height: 1.6;
@@ -40,12 +36,10 @@ h1 {
 	border-top: 1px solid #d6c2a6;
 	padding-top: 20px;
 }
-
 .cell.right {
 	text-align: right;
 	margin-top: 30px;
 }
-
 .btn {
 	padding: 10px 20px;
 	font-size: 1rem;
@@ -60,28 +54,22 @@ h1 {
   color: #fff5e9;
   border: none;
 }
-
 .btn-edit:hover {
   background-color: #ba8f65;
 }
-
 .btn-delete {
   background-color: #a94442;
   color: #fff2f0;
   border: none;
 }
-
 .btn-delete:hover {
   background-color: #922d2b;
 }
-
-
 .btn-neutral {
 	background-color: #d9c7b3;
 	color: #5b3a29;
 	border: none;
 }
-
 .btn-neutral:hover {
 	background-color: #cbb7a3;
 }
@@ -117,16 +105,16 @@ h1 {
 			                <fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm"/>
 			            </c:when>
 			            <c:otherwise>
-			                
+
 			            </c:otherwise>
 			        </c:choose>
 			    </td>
 
 	<div class="content">
-		<img src = "/board/petfluencer/image?boardNo=${boardDto.boardNo}">
+		<img src = "/board/fun/image?boardNo=${boardDto.boardNo}">
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
-	
+
 	<div class="cell right" style="margin-top: 10px;">
   		<i id="board-like" class="fa-regular fa-thumbs-up" style="font-size: 1.8rem; cursor: pointer; color: #a67c52;"></i>
     	<span id="board-like-count" style="font-size: 1.2rem; margin-left: 8px; color: #5b3a29;">0</span>

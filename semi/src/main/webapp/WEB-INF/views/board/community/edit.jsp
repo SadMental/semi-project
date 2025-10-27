@@ -103,6 +103,7 @@
 	                  ${headerDto.headerName}
 	              </option>
 	          </c:forEach>
+	  </select>
     </div>
     
     <div class="cell">
