@@ -196,11 +196,11 @@ public class BoardController {
 		}
 		boardDao.delete(1, boardNo);
 		
-		//게시글 삭제 시 포인트도 같이 차감
-		String loginId = (String) session.getAttribute("loginId");
-		if (loginId != null) {
-			memberDao.addPoint(loginId, -50);
-		}
+//		//게시글 삭제 시 포인트도 같이 차감
+//		String loginId = (String) session.getAttribute("loginId");
+//		if (loginId != null) {
+//			memberDao.addPoint(loginId, -50);
+//		}
 		
 		return "redirect:list";
 	}
