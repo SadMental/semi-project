@@ -248,4 +248,13 @@ public class MemberController {
 		return "redirect:findResult";
 	}
 	
+	@RequestMapping("/donation")
+	public String donation() {
+		return "/WEB-INF/views/member/donation.jsp";
+	}
+	
+	@RequestMapping("/pointUse")
+	public String pointUse() {
+		return "/WEB-INF/views/member/pointUse.jsp";
+	}
 }

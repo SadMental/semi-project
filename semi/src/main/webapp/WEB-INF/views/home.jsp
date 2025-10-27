@@ -161,7 +161,6 @@
                     <p>4</p>
                 </div>
             </div>
-
             <div class="cell ms-10 me-10">
             	<i class="fa-solid fa-comment-sms"></i>
                 <label>커뮤니티</label>

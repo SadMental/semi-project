@@ -64,7 +64,7 @@ public class PetfluencerController {
 	
     @PostMapping("/write")
     public String write(@ModelAttribute BoardDto boardDto,
-                        HttpSession session,
+                        HttpSession session, Model model,
             			@RequestParam MultipartFile media,
             			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
     {
@@ -84,6 +84,12 @@ public class PetfluencerController {
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardNo, mediaNo);
 		}
+		
+		//게시글 포인트
+//		memberDao.addPoint(loginId, 50);
+//		MemberDto member = memberDao.selectOne(loginId);
+//		model.addAttribute("memberPoint", member.getMemberPoint());
+		
 		
 		return "redirect:detail?boardNo=" + boardNo;
 	}
