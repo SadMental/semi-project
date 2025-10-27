@@ -96,6 +96,13 @@ public class BoardDao {
 		Object[] params = { pageType, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	// 마이페이지에서 글 삭제
+	public boolean mypageDelete (int boardNo) {
+		String sql = "delete board where board_no = ?";
+		Object[] params = {boardNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 
 	// 수정
 	public boolean update(BoardDto boardDto) {
