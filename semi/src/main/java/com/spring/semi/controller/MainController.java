@@ -21,9 +21,11 @@ public class MainController
 	{
 		List<BoardDto> free_board_list = boardDao.selectListWithPagingForMainPage(1, 1, 8);	
 		List<BoardDto> petfluencer_board_list = boardDao.selectListWithPagingForMainPage(3, 1, 10);		
+		List<BoardDto> fun_board_list = boardDao.selectListWithPagingForMainPage(24, 1, 8);	
 		
 		model.addAttribute("free_board_list", free_board_list);
 		model.addAttribute("petfluencer_board_list", petfluencer_board_list);
+		model.addAttribute("fun_board_list", fun_board_list);
 		
 		return "/WEB-INF/views/home.jsp";
 	}

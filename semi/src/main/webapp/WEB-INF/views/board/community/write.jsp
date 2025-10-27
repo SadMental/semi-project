@@ -67,22 +67,21 @@
 }
 </style>
 
-<form autocomplete="off" action="write" method="post" enctype="multipart/form-data">
+<form autocomplete="off" action="write" method="post">
   <div class="container w-800">
       <div class="cell center">
-          <h1>펫플루언서 작성</h1>
+          <h1>자유 게시판 작성</h1>
       </div>
       <div class="cell center">
           이 글은 정보게시판에 업로드 됩니다.<br>
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
-        <div class="cell">
-			<select name="boardHeader" class="field w-100 mt-2">
-		      <option value="">-- 분류 선택 --</option>
-	             <c:forEach var="headerDto" items="${headerList}">
-				  	 <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
-				 </c:forEach>
-			</select>
+	  <select name="boardHeader" class="field w-100 mt-2">
+	  	         <option value="">-- 분류 선택 --</option>
+	  	         <c:forEach var="headerDto" items="${headerList}">
+	  	             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+	  	         </c:forEach>
+	  </select>
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>
@@ -90,12 +89,6 @@
       <div class="cell mt-20">
           <textarea name="boardContent" class="summernote-editor"></textarea>
       </div>
-      
-      <div class = "cell">
-      		<label>썸네일</label>
-            <input type = "file"
-            name = "media" accept = ".png,.jpg" class = "field w-100" required>
-       </div>
       
       <div class="cell right mt-20">
           <button class="btn btn-positive">등록하기</button>

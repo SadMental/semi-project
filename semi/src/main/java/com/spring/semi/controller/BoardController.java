@@ -35,9 +35,9 @@ import com.spring.semi.vo.PageVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board/free")
+@RequestMapping("/board/community")
 public class BoardController {
-	   private final MediaService mediaService;
+	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
@@ -81,7 +81,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("headerMap", headerMap); // JSP에서 사용
         model.addAttribute("pageVO", pageVO);
-        return "/WEB-INF/views/board/free/list.jsp";
+        return "/WEB-INF/views/board/community/list.jsp";
     }
 
 	
@@ -90,7 +90,7 @@ public class BoardController {
 	       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
 	       model.addAttribute("headerList", headerList);
 	      
-	       return "/WEB-INF/views/board/free/write.jsp";
+	       return "/WEB-INF/views/board/community/write.jsp";
 	      
 	   }
 	  
@@ -129,7 +129,7 @@ public class BoardController {
 	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
 	           model.addAttribute("memberDto", memberDto);
 	       }
-		return "/WEB-INF/views/board/free/detail.jsp";
+		return "/WEB-INF/views/board/community/detail.jsp";
 	}
 	
 	  @GetMapping("/edit")
@@ -186,7 +186,7 @@ public class BoardController {
 			int mediaNo = Integer.parseInt(element.attr("data-pk"));
 			mediaService.delete(mediaNo);		
 		}
-		boardDao.delete(1, boardNo);
+		boardDao.delete(boardNo);
 		return "redirect:list";
 	}
 	
