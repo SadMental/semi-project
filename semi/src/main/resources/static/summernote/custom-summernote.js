@@ -39,4 +39,25 @@ $(function(){
             }
         }
     });
+	$(".text-summernote-editor").summernote({
+	        height: 250, // set editor height
+	        minHeight: 200, // set minimum height of editor
+	        maxHeight: 400, // set maximum height of editor
+
+	        placeholder:"내용을 입력하세요.",
+	        toolbar:[
+	        ["font", ["style", "fontname", "fontsize", "forecolor", "backcolor"]],
+	        ["style", ["bold", "italic", "underline", "strikethrough"]],
+	        ["tool", ["ol", "ul", "paragraph", "table", "hr", "fullscreen"]],
+	        ],
+			
+			callbacks: {
+	            onImageUpload: function() {
+	                console.log("이곳에는 이미지 업로드가 불가능합니다.");
+					alert("이곳에는 이미지 업로드가 불가능합니다.")
+					return;
+	                
+	            }
+	        }
+	    });
 });
