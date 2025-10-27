@@ -194,7 +194,7 @@ public class BoardController {
 			int mediaNo = Integer.parseInt(element.attr("data-pk"));
 			mediaService.delete(mediaNo);		
 		}
-		boardDao.delete(1, boardNo);
+//		boardDao.delete(1, boardNo);
 		
 //		//게시글 삭제 시 포인트도 같이 차감
 //		String loginId = (String) session.getAttribute("loginId");
