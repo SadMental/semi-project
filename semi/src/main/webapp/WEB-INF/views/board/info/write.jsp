@@ -81,7 +81,7 @@
 	         <c:forEach var="headerDto" items="${headerList}">
 	             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
 	         </c:forEach>
-	     </select>
+	  </select>
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>

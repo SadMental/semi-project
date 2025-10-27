@@ -5,12 +5,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +21,6 @@ import com.spring.semi.service.MediaService;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/rest/member")
 public class MemberRestController {
@@ -94,11 +91,18 @@ public class MemberRestController {
 		} catch (Exception e) {}
 	}
 	
+	// 아이디 체크
 	@PostMapping("/checkId")
-	@ResponseBody
 	public boolean checkId(@RequestParam String memberId) {
 		MemberDto findDto = memberDao.selectOne(memberId);
 		return findDto != null;
+	}
+	
+	// 닉네임 체크
+	@PostMapping("/checkNickname")
+	public boolean checkNickname(@RequestParam String memberNickname) {
+		MemberDto findDto = memberDao.selectForNickname(memberNickname);
+		return findDto == null? false : true;
 	}
 
 }

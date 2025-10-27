@@ -132,7 +132,7 @@ public class InfoBoardController {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null)
 			throw new TargetNotfoundException("존재하지 않는 글");
-		boardDao.delete(2, boardNo);
+		boardDao.delete(boardNo);
 		return "redirect:list";
 	}
 

@@ -92,7 +92,7 @@ button.btn.btn-positive:hover {
 			       <c:forEach var="headerDto" items="${headerList}">
 			           <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
 			       </c:forEach>
-			   </select>
+			</select>
 			<div class="cell mt-20">
 				<textarea name="boardContent" id="content" class="summernote-editor"></textarea>
 			</div>

@@ -90,22 +90,21 @@
   }
 </style>
 
-<form action="edit" method="post" enctype="multipart/form-data">
+<form action="edit" method="post">
   <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
   
   <div class="container w-800">
     <div class="cell">
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
-      <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
-    </div>
 	  <select name="boardHeader" required>
 	          <option value="">-- 선택 --</option>
-	          <c:forEach var="headerDto" items="${headerList}">
+	          <c:forEach var="headerDto" items="${freeheaderList}">
 	              <option value="${headerDto.headerNo}">
 	                  ${headerDto.headerName}
 	              </option>
 	          </c:forEach>
 	  </select>
+    </div>
     
     <div class="cell">
       <label for="title">제목 <i class="fa-solid fa-asterisk red"></i></label>
@@ -115,12 +114,6 @@
     <div class="cell">
       <label for="content">내용 <i class="fa-solid fa-asterisk red"></i></label>
       <textarea name="boardContent" id="content" class="summernote-editor">${boardDto.boardContent}</textarea>
-    </div>
-    
-    <div class = "cell">
-   		<label>썸네일</label>
-        <input type = "file"
-        name = "media" accept = ".png,.jpg" class = "field w-100" required>
     </div>
     
     <div class="cell mt-40">

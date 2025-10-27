@@ -160,7 +160,7 @@ public class AdoptionBoardController {
            mediaService.delete(attachmentNo);
        }
        // 글 삭제
-       boardDao.delete(4,boardNo);
+       boardDao.delete(boardNo);
        return "redirect:list";
    }
    //글상세보기

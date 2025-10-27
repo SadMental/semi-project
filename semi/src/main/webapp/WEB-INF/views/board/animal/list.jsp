@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
@@ -173,7 +175,7 @@
 <div class="container w-800">
 
 	<div class="cell center">
-		<h1>펫플루언서</h1>	
+		<h1>동물위키</h1>	
 	</div>
 	<div class="cell center mt-30 mb-50">
 		<form action="list">
@@ -225,35 +227,29 @@
 					<tbody>						
 						<table border="1">
 						    <c:forEach var="boardDto" items="${boardList}" varStatus="st">
-						        <c:if test="${st.index % 3 == 0}">
-						            <tr>
-						        </c:if>
-						
-						        <td>
-						        	<a href="detail?boardNo=${boardDto.boardNo}">
-						        		<div class="cell card">
-									        <img src="/board/petfluencer/image?boardNo=${boardDto.boardNo}">
-									        <button class="overlay-btn"><i class="fa fa-camera"></i></button>
-									        <div class="like-badge"><i class="fa fa-heart"></i> ${boardDto.boardLike}</div>
-									        <div class="card-container">
-									            <div class="card-title">${boardDto.boardTitle}</div>
-									            <div class="card-info">
-									                <i class="fa fa-eye"></i> ${boardDto.boardView}
-									                <i class="fa fa-comment"></i> ${boardDto.boardReply}
-									            </div>
-									        </div>
-									    </div>
-						        	</a>
-						        </td>
-						
-						        <c:if test="${st.index % 3 == 2}">
-						            </tr>
-						        </c:if>
-						    </c:forEach>
-						
-						    <c:if test="${numbers.size() % 3 != 0}">
+						        <tr>
+							        <td>
+							        	<a href="detail?boardNo=${boardDto.boardNo}">
+							        		<div class="cell flex-box w-100p">
+							        			<img src="/board/animal/image?boardNo=${boardDto.boardNo}" style="width:100px;">
+							        			<div class="animal-container">
+							        				<div class="top-container flex-box w-400">
+							        					<label>${boardDto.boardTitle}</label>
+							        					<label class="red">[${boardDto.boardReply}]</label>
+							        				</div>
+							        				<div class="bottom-container flex-box w-400">
+							        					<img src="/member/profile?member_id=" + boadrDto.boardWriter" style="width:33px;">
+							        					<label style="font-size:0.8em;" class="ms-10 me-10">${boardDto.boardWriter}</label> 
+							        					<fmt:formatDate value="${boardDto.boardWtime}" pattern="MM-dd"/> 
+							        					<i class="fa fa-eye ms-10"></i> ${boardDto.boardView} 
+							        					<i class="fa fa-heart red ms-10"></i> ${boardDto.boardLike} 
+							        				</div>
+							        			</div>
+										    </div>
+							        	</a>
+							        </td>
 						        </tr>
-						    </c:if>
+						    </c:forEach>
 						</table>
 					</tbody>
 					<tfoot>

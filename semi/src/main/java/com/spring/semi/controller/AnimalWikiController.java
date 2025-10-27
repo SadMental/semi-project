@@ -26,8 +26,8 @@ import com.spring.semi.vo.PageVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board/petfluencer")
-public class PetfluencerController {
+@RequestMapping("/board/animal")
+public class AnimalWikiController {
 	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
@@ -36,7 +36,7 @@ public class PetfluencerController {
 	@Autowired
 	private HeaderDao headerDao;
 	
-	PetfluencerController(MediaService mediaService) {
+	AnimalWikiController(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 	
@@ -46,25 +46,25 @@ public class PetfluencerController {
 		pageVO.setSize(12);
 		pageVO.fixPageRange(); // ★ 페이지 범위 보정
 		
-		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 3));
-		pageVO.setDataCount(boardDao.count(pageVO, 3));
+		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 7));
+		pageVO.setDataCount(boardDao.count(pageVO, 7));
 		model.addAttribute("pageVO", pageVO);
 			
-		return "/WEB-INF/views/board/petfluence/list.jsp";
+		return "/WEB-INF/views/board/animal/list.jsp";
 	}
 
 	
-		  @GetMapping("/write")
-		   public String writeForm(Model model) {
-		       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-		       model.addAttribute("headerList", headerList);
+	@GetMapping("/write")
+	public String writeForm(Model model) {
+       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
+       model.addAttribute("headerList", headerList);
 		     
-		return "/WEB-INF/views/board/petfluence/write.jsp";
+       return "/WEB-INF/views/board/animal/write.jsp";
 	}
 	
     @PostMapping("/write")
     public String write(@ModelAttribute BoardDto boardDto,
-                        HttpSession session, Model model,
+                        HttpSession session,
             			@RequestParam MultipartFile media,
             			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
     {
@@ -77,19 +77,13 @@ public class PetfluencerController {
       
         //  board와 header 연결
       
-        boardDao.insert(boardDto, 3);
+        boardDao.insert(boardDto, 7);
         
 		if(!media.isEmpty()) 
 		{
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardNo, mediaNo);
 		}
-		
-		//게시글 포인트
-//		memberDao.addPoint(loginId, 50);
-//		MemberDto member = memberDao.selectOne(loginId);
-//		model.addAttribute("memberPoint", member.getMemberPoint());
-		
 		
 		return "redirect:detail?boardNo=" + boardNo;
 	}
@@ -113,7 +107,7 @@ public class PetfluencerController {
 	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
 	           model.addAttribute("memberDto", memberDto);
 	       }
-		return "/WEB-INF/views/board/petfluence/detail.jsp";
+		return "/WEB-INF/views/board/animal/detail.jsp";
 	}
 	
 	  @GetMapping("/edit")
@@ -123,7 +117,7 @@ public class PetfluencerController {
 	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
 	       model.addAttribute("headerList", headerList);
 	       model.addAttribute("boardDto", boardDto);
-		return "/WEB-INF/views/board/petfluence/edit.jsp";
+		return "/WEB-INF/views/board/animal/edit.jsp";
 	}
 	
 	@PostMapping("/edit")

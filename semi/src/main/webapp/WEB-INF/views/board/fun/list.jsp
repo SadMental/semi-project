@@ -98,12 +98,10 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         font-family: sans-serif;
     }
-
     .card img {
         width: 100%;
         display: block;
     }
-
     .overlay-btn {
         position: absolute;
         top: 8px;
@@ -114,12 +112,10 @@
         padding: 6px;
         cursor: pointer;
     }
-
     .overlay-btn i {
         font-size: 16px;
         color: #333;
     }
-
     .like-badge {
         position: absolute;
         bottom: 48px;
@@ -133,17 +129,14 @@
         align-items: center;
         gap: 4px;
     }
-
     .card-content {
         padding: 8px;
     }
-
     .card-title {
         font-weight: bold;
         font-size: 14px;
         margin: 4px 0;
     }
-
     .card-desc {
         font-size: 13px;
         color: #555;
@@ -151,7 +144,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
     .card-info {
         display: flex;
         align-items: center;
@@ -173,7 +165,7 @@
 <div class="container w-800">
 
 	<div class="cell center">
-		<h1>펫플루언서</h1>	
+		<h1>FUN</h1>	
 	</div>
 	<div class="cell center mt-30 mb-50">
 		<form action="list">
@@ -219,58 +211,40 @@
 				<table>
 					<thead>
 						<tr>
-							<th></th>
+							<th>No</th>
+							<th>썸네일</th>
+                            <th>분류	</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>조회수</th>
+							<th>추천수</th>
 						</tr>
 					</thead>
-					<tbody>						
-						<table border="1">
-						    <c:forEach var="boardDto" items="${boardList}" varStatus="st">
-						        <c:if test="${st.index % 3 == 0}">
-						            <tr>
-						        </c:if>
-						
-						        <td>
-						        	<a href="detail?boardNo=${boardDto.boardNo}">
-						        		<div class="cell card">
-									        <img src="/board/petfluencer/image?boardNo=${boardDto.boardNo}">
-									        <button class="overlay-btn"><i class="fa fa-camera"></i></button>
-									        <div class="like-badge"><i class="fa fa-heart"></i> ${boardDto.boardLike}</div>
-									        <div class="card-container">
-									            <div class="card-title">${boardDto.boardTitle}</div>
-									            <div class="card-info">
-									                <i class="fa fa-eye"></i> ${boardDto.boardView}
-									                <i class="fa fa-comment"></i> ${boardDto.boardReply}
-									            </div>
-									        </div>
-									    </div>
-						        	</a>
-						        </td>
-						
-						        <c:if test="${st.index % 3 == 2}">
-						            </tr>
-						        </c:if>
-						    </c:forEach>
-						
-						    <c:if test="${numbers.size() % 3 != 0}">
-						        </tr>
-						    </c:if>
-						</table>
+					<tbody>
+						<c:forEach var="boardDto" items="${boardList}">
+							<tr>
+								<td>${boardDto.boardNo}</td>
+								<td><img src="/board/fun/image?boardNo=${boardDto.boardNo}" style="width:32px;"></td>
+                                <td>${headerMap[boardDto.boardNo].headerName}</td>  
+								<td style="text-align: center;"><a
+									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
+								</td>
+								<td>${boardDto.boardWriter}</td>
+								<td>${boardDto.boardView}</td>
+								<td>${boardDto.boardLike}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="7">
-								검색결과 : 
-								${pageVO.begin} - ${pageVO.end}
-								/
-								${pageVO.dataCount}개
-							</td>
+							<td colspan="7">검색결과 : ${pageVO.begin} - ${pageVO.end} /
+								${pageVO.dataCount}개</td>
 						</tr>
-						
+
 						<tr>
-					        <td colspan="7" style="text-align: center;">
-					            <jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
-					        </td>
-					    </tr>
+							<td colspan="7" style="text-align: center;"><jsp:include
+									page="/WEB-INF/views/template/pagination.jsp"></jsp:include></td>
+						</tr>
 					</tfoot>
 				</table>
 			</div>
