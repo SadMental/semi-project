@@ -91,9 +91,9 @@ public class BoardDao {
         return list.isEmpty() ? null : list.get(0);
     }
 	// 삭제
-	public boolean delete(int pageType, int boardNo) {
-		String sql = "delete board where board_category_no=? and board_no = ?";
-		Object[] params = { pageType, boardNo };
+	public boolean delete(int boardNo) {
+		String sql = "delete board where board_no = ?";
+		Object[] params = { boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
