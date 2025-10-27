@@ -97,4 +97,14 @@ public class MemberDao {
 		Object[] params = {min, max};
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
+	
+	//포인트 쌓기
+		public void addPoint(String memberId, int point) {
+			String sql = "update member set member_point = member_point + ? "
+					+ "where member_id = ?";
+			Object[] params = {point, memberId};
+			int result = jdbcTemplate.update(sql, params);
+
+		}
+
 }

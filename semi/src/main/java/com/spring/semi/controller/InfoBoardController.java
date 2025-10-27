@@ -59,7 +59,7 @@ public class InfoBoardController {
 	}
 
 	 @PostMapping("/write")
-	   public String write(@ModelAttribute BoardDto boardDto, HttpSession session) {
+	   public String write(@ModelAttribute BoardDto boardDto, HttpSession session, Model model) {
 	    
 	       String loginId = (String) session.getAttribute("loginId");
 	       if (loginId == null) throw new IllegalStateException("로그인 정보가 없습니다.");
@@ -72,6 +72,12 @@ public class InfoBoardController {
 	       boardDto.setBoardNo(boardDao.sequence());
 	       int boardType = 2;
 	       boardDao.insert(boardDto, boardType);
+	       
+	       //게시글 포인트
+	       memberDao.addPoint(loginId, 70);
+	       MemberDto member = memberDao.selectOne(loginId);
+	       model.addAttribute("memberPoint", member.getMemberPoint());
+	       
 		return "redirect:list";
 
 	}

@@ -96,7 +96,7 @@ public class BoardController {
 	  
 	 
 	   @PostMapping("/write")
-	   public String write(@ModelAttribute BoardDto boardDto, HttpSession session) {
+	   public String write(@ModelAttribute BoardDto boardDto, HttpSession session, Model model) {
 	    
 	       String loginId = (String) session.getAttribute("loginId");
 	       if (loginId == null) throw new IllegalStateException("로그인 정보가 없습니다.");
@@ -108,7 +108,14 @@ public class BoardController {
 	   
 	       boardDto.setBoardNo(boardDao.sequence());
 	       int boardType = 1;
+
 	       boardDao.insert(boardDto, boardType);
+	       
+	       //게시글 포인트
+	       memberDao.addPoint(loginId, 50);	       
+	       MemberDto member = memberDao.selectOne(loginId);
+	       model.addAttribute("memberPoint", member.getMemberPoint());
+	       
 	       return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	   }
 	
@@ -129,6 +136,7 @@ public class BoardController {
 	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
 	           model.addAttribute("memberDto", memberDto);
 	       }
+
 		return "/WEB-INF/views/board/free/detail.jsp";
 	}
 	
@@ -174,7 +182,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo)
+	public String delete(@RequestParam int boardNo, HttpSession session)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
@@ -187,6 +195,13 @@ public class BoardController {
 			mediaService.delete(mediaNo);		
 		}
 		boardDao.delete(1, boardNo);
+		
+		//게시글 삭제 시 포인트도 같이 차감
+		String loginId = (String) session.getAttribute("loginId");
+		if (loginId != null) {
+			memberDao.addPoint(loginId, -50);
+		}
+		
 		return "redirect:list";
 	}
 	

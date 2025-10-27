@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dao.ReplyDao;
 import com.spring.semi.dto.BoardDto;
+import com.spring.semi.dto.MemberDto;
 import com.spring.semi.dto.ReplyDto;
 import com.spring.semi.error.NeedPermissionException;
 import com.spring.semi.error.TargetNotfoundException;
@@ -29,6 +32,8 @@ public class ReplyRestController {
    private ReplyDao replyDao;
    @Autowired
    private BoardDao boardDao;
+   @Autowired
+   private MemberDao memberDao;
 
   //댓글목록
    @PostMapping("/list")
@@ -61,7 +66,7 @@ public class ReplyRestController {
 		return result;
 	}
    @PostMapping("/write")
-   public void write(@ModelAttribute ReplyDto replyDto, HttpSession session) {
+   public void write(@ModelAttribute ReplyDto replyDto, HttpSession session, Model model) {
        if (replyDto.getReplyCategoryNo() == 0) {
            throw new IllegalArgumentException("댓글 카테고리 번호가 필요합니다.");
        }
@@ -73,6 +78,12 @@ public class ReplyRestController {
        replyDto.setReplyWriter(loginId);
 
        replyDao.insert(replyDto);
+       
+       //댓글 포인트
+       memberDao.addPoint(loginId, 20);
+       MemberDto member = memberDao.selectOne(loginId);
+       model.addAttribute("memberPoint", member.getMemberPoint());
+       
    }
 
 	

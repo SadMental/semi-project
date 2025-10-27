@@ -236,4 +236,6 @@ public void connect(int boardNo, int mediaNo)
 	Object[] params = {login_id};
 	return jdbcTemplate.query(sql, boardListVOMapper, params);
   }
+  
+  
 }
