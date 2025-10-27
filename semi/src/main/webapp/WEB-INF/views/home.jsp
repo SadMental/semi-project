@@ -151,8 +151,10 @@
         <img src="#" style="width:32px" class="ranking-profile ms-10">
 
         <div class="ranking-wrapper flex-box flex-vertical" style="width:60%">
-            <span class="ranking-nickname left">닉네임</span>
-            <span class="ranking-description text-ellipsis left" style="color:gray; font-size: 0.8em;">설명</span>
+			<a href="#" class="link ranking-a">
+            	<span class="ranking-nickname">닉네임</span>
+            	<span class="ranking-description text-ellipsis left" style="color:gray; font-size: 0.8em;">설명</span>
+			</a>
         </div>
         
         <div class="ranking-heart flex-box" style="width:30%">
@@ -203,6 +205,8 @@
 	                    var ranking = response[i];
 	                    var origin = $("#ranking-template").text();
 	                    var html = $.parseHTML(origin);
+	                    
+	                    $(html).find(".ranking-a").attr("href", "/member/detail?memberNickname="+ranking.memberNickname);
 	                    $(html).find(".ranking-profile").attr("src", "/member/profile?member_id=" + ranking.memberId);
 	                    $(html).find(".number").text(number++);
 	                    $(html).find(".ranking-nickname").text(ranking.memberNickname);
@@ -277,7 +281,7 @@ $(function () {
                             <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
                                 <label class="free-board-title">${boardDto.boardTitle}</label>
                                 <div class="cell">
-                                    <img src="#" style="width:20px;">
+                                    <img src="/member/profile?member_id="+${boardDto.boardWriter} style="width:20px;">
                                     <label class="free-board-nickname"
                                         style="font-size:0.8em;">${boardDto.boardWriter}</label>
                                     <i class="fa-solid fa-eye"></i>
