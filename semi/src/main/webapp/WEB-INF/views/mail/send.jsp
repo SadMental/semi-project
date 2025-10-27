@@ -80,6 +80,7 @@
 				<i class="fa-solid fa-asterisk red"></i>
 			</label>
 			<textarea name="mailContent" class="summernote-editor"></textarea>
+			<div id="total-char" data-maxLength="200"></div>
 		</div>
 		<div class="cell center">
 			<button type="submit" class="btn btn-positive w-50p">
