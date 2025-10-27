@@ -26,7 +26,7 @@
 .hr-details {
 	border: solid 1px rgb(233, 231, 231);
 }
-
+ 
 .content {
 	white-space: nowrap;
 	overflow: hidden;
