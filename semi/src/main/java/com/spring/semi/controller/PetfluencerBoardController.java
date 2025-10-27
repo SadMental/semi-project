@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/board/petfluence")
-public class PetfluencerController {
+public class PetfluencerBoardController {
 	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
@@ -36,7 +36,7 @@ public class PetfluencerController {
 	@Autowired
 	private HeaderDao headerDao;
 	
-	PetfluencerController(MediaService mediaService) {
+	PetfluencerBoardController(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 	
@@ -199,7 +199,7 @@ public class PetfluencerController {
 //			int mediaNo = Integer.parseInt(element.attr("data-pk"));
 //			mediaService.delete(mediaNo);		
 //		}
-		boardDao.delete(3, boardNo);
+		boardDao.delete(boardNo);
 		return "redirect:list";
 	}
 	
@@ -213,7 +213,7 @@ public class PetfluencerController {
 		}
 		catch(Exception e) 
 		{
-			return "redirect:/images/error/no-image.png";
+			return "redirect:/image/error/no-image.png";
 		}
 	}
 }

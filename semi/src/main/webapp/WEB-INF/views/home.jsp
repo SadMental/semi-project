@@ -182,17 +182,6 @@
                     <p>4</p>
                 </div>
             </div>
-
-            <div class="cell ms-10 me-10 center" style="background-color:green">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                광고판인가?
-                <p>4</p>
-                <p>5</p>
-                <p>6</p>
-            </div>
-
             <div class="cell ms-10 me-10">
             	<i class="fa-solid fa-comment-sms"></i>
                 <label>커뮤니티</label>
@@ -200,28 +189,28 @@
             <div class="cell flex-box">
                 <!-- 			테이블 한 줄에 2행씩 찍는 방법 -->
                 <table>
-                    <c:forEach var="boardDto" items="${free_board_list}" varStatus="st">
+                    <c:forEach var="boardDto" items="${community_board_list}" varStatus="st">
                         <c:if test="${st.index % 2 == 0}">
                             <tr>
                         </c:if>
 
                         <td>
                             <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
-                                <label class="free-board-title">${boardDto.boardTitle}</label>
+                                <label class="community-board-title">${boardDto.boardTitle}</label>
                                 <div class="cell">
                                     <img src="#" style="width:20px;">
-                                    <label class="free-board-nickname"
+                                    <label class="community-board-nickname"
                                         style="font-size:0.8em;">${boardDto.boardWriter}</label>
                                     <i class="fa-solid fa-eye"></i>
-                                    <label class="free-board-view"
+                                    <label class="community-board-view"
                                         style="font-size:0.8em;">${boardDto.boardView}</label>
                                     <i class="fa-solid fa-comment-dots"></i>
-                                    <label class="free-board-reply"
+                                    <label class="community-board-reply"
                                         style="font-size:0.8em;">${boardDto.boardReply}</label>
                                     <i class="fa-solid fa-heart red"></i>
-                                    <label class="free-board-like"
+                                    <label class="community-board-like"
                                         style="font-size:0.8em;">${boardDto.boardLike}</label>
-                                    <label class="free-board-time"
+                                    <label class="community-board-time"
                                         style="font-size:0.8em;">${boardDto.boardWtime}</label>
                                 </div>
                             </div>
@@ -239,7 +228,7 @@
                 </table>
             </div>
             <div class="cell ms-10 me-10 center">
-                <a href="/board/free/list" class="link">커뮤니티 더보기 ></a>
+                <a href="/board/community/list" class="link">커뮤니티 더보기 ></a>
             </div>
 
             <div class="cell ms-10 me-10">
@@ -255,29 +244,49 @@
                 <p>6</p>
             </div>
             <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">펫 플루언서 더보기 ></a>
+                <a href="/board/petfluencer/list" class="link">펫 플루언서 더보기 ></a>
             </div>
 
             <div class="cell ms-10 me-10">
                 <label>FUN</label>
             </div>
             <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>FUN 1</p>
-                    <p>FUN 3</p>
-                    <p>FUN 5</p>
-                    <p>FUN 7</p>
-                </div>
+                <table>
+                    <c:forEach var="boardDto" items="${fun_board_list}" varStatus="st">
+                        <c:if test="${st.index % 2 == 0}">
+                            <tr>
+                        </c:if>
 
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>FUN 2</p>
-                    <p>FUN 4</p>
-                    <p>FUN 6</p>
-                    <p>FUN 8</p>
-                </div>
+                        <td>
+                            <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
+                            	<div class = "flex-box">
+	                            	<img src="/board/fun/image?boardNo=${boardDto.boardNo}" style="width:60px;" class="left">
+	                            	<div class="fun-container w-100p flex-box flex-vertical left">
+                            			<a href="/board/fun/detail?boardNo=${boardDto.boardNo}" class="link">
+			                                <label class="fun-board-title" style="height:75%;">${boardDto.boardTitle}</label>
+			                                <div class="flex-box">
+			                                	<i class="fa-solid fa-eye" style="color:gray;""></i> 
+			                                	<label style="color:gray; font-size: 0.7em;">${boardDto.boardView}명이 이 콘텐츠를 보았어요!</label>
+		                            		</div>
+                            			</a>
+	                            	</div>
+                            	</div>
+                            </div>
+                        </td>
+
+                        <c:if test="${st.index % 2 == 1}">
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+
+                    <!-- 				홀수 개일 때 마지막 행 닫기 -->
+                    <c:if test="${numbers.size() % 2 != 0}">
+                        </tr>
+                    </c:if>
+                </table>
             </div>
             <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">FUN 더보기 ></a>
+                <a href="/board/fun/list" class="link">FUN 더보기 ></a>
             </div>
 
             <div class="cell ms-10 me-10">
