@@ -1,6 +1,7 @@
 package com.spring.semi.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.HeaderDao;
@@ -166,6 +168,15 @@ public class BoardController {
 		}
 		boardDao.delete(1, boardNo);
 		return "redirect:list";
+	}
+	
+	@PostMapping("/mypageDelete")
+	@ResponseBody
+	public String mypageDelete(@RequestParam("boardNo") List<Integer> boardNoList) {
+		for (int boardNo : boardNoList) {
+			boardDao.mypageDelete(boardNo);
+		}
+		return "success";
 	}
 	
 }
