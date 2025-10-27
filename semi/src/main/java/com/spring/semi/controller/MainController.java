@@ -20,8 +20,10 @@ public class MainController
 	public String home(Model model)
 	{
 		List<BoardDto> free_board_list = boardDao.selectListWithPagingForMainPage(1, 1, 8);		
+		List<BoardDto> petfluencer_board_list = boardDao.selectListWithPagingForMainPage(3, 1, 10);
 		
 		model.addAttribute("free_board_list", free_board_list);
+		model.addAttribute("petfluencer_board_list", petfluencer_board_list);
 		
 		return "/WEB-INF/views/home.jsp";
 	}
