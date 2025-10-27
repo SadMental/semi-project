@@ -141,7 +141,7 @@
 				<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
 					class="kh-pill" href="/board/free/list">COMMUNITY</a> <a
 					class="kh-pill" href="/board/info/list">INFO</a> <a class="kh-pill"
-					href="/adoptionBoard/list">SERVICE</a>
+					href="/board/adoption/list">SERVICE</a>
 				<c:choose>
 			<c:when test="${sessionScope.loginId != null}">
 				<a class="kh-pill kh-pill--active" href="/member/logout">LOGOUT</a>

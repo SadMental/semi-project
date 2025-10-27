@@ -98,12 +98,15 @@ a:hover {
 		<form action="list">
 			<div class="search-bar">
 				<select name="column">
-					<option value="board_title"
-						${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
-					<option value="board_writer"
-						${pageVO.column == 'board_writer' ? 'selected' : ''}>아이디</option>
-					<option value="member_nickname"
-						${pageVO.column == 'member_nickname' ? 'selected' : ''}>닉네임</option>
+					<option value="board_title">
+						${pageVO.column == 'board_title' ? 'selected' : ''}제목</option>
+					<option value="board_writer">
+						${pageVO.column == 'board_writer' ? 'selected' : ''}아이디</option>
+					<option value="member_nickname">
+						${pageVO.column == 'member_nickname' ? 'selected' : ''}닉네임</option>
+					<option value="header_name">
+						${pageVO.column == 'header_name' ? 'selected' : ''}분류</option>	
+						
 				</select> <input type="text" name="keyword" value="${pageVO.keyword}"
 					required placeholder="검색어 입력">
 
@@ -139,7 +142,7 @@ a:hover {
 					<thead>
 						<tr>
 							<th>No</th>
-<!-- 							<th>분류</th> -->
+                            <th>분류	</th>
 							<th>제목</th>
 							<th>작성자</th>
 							<th>조회수</th>
@@ -150,7 +153,7 @@ a:hover {
 						<c:forEach var="boardDto" items="${boardList}">
 							<tr>
 								<td>${boardDto.boardNo}</td>
-<%-- 								  <td>${boardDto.headerName}</td>  --%>
+                                <td>${headerMap[boardDto.boardNo].headerName}</td>  
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>

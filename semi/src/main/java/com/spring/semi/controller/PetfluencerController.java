@@ -1,13 +1,8 @@
 package com.spring.semi.controller;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,15 +54,16 @@ public class PetfluencerController {
 	}
 
 	
-	@GetMapping("/write")
-	public String write() 
-	{
+		  @GetMapping("/write")
+		   public String writeForm(Model model) {
+		       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
+		       model.addAttribute("headerList", headerList);
+		     
 		return "/WEB-INF/views/board/petfluence/write.jsp";
 	}
 	
     @PostMapping("/write")
     public String write(@ModelAttribute BoardDto boardDto,
-                        @ModelAttribute HeaderDto headerDto,
                         HttpSession session,
             			@RequestParam MultipartFile media,
             			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
@@ -78,12 +74,9 @@ public class PetfluencerController {
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
 
-        int headerNo = headerDao.sequence();
-        headerDto.setHeaderNo(headerNo);
-        headerDao.insert(headerDto);
-
+      
         //  board와 header 연결
-        boardDto.setBoardHeader(headerNo);
+      
         boardDao.insert(boardDto, 3);
         
 		if(!media.isEmpty()) 
@@ -99,28 +92,31 @@ public class PetfluencerController {
 	public String detail(HttpSession session,
 			Model model, 
 			@RequestParam int boardNo) {
-		BoardDto boardDto = boardDao.selectOne(boardNo);
-		if (boardDto == null) 
-			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
-		
-		if (boardDto.getBoardWriter() != null) 
-		{			
-			MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
-			model.addAttribute("memberDto", memberDto);
-		}
-
-		model.addAttribute("boardDto", boardDto);
+	      // 게시글 조회
+	       BoardDto boardDto = boardDao.selectOne(boardNo);
+	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
+	       model.addAttribute("boardDto", boardDto);
+	    // 헤더 조회
+	       HeaderDto headerDto = headerDao.selectOne(boardDto.getBoardHeader());
+	    // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
+	    if(headerDto != null) {
+	        model.addAttribute("headerDto", headerDto); // Model에 HeaderDto 자체를 추가
+	    }
+	       // 작성자 정보
+	       if (boardDto.getBoardWriter() != null) {
+	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
+	           model.addAttribute("memberDto", memberDto);
+	       }
 		return "/WEB-INF/views/board/petfluence/detail.jsp";
 	}
 	
-	@GetMapping("/edit")
-	public String edit(Model model,
-			@RequestParam int boardNo)
-	{
-		BoardDto boardDto = boardDao.selectOne(boardNo);
-		if (boardDto == null) 
-			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
-		model.addAttribute("boardDto", boardDto);
+	  @GetMapping("/edit")
+	   public String edit(Model model, @RequestParam int boardNo) {
+	       BoardDto boardDto = boardDao.selectOne(boardNo);
+	       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
+	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
+	       model.addAttribute("headerList", headerList);
+	       model.addAttribute("boardDto", boardDto);
 		return "/WEB-INF/views/board/petfluence/edit.jsp";
 	}
 	
@@ -179,7 +175,7 @@ public class PetfluencerController {
 //		minus.removeAll(after);
 //		for(int mediaNo : minus)
 //			mediaService.delete(mediaNo);
-		
+		 HeaderDto header = headerDao.selectOne(boardDto.getBoardHeader());
 		boardDao.update(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}

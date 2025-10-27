@@ -69,11 +69,11 @@ public class BoardDao {
 
 	// 검색
 	public List<BoardDto> searchList(String column, String keyword) {
-		Set<String> allowList = Set.of("board_title", "board_writer", "board_content");
+		Set<String> allowList = Set.of("board_title", "board_writer", "board_content", "header_name");
 		if (!allowList.contains(column))
 			return List.of();
 
-		String sql = "select * from board where instr(#1, ?) > 0 " + "order by #1 asc, board_no asc";
+		String sql = "select b.* from board b left join header h on b.header_no = h.header_no where instr(#1, ?) > 0 order by #1 asc, b.board_no asc";
 		sql = sql.replace("#1", column);
 		Object[] params = { keyword };
 		return jdbcTemplate.query(sql, boardMapper, params);
@@ -106,23 +106,38 @@ public class BoardDao {
 
 	// 수정
 	public boolean update(BoardDto boardDto) {
-		String sql = "update board " + "set board_title=?, board_content=? " + ", board_etime=systimestamp "
+		String sql = "update board " + "set board_title=?, board_content=?, board_header=? "  + ", board_etime=systimestamp "
 				+ "where board_no=?";
-		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardNo() };
+		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardHeader(), boardDto.getBoardNo() };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	public int count(PageVO pageVO, int pageType) {
-		if (pageVO.isList()) {
-			String sql = "select count(*) from board " + "where board_category_no=? " + "order by board_no asc";
-			Object[] params = { pageType };
-			return jdbcTemplate.queryForObject(sql, int.class, params);
-		} else {
-			String sql = "select count(*) from board " + "where instr(#1, ?) > 0 " + "and board_category_no=?";
-			sql = sql.replace("#1", pageVO.getColumn());
-			Object[] params = { pageVO.getKeyword(), pageType };
-			return jdbcTemplate.queryForObject(sql, int.class, params);
-		}
+	    if (pageVO.isList()) {
+	        String sql = "select count(*) from board where board_category_no=? order by board_no asc";
+	        Object[] params = { pageType };
+	        return jdbcTemplate.queryForObject(sql, int.class, params);
+	    }
+	    else {
+	        if ("header_name".equalsIgnoreCase(pageVO.getColumn())) {
+	            // header 검색
+	            String sql = "select count(*) from board b "
+	                       + "left join header h on b.board_header = h.header_no "
+	                       + "where instr(h.header_name, ?) > 0 "
+	                       + "and b.board_category_no=?";
+	            Object[] params = { pageVO.getKeyword(), pageType };
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	        }
+	        else {
+	            //기존검색
+	            String sql = "select count(*) from board "
+	                       + "where instr(#1, ?) > 0 "
+	                       + "and board_category_no=?";
+	            sql = sql.replace("#1", pageVO.getColumn());
+	            Object[] params = { pageVO.getKeyword(), pageType };
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	        }
+	    }
 	}
 
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
