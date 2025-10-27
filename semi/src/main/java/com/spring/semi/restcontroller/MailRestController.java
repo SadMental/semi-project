@@ -20,16 +20,16 @@ public class MailRestController {
 	private MemberDao memberDao;
 	
 	@PostMapping("/checkMember")
-	public boolean checkMember(
+	public int checkMember(
 			@RequestParam String memberNickname,
 			HttpSession session
 			) {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectForNickname(memberNickname);
-		if(memberDto == null) return false;
-		if(memberDto.getMemberId().equals(loginId)) return false;
+		if(memberDto == null) return 0;
+		if(memberDto.getMemberId().equals(loginId)) return -1;
 		
-		return true;
+		return 1;
 	}
 	
 }

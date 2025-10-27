@@ -25,16 +25,22 @@
 				method : "post",
 				data : {memberNickname : $("[name=memberNickname]").val()},
 				success : function (responce) {
-					console.log($("[name=memberNickname]").val());
-					if(responce == false) {
-						state.checkMemberNicknameValid = false;
-						$("[name=memberNickname]").removeClass("success fail fail2").addClass("fail")
-						return;
-					}
-					
-					$("[name=memberNickname]").removeClass("success fail fail2").addClass("success")
-					state.checkMemberNicknameValid = true;
-					
+					switch(responce){
+						case -1 : 
+							state.checkMemberNicknameValid = false;
+							$("[name=memberNickname]").removeClass("success fail fail2").addClass("fail2")
+							return;
+						case 0 :
+							state.checkMemberNicknameValid = false;
+							$("[name=memberNickname]").removeClass("success fail fail2").addClass("fail")
+							return;
+						case 1 :
+							state.checkMemberNicknameValid = true;
+							$("[name=memberNickname]").removeClass("success fail fail2").addClass("success")
+							return;
+						default :
+							console.error("오류")
+					}					
 				}
 			})
 		})
@@ -72,6 +78,7 @@
 				</button>
 				<div class="success-feedback w-100p" >확인완료</div>
 				<div class="fail-feedback w-100p">회원이 존재하지않습니다.</div>
+				<div class="fail2-feedback w-100p">본인에게 보낼 수 없습니다.</div>
 			</div>
 		</div>
 		<div class="cell">
