@@ -439,29 +439,45 @@ $(function () {
                 <label>동물위키</label>
             </div>
             <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-100p">
-                    <p>동물위키 1</p>
-                </div>
-                <div class="cell ms-10 me-10 center w-100p">
-                    <p>동물위키 2</p>
-                </div>
-                <div class="cell ms-10 me-10 center w-100p">
-                    <p>동물위키 3</p>
-                </div>
-            </div>
-            <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-100p">
-                    <p>동물위키 4</p>
-                </div>
-                <div class="cell ms-10 me-10 center w-100p">
-                    <p>동물위키 5</p>
-                </div>
-                <div class="cell ms-10 me-10 center w-100p">
-                    <p>동물위키 6</p>
-                </div>
+                 <table>
+                    <c:forEach var="boardDto" items="${animal_wiki_board_list}" varStatus="st">
+                        <c:if test="${st.index % 3 == 0}">
+                            <tr>
+                        </c:if>
+                        <td>
+                            <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
+                            	<div class = "flex-box">
+	                            	<div class="animal-container w-100p flex-box flex-vertical left" style="height:200px;">
+                            			<a href="/board/animal/detail?boardNo=${boardDto.boardNo}" class="link">
+			                            	<img src="/board/animal/image?boardNo=${boardDto.boardNo}" style="width:60px; height:60px; border-radius:50px; overflow: hidden;" class="left">
+			                                <br>
+			                                <br>
+			                                <br>
+			                                <label class="animal-board-title">${boardDto.boardTitle}</label>
+			                                <br>
+			                                <br>
+			                                <br>
+			                                <div class="view-container flex-box">			                              
+				                                <i class="fa-solid fa-eye" style="color:gray;""></i> 
+				                                <label style="color:gray; font-size: 0.7em;">${boardDto.boardView}명이 이 콘텐츠를 보았어요!</label>
+			                                </div>
+                            			</a>
+	                            	</div>
+                            	</div>
+                            </div>
+                        </td>
+                        <c:if test="${st.index % 3 == 2}">
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                    <!-- 				홀수 개일 때 마지막 행 닫기 -->
+                    <c:if test="${numbers.size() % 3 != 0}">
+                        </tr>
+                    </c:if>
+                </table>
             </div>
             <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">동물위키 더보기 ></a>
+                <a href="/board/animal/list" class="link">동물위키 더보기 ></a>
             </div>
 
             <div class="cell ms-10 me-10">
