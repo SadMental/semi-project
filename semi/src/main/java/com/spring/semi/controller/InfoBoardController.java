@@ -30,7 +30,9 @@ import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.MemberVO;
 import com.spring.semi.vo.PageVO;
+import com.spring.semi.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -46,6 +48,9 @@ public class InfoBoardController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+	@Autowired
+	private MemberService memberService;
+
 	InfoBoardController(MediaService mediaService) {
 	        this.mediaService = mediaService;
 	    }
@@ -99,16 +104,23 @@ public class InfoBoardController {
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
 
 	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
+	     Map<String, MemberVO> memberMap = new HashMap<>();
 	     for (BoardDto b : boardList) {
 	         HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
 	         if (headerDto != null) {
 	             headerMap.put(b.getBoardNo(), headerDto);
+	         }
+	         // 작성자 정보 (MemberVO)
+	         if (b.getBoardWriter() != null && !memberMap.containsKey(b.getBoardWriter())) {
+	             MemberVO memberVO = memberService.getMemberInfo(b.getBoardWriter());
+	             memberMap.put(b.getBoardWriter(), memberVO);
 	         }
 	     }
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
 	     model.addAttribute("headerMap", headerMap);
+	     model.addAttribute("memberMap", memberMap);
 	     model.addAttribute("pageVO", pageVO);
 	     model.addAttribute("orderBy", orderBy);
 
@@ -116,26 +128,28 @@ public class InfoBoardController {
 	 }
 
 
-	// 상세
-	@RequestMapping("/detail")
-	public String detail(Model model, @RequestParam int boardNo) {
-		// 게시글 조회
-	       BoardDto boardDto = boardDao.selectOne(boardNo);
-	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
-	       model.addAttribute("boardDto", boardDto);
-	    // 헤더 조회
-	       HeaderDto headerDto = headerDao.selectOne(boardDto.getBoardHeader());
-	    // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
-	    if(headerDto != null) {
-	        model.addAttribute("headerDto", headerDto); // Model에 HeaderDto 자체를 추가
-	    }
-	       // 작성자 정보
-	       if (boardDto.getBoardWriter() != null) {
-	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
-	           model.addAttribute("memberDto", memberDto);
-	       }
-		return "/WEB-INF/views/board/info/detail.jsp";
-	}
+	 @RequestMapping("/detail")
+	 public String detail(Model model, @RequestParam int boardNo) {
+	     // 게시글 조회
+	     BoardDto boardDto = boardDao.selectOne(boardNo);
+	     if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
+	     model.addAttribute("boardDto", boardDto);
+
+	     // 헤더 조회
+	     HeaderDto headerDto = headerDao.selectOne(boardDto.getBoardHeader());
+	     if (headerDto != null) {
+	         model.addAttribute("headerDto", headerDto);
+	     }
+
+	     // 작성자 정보 조회
+	     if (boardDto.getBoardWriter() != null) {
+	         MemberVO memberVO = memberService.getMemberInfo(boardDto.getBoardWriter());
+	         model.addAttribute("memberVO", memberVO);
+	     }
+
+	     return "/WEB-INF/views/board/info/detail.jsp";
+	 }
+
 
 	// 삭제
 	@RequestMapping("/delete")
