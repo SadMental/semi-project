@@ -89,7 +89,7 @@ public class BoardController {
 	   public String writeForm(Model model) {
 	       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
 	       model.addAttribute("headerList", headerList);
-	      
+	       
 	       return "/WEB-INF/views/board/community/write.jsp";
 	      
 	   }
@@ -181,7 +181,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo, HttpSession session)
+	public String delete(@RequestParam int boardNo, HttpSession session, Model model)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
@@ -192,8 +192,17 @@ public class BoardController {
 		for(Element element : elements) {
 			int mediaNo = Integer.parseInt(element.attr("data-pk"));
 			mediaService.delete(mediaNo);		
+			
+			
 		}
-
+		
+		//게시글 포인트 차감
+//		String loginId = (String) session.getAttribute("loginId");
+//		memberDao.minusPoint(loginId, 50);
+//		MemberDto member = memberDao.selectOne(loginId);
+//		model.addAttribute("memberPoint", member.getMemberPoint());
+//				
+		
 		return "redirect:list";
 	}
 	
@@ -203,6 +212,7 @@ public class BoardController {
 		for (int boardNo : boardNoList) {
 			boardDao.mypageDelete(boardNo);
 		}
+		
 		return "success";
 	}
 	

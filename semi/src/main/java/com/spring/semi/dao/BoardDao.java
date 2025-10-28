@@ -92,16 +92,24 @@ public class BoardDao {
     }
 	// 삭제
 	public boolean delete(int boardNo) {
-		String sql = "delete board where board_no = ?";
+		String sql = "update board set deleted = 1 where board_no = ?";
 		Object[] params = { boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
 	// 마이페이지에서 글 삭제
 	public boolean mypageDelete (int boardNo) {
-		String sql = "delete board where board_no = ?";
-		Object[] params = {boardNo};
-		return jdbcTemplate.update(sql, params) > 0;
+		return delete(boardNo);
+	}
+	
+	// 삭제된 글 조회
+	public List<BoardListVO> selectDeletedByMemberId(String login_id) {
+		String sql = "select board_no, board_title, board_wtime, board_view "
+				+ "from board "
+				+ "where board_writer = ? and deleted = 1 "
+				+ "order by board_wtime desc";
+		Object[] params = {login_id};
+		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
 
 	// 수정
@@ -231,7 +239,7 @@ public void connect(int boardNo, int mediaNo)
   //마이페이지  내글 보기 관련
   public List<BoardListVO> selectByMemberId(String login_id) {
 	String sql = "select board_no, board_title, board_wtime, board_view from board "
-			+ "where board_writer = ? "
+			+ "where board_writer = ? and deleted = 0"
 			+ "order by board_wtime desc";
 	Object[] params = {login_id};
 	return jdbcTemplate.query(sql, boardListVOMapper, params);
