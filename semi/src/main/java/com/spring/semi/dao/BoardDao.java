@@ -69,12 +69,26 @@ public class BoardDao {
     }
 	// 삭제
 	public boolean delete(int boardNo) {
-		String sql = "delete board where board_no = ?";
+		String sql = "update board set deleted = 1 where board_no = ?";
 		Object[] params = { boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	// 마이페이지에서 글 삭제
+//	public boolean mypageDelete (int boardNo) {
+//		return delete(boardNo);
+//	}
+	
+	// 삭제된 글 조회
+	public List<BoardListVO> selectDeletedByMemberId(String login_id) {
+		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
+				+ "join category on category_no = board_category_no "
+				+ "where board_writer = ? and deleted = 1 "
+				+ "order by board_wtime desc";
+		Object[] params = {login_id};
+		return jdbcTemplate.query(sql, boardListVOMapper, params);
+	}
+
 	public boolean mypageDelete(int boardNo) {
 		String sql = "delete board where board_no = ?";
 		Object[] params = { boardNo };
@@ -116,7 +130,7 @@ public class BoardDao {
 		if (pageVO.isList()) {
 			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where b.board_category_no=? " + "    order by b.board_no desc" + "  ) TMP"
+					+ "    where b.board_category_no=? " + "  and deleted = 0  order by b.board_no desc" + "  ) TMP"
 					+ ") where rn between ? and ?";
 			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
 			return jdbcTemplate.query(sql, boardListMapper, params);
@@ -206,6 +220,7 @@ public class BoardDao {
 
 	// 메인페이지에서 바로 보이는 free_board는 검색이 없고 PageVO가 없다
 	public List<BoardDto> selectListWithPagingForMainPage(int pageType, int min, int max) {
+
 		String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 				+ "    from board b " + "    left join header h on b.board_header = h.header_no "
 				+ "    where b.board_category_no=? " + "    order by b.board_no desc" + "  ) TMP"
@@ -219,10 +234,13 @@ public class BoardDao {
 	public List<BoardListVO> selectByMemberId(String login_id) {
 		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
 				+ "join category on category_no = board_category_no " 
-				+ "where board_writer = ? "
+				+ "where board_writer = ? and deleted = 0"
 				+ "order by board_wtime desc";
 		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
+}
+
 
 }
+
