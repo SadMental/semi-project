@@ -204,12 +204,26 @@ public void connect(int boardNo, int mediaNo)
 		};
 		jdbcTemplate.update(sql, params);
 	}
+
+public void connect_video(int boardNo, int videoNo) {
+	String sql = "insert into board_video (board_no, video_no) values (?, ?)";
+	Object[] params = {
+			boardNo, 
+			videoNo
+	};
+	jdbcTemplate.update(sql, params);
+}
 	
 	public int findMedia(int boardNo){
 		String sql = "select media_no from board_image where board_no = ?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
   }
+	public int findVideo(int boardNo){
+		String sql = "select video_no from board_video where board_no = ?";
+		Object[] params = {boardNo};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
   
 	// 메인페이지에서 바로 보이는 free_board는 검색이 없고 PageVO가 없다
 	public List<BoardDto> selectListWithPagingForMainPage(int pageType, int min, int max) {
