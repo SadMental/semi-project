@@ -73,6 +73,7 @@
 	  	<div class="cell">
 	  		<div class="cell">
 	  			<label>
+	  			
 	  				<span>이메일</span>
 	  			</label>
 				<input class="flex-fill w-100p" type="text" inputmode="email" name="memberEmail">
