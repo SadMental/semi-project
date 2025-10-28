@@ -109,9 +109,12 @@ h1 {
 			            </c:otherwise>
 			        </c:choose>
 			    </td>
-
+		    </tr>
+		</table>
+	</div>
 	<div class="content">
 		<img src = "/board/fun/image?boardNo=${boardDto.boardNo}">
+		<video src="/board/fun/video?boardNo=${boardDto.boardNo}" controls autoplay="autoplay"></video>
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
 

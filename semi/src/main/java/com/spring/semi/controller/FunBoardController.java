@@ -28,17 +28,14 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board/fun")
 public class FunBoardController {
-	private final MediaService mediaService;
+	@Autowired
+	private MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
 	private HeaderDao headerDao;
-
-	FunBoardController(MediaService mediaService) {
-        this.mediaService = mediaService;
-    }
 
 	@RequestMapping("/list")
 	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
@@ -65,6 +62,7 @@ public class FunBoardController {
     public String write(@ModelAttribute BoardDto boardDto,
                         HttpSession session,
             			@RequestParam MultipartFile media,
+            			@RequestParam MultipartFile video,
             			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
     {
         String loginId = (String) session.getAttribute("loginId");
@@ -82,6 +80,10 @@ public class FunBoardController {
 		{
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardNo, mediaNo);
+		}
+		if(!video.isEmpty()) {
+			int videoNo = mediaService.save(video);
+			boardDao.connect_video(boardNo, videoNo);
 		}
 
 		return "redirect:detail?boardNo=" + boardNo;
@@ -208,7 +210,20 @@ public class FunBoardController {
 		try 
 		{
 			int mediaNo = boardDao.findMedia(boardNo);
-			return "redirect:/media/download?mediaNo=" + mediaNo;			
+			return "redirect:/media/download?mediaNo=" + mediaNo;
+		}
+		catch(Exception e) 
+		{
+			return "redirect:/image/error/no-image.png";
+		}
+	}
+	@GetMapping("/video")
+	public String video(@RequestParam int boardNo) 
+	{
+		try 
+		{
+			int mediaNo = boardDao.findVideo(boardNo);
+			return "redirect:/media/download?mediaNo=" + mediaNo;
 		}
 		catch(Exception e) 
 		{

@@ -81,6 +81,7 @@
 				  	 <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
 			     </c:forEach>
 			</select>
+		</div>
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>
@@ -94,6 +95,10 @@
             <input type = "file"
             name = "media" accept = ".png,.jpg" class = "field w-100" required>
        </div>
+       <div class="cell test">
+       		<label>비디오</label>
+			<input type="file" id="test-video" name="video" class="field w-100">
+		</div>
 
       <div class="cell right mt-20">
           <button class="btn btn-positive">등록하기</button>
