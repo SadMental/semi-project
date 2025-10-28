@@ -121,7 +121,9 @@ h1 {
 			            </c:otherwise>
 			        </c:choose>
 			    </td>
-
+			</tr>
+			</table>
+		</div>
 	<div class="content">
 		<img src = "/board/petfluencer/image?boardNo=${boardDto.boardNo}">
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
