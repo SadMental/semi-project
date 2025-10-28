@@ -141,6 +141,21 @@
         margin-top: 2px;
     }
 </style>
+<script type="text/javascript">
+$(function () {
+    var swiper = new Swiper(".swipers", {
+        slidesPerView: 4.8,
+        spaceBetween: 20,
+        loop: true,
+        speed: 800,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        slidesPerGroup: 1,
+    });
+});
+</script>
 
 
         <div class="cell flex-vertical w-75p">
