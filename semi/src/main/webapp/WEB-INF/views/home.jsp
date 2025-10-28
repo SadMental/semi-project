@@ -142,7 +142,7 @@
     }
 </style>
 
-    
+
         <div class="cell flex-vertical w-75p">
             <div class="cell flex-box">
                 <div class="cell ms-10 pe-10 center w-50p">
@@ -328,7 +328,7 @@
                 </div>
             </div>
             <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">사용후기 더보기 ></a>
+                <a href="/board/review/list" class="link">사용후기 더보기 ></a>
             </div>
 
             <div class="cell ms-10 me-10">
