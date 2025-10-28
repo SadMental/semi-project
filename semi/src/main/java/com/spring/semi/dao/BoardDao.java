@@ -49,6 +49,26 @@ public class BoardDao {
 	    
 	    jdbcTemplate.update(sql, params);
 	}
+	
+	public void insertForReview(BoardDto boardDto, int boardType) {
+	    String sql = "insert into board (" +
+	                 "board_category_no, board_no, board_writer, board_title, board_content, board_header," +
+	                 "board_animal_header, board_type_header, board_score ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    
+	    Object[] params = {
+	        boardType,
+	        boardDto.getBoardNo(),
+	        boardDto.getBoardWriter(),
+	        boardDto.getBoardTitle(),
+	        boardDto.getBoardContent(),
+	        boardDto.getBoardHeader(),
+	        boardDto.getBoardAnimalHeader(),
+	        boardDto.getBoardTypeHeader(),
+	        boardDto.getBoardScore()
+	    };
+	    
+	    jdbcTemplate.update(sql, params);
+	}
 
 	public List<BoardDto> selectList(int boardType) {
 	    String sql = "SELECT b.*, h.header_name " +

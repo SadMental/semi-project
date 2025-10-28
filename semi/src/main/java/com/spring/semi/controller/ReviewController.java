@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.semi.dao.AnimalHeaderDao;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dao.TypeHeaderDao;
+import com.spring.semi.dto.AnimalHeaderDto;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
+import com.spring.semi.dto.TypeHeaderDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.PageVO;
@@ -35,6 +39,10 @@ public class ReviewController {
 	private MemberDao memberDao;
 	@Autowired
 	private HeaderDao headerDao;
+	@Autowired
+	private AnimalHeaderDao animalHeaderDao;
+	@Autowired
+	private TypeHeaderDao typeHeaderDao;
 	
 	ReviewController(MediaService mediaService) {
         this.mediaService = mediaService;
@@ -58,7 +66,11 @@ public class ReviewController {
 	public String writeForm(Model model) {
        List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
        model.addAttribute("headerList", headerList);
-		     
+       List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
+       model.addAttribute("animalHeaderList", animalHeaderList);
+       List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+       model.addAttribute("typeHeaderList", typeHeaderList);
+       
        return "/WEB-INF/views/board/review/write.jsp";
 	}
 	
@@ -77,7 +89,7 @@ public class ReviewController {
       
         //  board와 header 연결
       
-        boardDao.insert(boardDto, 5);
+        boardDao.insertForReview(boardDto, 5);
         
 		if(!media.isEmpty()) 
 		{
@@ -114,8 +126,15 @@ public class ReviewController {
 	   public String edit(Model model, @RequestParam int boardNo) {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
 	       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
+	       List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
+	       List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	       
+	       if (boardDto == null) 
+	    	   throw new TargetNotfoundException("존재하지 않는 글");
+	       
 	       model.addAttribute("headerList", headerList);
+	       model.addAttribute("animalHeaderList", animalHeaderList);
+	       model.addAttribute("typeHeaderList", typeHeaderList);
 	       model.addAttribute("boardDto", boardDto);
 		return "/WEB-INF/views/board/review/edit.jsp";
 	}

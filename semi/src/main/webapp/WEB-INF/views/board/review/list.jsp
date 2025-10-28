@@ -175,7 +175,7 @@
 <div class="container w-800">
 
 	<div class="cell center">
-		<h1>동물위키</h1>	
+		<h1>사용후기</h1>	
 	</div>
 	<div class="cell center mt-30 mb-50">
 		<form action="list">
