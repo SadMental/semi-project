@@ -240,3 +240,7 @@ public class BoardDao {
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
 }
+
+
+}
+

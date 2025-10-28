@@ -465,6 +465,24 @@ textarea.field {
  {
     display: block;
 }
+/* 작성자 등급 뱃지 */
+.grade-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* 회원 등급별 색상 */
+.grade-badge.level1 { background-color: #D9C4A8; }
+.grade-badge.level2 { background-color: #BFA280; }
+.grade-badge.level3 { background-color: #A37C50; }
+.grade-badge.level4 { background-color: #855C3B; }
+.grade-badge.level5 { background-color: #4B2E1E; }
 
 
 
