@@ -146,11 +146,13 @@ public class BoardDao {
 	}
 
 	// 최신순 목록
-	public List<BoardDto> selectListByWriteTime(int min, int max) {
+	public List<BoardListVO> selectListByWriteTime(int min, int max) {
 		String sql = "select * from (" + "select rownum rn, TMP.* from ("
-				+ "select * from board order by board_wtime desc" + ")TMP) where rn between ? and ?";
+				+ "select board_no, board_title, board_wtime, board_view, category_name "
+				+ "from board join category on category_no = board_category_no "
+				+ "order by board_wtime desc" + ")TMP) where rn between ? and ?";
 		Object[] params = { min, max };
-		return jdbcTemplate.query(sql, boardMapper, params);
+		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
 
 //	조회순 추천순 시간순 목록 조회
@@ -215,7 +217,9 @@ public class BoardDao {
 
 	// 마이페이지 내글 보기 관련
 	public List<BoardListVO> selectByMemberId(String login_id) {
-		String sql = "select board_no, board_title, board_wtime, board_view from board " + "where board_writer = ? "
+		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
+				+ "join category on category_no = board_category_no " 
+				+ "where board_writer = ? "
 				+ "order by board_wtime desc";
 		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
