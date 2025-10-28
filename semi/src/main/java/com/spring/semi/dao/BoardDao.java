@@ -81,8 +81,8 @@ public class BoardDao {
 	
 	// 삭제된 글 조회
 	public List<BoardListVO> selectDeletedByMemberId(String login_id) {
-		String sql = "select board_no, board_title, board_wtime, board_view "
-				+ "from board "
+		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
+				+ "join category on category_no = board_category_no "
 				+ "where board_writer = ? and deleted = 1 "
 				+ "order by board_wtime desc";
 		Object[] params = {login_id};
@@ -130,7 +130,7 @@ public class BoardDao {
 		if (pageVO.isList()) {
 			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where b.board_category_no=? " + "    order by b.board_no desc" + "  ) TMP"
+					+ "    where b.board_category_no=? " + "  and deleted = 0  order by b.board_no desc" + "  ) TMP"
 					+ ") where rn between ? and ?";
 			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
 			return jdbcTemplate.query(sql, boardListMapper, params);
@@ -234,7 +234,7 @@ public class BoardDao {
 	public List<BoardListVO> selectByMemberId(String login_id) {
 		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
 				+ "join category on category_no = board_category_no " 
-				+ "where board_writer = ? "
+				+ "where board_writer = ? and deleted = 0"
 				+ "order by board_wtime desc";
 		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);

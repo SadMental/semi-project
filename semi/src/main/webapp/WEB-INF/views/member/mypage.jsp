@@ -223,6 +223,36 @@ $(function () {
             </div>
             <c:forEach var="board" items="${boardListVO}">
 <!--                 <hr class="hr-details"> -->
+			<c:set var="boardPath" value="/board/"/>
+			<c:choose>
+	    	<c:when test="${board.categoryName eq '자유게시판'}">
+		        <c:set var="boardPath" value="${boardPath}community" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '정보게시판'}">
+		        <c:set var="boardPath" value="${boardPath}info" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '펫플루언서'}">
+		        <c:set var="boardPath" value="${boardPath}petfluencer" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '분양게시판'}">
+		        <c:set var="boardPath" value="${boardPath}adoption" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '사용후기'}">
+		        <c:set var="boardPath" value="${boardPath}review" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq 'short'}">
+		        <c:set var="boardPath" value="${boardPath}short" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '동물위키'}">
+		        <c:set var="boardPath" value="${boardPath}animal" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '체험판123'}">
+		        <c:set var="boardPath" value="${boardPath}" />
+		    </c:when>
+		    <c:otherwise>
+		    </c:otherwise>
+			</c:choose>
+			<c:set var="boardRealPath" value="${boardPath}/detail?boardNo=${board.boardNo}" />
                 <div class="cell flex-box content write-board-code">
                     <input class="w-5p center content one-check" type="checkbox" name="boardNo" value="${board.boardNo}">
                     <div class="w-10p center content no">
@@ -230,7 +260,7 @@ $(function () {
                     </div>
                     <div class="w-65p content title" style="padding: 0 1.5em 0 1.5em;">
 
-                        <a href="/board/${board.categoryName }/detail?boardNo=${board.boardNo}" class="boardTitle">${board.boardTitle }</a>
+                        <a href="${boardRealPath}" class="boardTitle">${board.boardTitle }</a>
                     </div>
                     <div class="w-10p center content">
                         <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
@@ -258,13 +288,43 @@ $(function () {
 
             <!-- 삭제한 글 코드 구간 -->
             <c:forEach var="board" items="${deletedBoardListVO}">
+            <c:set var="boardPath" value="/board/"/>
+			<c:choose>
+	    	<c:when test="${board.categoryName eq '자유게시판'}">
+		        <c:set var="boardPath" value="${boardPath}community" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '정보게시판'}">
+		        <c:set var="boardPath" value="${boardPath}info" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '펫플루언서'}">
+		        <c:set var="boardPath" value="${boardPath}petfluencer" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '분양게시판'}">
+		        <c:set var="boardPath" value="${boardPath}adoption" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '사용후기'}">
+		        <c:set var="boardPath" value="${boardPath}review" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq 'short'}">
+		        <c:set var="boardPath" value="${boardPath}short" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '동물위키'}">
+		        <c:set var="boardPath" value="${boardPath}animal" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '체험판123'}">
+		        <c:set var="boardPath" value="${boardPath}" />
+		    </c:when>
+		    <c:otherwise>
+		    </c:otherwise>
+			</c:choose>
+			<c:set var="boardRealPath" value="${boardPath}/detail?boardNo=${board.boardNo}" />
 <!--             <hr class="hr-details"> -->
                 <div class="cell flex-box content delete-board-code">
                     <div class="w-10p center content no">
                         ${board.boardNo }
                     </div>
                     <div class="w-70p content title" style="padding: 0 1.5em 0 1.5em;">
-                        <a href="/board/info/detail?boardNo=${board.boardNo}" class="boardTitle">${board.boardTitle }</a>
+                        <a href="${boardRealPath}" class="boardTitle">${board.boardTitle }</a>
                     </div>
                     <div class="w-10p center content">
                         <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
