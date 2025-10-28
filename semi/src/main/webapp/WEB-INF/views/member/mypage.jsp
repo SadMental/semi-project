@@ -134,7 +134,7 @@ $(function () {
     	});
     
     $.ajax({
-    	url:"/board/free/mypageDelete",
+    	url:"/board/community/mypageDelete",
     	method:"post",
     	data:{boardNo: boardNos},
     	success: function(response) {
