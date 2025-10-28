@@ -89,6 +89,24 @@
     color: red;
   }
 </style>
+<script src="https://cdn.jsdelivr.net/gh/hiphop5782/score@latest/score.js"></script>
+<script type = "text/javascript">
+    $(function(){
+        $(".star-editor").score({
+            starColor:"#f1c40f",
+            //backgroundColor:"#dfe6e9",
+            editable:true,//false
+            integerOnly:true,//false
+            zeroAvailable:true,
+            send:{
+                sendable:true,
+                name:"reviewRate",//star
+            },
+        });
+    });
+</script>
+
+
 
 <form action="edit" method="post" enctype="multipart/form-data">
   <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
@@ -98,15 +116,30 @@
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
       <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
     </div>
-	  <select name="boardHeader" required>
-	          <option value="">-- 선택 --</option>
-	          <c:forEach var="headerDto" items="${headerList}">
-	              <option value="${headerDto.headerNo}">
-	                  ${headerDto.headerName}
-	              </option>
-	          </c:forEach>
-	  </select>
-    
+	  <div class="cell flex-box">
+			<select name="boardHeader" class="field w-100 mt-2">
+			    <option value="">-- 분류 선택 --</option>
+			    <c:forEach var="headerDto" items="${headerList}">
+					<option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+				</c:forEach>
+			</select>
+			<select name="boardAnimalHeader" class="field w-100 mt-2">
+			    <option value="">-- 분류 선택 --</option>
+			    <c:forEach var="animalHeaderDto" items="${animalHeaderList}">
+					<option value="${animalHeaderDto.animalHeaderNo}">${animalHeaderDto.animalHeaderName}</option>
+				</c:forEach>
+			</select>
+			<select name="boardTypeHeader" class="field w-100 mt-2">
+			    <option value="">-- 분류 선택 --</option>
+			    <c:forEach var="typeHeaderDto" items="${typeHeaderList}">
+					<option value="${typeHeaderDto.typeHeaderNo}">${typeHeaderDto.typeHeaderName}</option>
+				</c:forEach>
+			</select>
+		</div>
+		
+		<div class = "cell">
+            <div name="boardScore" class="star-editor" data-max="5" date-rate="${boardDto.boardScore}"></div>
+        </div>
     <div class="cell">
       <label for="title">제목 <i class="fa-solid fa-asterisk red"></i></label>
       <input type="text" name="boardTitle" id="title" value="${boardDto.boardTitle}" class="field w-100">

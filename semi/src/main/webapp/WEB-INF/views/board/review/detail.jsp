@@ -4,6 +4,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 
+
 <style>
 body {
 	background-color: #f4ede6;
@@ -88,11 +89,15 @@ h1 {
 </style>
 
 <div class="container w-800">
-<c:if test="${not empty headerDto}">
-    <tr>
-       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
-    </tr>
-</c:if>
+	<c:if test="${not empty headerDto}">
+	    <tr>
+	       <h1> [${headerDto.headerName}] ${boardDto.boardTitle}</h1>      
+	    </tr>
+	</c:if>
+	<div class="flex-box">
+	   <div class="badge me-10">${animalHeaderDto.animalHeaderName}</div>
+	   <div class="badge me-10">${typeHeaderDto.typeHeaderName}</div>
+	</div>
 
 
 	<div class="meta">
@@ -123,7 +128,7 @@ h1 {
 			    </td>
 
 	<div class="content">
-		<img src = "/board/animal/image?boardNo=${boardDto.boardNo}">
+		<img src = "/board/review/image?boardNo=${boardDto.boardNo}">
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
 	

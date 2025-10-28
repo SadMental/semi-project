@@ -175,7 +175,7 @@
 <div class="container w-800">
 
 	<div class="cell center">
-		<h1>동물위키</h1>	
+		<h1>사용후기</h1>	
 	</div>
 	<div class="cell center mt-30 mb-50">
 		<form action="list">
@@ -226,23 +226,30 @@
 					</thead>
 					<tbody>						
 						<table border="1">
-						    <c:forEach var="boardDto" items="${boardList}" varStatus="st">
+						    <c:forEach var="boardForReviewVO" items="${boardForReviewVOList}" varStatus="st">
 						        <tr>
 							        <td>
-							        	<a href="detail?boardNo=${boardDto.boardNo}">
+							        	<a href="detail?boardNo=${boardForReviewVO.boardNo}">
 							        		<div class="cell flex-box w-100p">
-							        			<img src="/board/review/image?boardNo=${boardDto.boardNo}" style="width:100px;">
+							        			<img src="/board/review/image?boardNo=${boardForReviewVO.boardNo}" style="width:100px;">
 							        			<div class="animal-container">
-							        				<div class="top-container flex-box w-400">
-							        					<label>${boardDto.boardTitle}</label>
-							        					<label class="red">[${boardDto.boardReply}]</label>
+							        				<div class="top-container flex-box w-600">
+							        					<div class="flex-box">
+														   <div class="badge me-10">${boardForReviewVO.animalHeaderName}</div>
+														   <div class="badge me-10">${boardForReviewVO.typeHeaderName}</div>
+														</div>
+							        					<label>${boardForReviewVO.boardTitle}</label>
+							        					<label class="red">[${boardForReviewVO.boardReply}]</label>
 							        				</div>
-							        				<div class="bottom-container flex-box w-400">
-							        					<img src="/member/profile?member_id=" + boadrDto.boardWriter" style="width:33px;">
-							        					<label style="font-size:0.8em;" class="ms-10 me-10">${boardDto.boardWriter}</label> 
-							        					<fmt:formatDate value="${boardDto.boardWtime}" pattern="MM-dd"/> 
-							        					<i class="fa fa-eye ms-10"></i> ${boardDto.boardView} 
-							        					<i class="fa fa-heart red ms-10"></i> ${boardDto.boardLike} 
+							        				<div class="bottom-container flex-box w-600">
+							        					<img src="/member/profile?member_id=" + boardForReviewVO.boardWriter" style="width:33px;">
+							        					<label style="font-size:0.8em;" class="ms-10 me-10">${boardForReviewVO.boardWriter}</label> 
+							        					<fmt:formatDate value="${boardForReviewVO.boardWtime}" pattern="MM-dd"/> 
+							        					<i class="fa fa-eye ms-10"></i> ${boardForReviewVO.boardView} 
+							        					<i class="fa fa-heart red ms-10"></i> ${boardForReviewVO.boardLike}
+							        					<div class="badge">						        					
+								        					<i class="fa-solid fa-star"></i> ${boardForReviewVO.boardScore}
+							        					</div>
 							        				</div>
 							        			</div>
 										    </div>

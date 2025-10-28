@@ -8,9 +8,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.spring.semi.dto.BoardDto;
+import com.spring.semi.mapper.BoardForReviewVOMapper;
 import com.spring.semi.mapper.BoardListMapper;
 import com.spring.semi.mapper.BoardListVOMapper;
 import com.spring.semi.mapper.BoardMapper;
+import com.spring.semi.vo.BoardForReviewVO;
 import com.spring.semi.vo.BoardListVO;
 import com.spring.semi.vo.PageVO;
 
@@ -25,6 +27,8 @@ public class BoardDao {
 	private BoardListMapper boardListMapper;
 	@Autowired
 	private BoardListVOMapper boardListVOMapper;
+	@Autowired
+	private BoardForReviewVOMapper boardForReviewVOMapper;
 
 
 	public int sequence() {
@@ -47,6 +51,26 @@ public class BoardDao {
 	        boardDto.getBoardHeader() // 
 	    };
 	    
+	    jdbcTemplate.update(sql, params);
+	}
+	
+	public void insertForReview(BoardDto boardDto, int boardType) {
+	    String sql = "insert into board (" +
+	                 "board_category_no, board_no, board_writer, board_title, board_content, board_header," +
+	                 "board_animal_header, board_type_header, board_score ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	    Object[] params = {
+	        boardType,
+	        boardDto.getBoardNo(),
+	        boardDto.getBoardWriter(),
+	        boardDto.getBoardTitle(),
+	        boardDto.getBoardContent(),
+	        boardDto.getBoardHeader(),
+	        boardDto.getBoardAnimalHeader(),
+	        boardDto.getBoardTypeHeader(),
+	        boardDto.getBoardScore()
+	    };
+
 	    jdbcTemplate.update(sql, params);
 	}
 
@@ -82,13 +106,15 @@ public class BoardDao {
 	public BoardDto selectOne(int boardNo) {
         String sql = "SELECT board_no, board_category_no, board_writer, "
                    + "board_title, board_content, board_view, board_like, "
-                   + "board_wtime, board_etime, board_header, board_reply "
+                   + "board_wtime, board_etime, board_header, board_reply, "
+                   + "board_animal_header, board_type_header, board_score "
                    + "FROM board "
                    + "WHERE board_no=?";
         Object[] params = { boardNo };
         List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
         return list.isEmpty() ? null : list.get(0);
     }
+	
 	// 삭제
 	public boolean delete(int boardNo) {
 		String sql = "delete board where board_no = ?";
@@ -108,6 +134,16 @@ public class BoardDao {
 		String sql = "update board " + "set board_title=?, board_content=?, board_header=? "  + ", board_etime=systimestamp "
 				+ "where board_no=?";
 		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardHeader(), boardDto.getBoardNo() };
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+	public boolean updateForReview(BoardDto boardDto) {
+		String sql = "update board set board_title=?, board_content=?, board_header=?, board_etime=systimestamp, "
+				+ "board_animal_header=?, board_type_header=?, board_score=? "
+				+ "where board_no=?";
+		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardHeader(), 
+				boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader(), boardDto.getBoardScore(),
+				boardDto.getBoardNo() };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
@@ -168,6 +204,43 @@ public class BoardDao {
 	        sql = sql.replace("#1", pageVO.getColumn());
 	        Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
 	        return jdbcTemplate.query(sql, boardListMapper, params);
+	    }
+	}
+	
+	public List<BoardForReviewVO> selectListWithPagingForReview(PageVO pageVO, int pageType)
+	{
+		if (pageVO.isList()) {
+	        String sql = "select * from (" +
+		            "  select rownum rn, TMP.* from (" +
+		            "    select b.*, h.header_name, a.animal_header_name, t.type_header_name " +
+		            "    from board b " +
+		            "    left join header h on b.board_header = h.header_no " +
+		            " 	 left join animal_header a on a.animal_header_no = b.board_animal_header " +
+		            "	 left join type_header t on t.type_header_no = b.board_type_header" +
+		            "    where b.board_category_no=? " +
+		            "    order by b.board_no desc" +
+		            "  ) TMP" +
+		            ") where rn between ? and ?";
+	        Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, boardForReviewVOMapper, params);
+	    } else {
+	        String sql = 
+	            "select * from (" +
+	            "  select rownum rn, TMP.* from (" +
+	            "    select b.*, h.header_name, a.animal_header_name, t.type_header_name  " +
+	            "    from board b " +
+	            "    left join header h on b.board_header = h.header_no " +
+		        " 	 left join animal_header a on a.animal_header_no = b.board_animal_header " +
+		        "	 left join type_header t on t.type_header_no = b.board_type_header" +
+	            "    where instr(#1, ?) > 0 " +
+	            "    and b.board_category_no=? " +
+	            "    order by #1 asc, b.board_no desc" +
+	            "  ) TMP" +
+	            ") where rn between ? and ?";
+
+	        sql = sql.replace("#1", pageVO.getColumn());
+	        Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
+	        return jdbcTemplate.query(sql, boardForReviewVOMapper, params);
 	    }
 	}
   
