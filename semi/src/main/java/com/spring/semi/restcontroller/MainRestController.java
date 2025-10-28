@@ -15,6 +15,7 @@ import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
+import com.spring.semi.vo.BoardListVO;
 
 @CrossOrigin
 @RestController
@@ -32,8 +33,8 @@ public class MainRestController {
 	}
 	
 	@PostMapping("/newboard")
-	public List<BoardDto> newboard() {
-		List<BoardDto> result = boardDao.selectListByWriteTime(1, 8);		
+	public List<BoardListVO> newboard() {
+		List<BoardListVO> result = boardDao.selectListByWriteTime(1, 8);		
 		return result;
 	}
 }

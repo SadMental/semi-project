@@ -15,6 +15,7 @@ public class BoardListVOMapper implements RowMapper<BoardListVO> {
         BoardListVO vo = new BoardListVO();
         vo.setBoardNo(rs.getInt("board_no"));
         vo.setBoardTitle(rs.getString("board_title"));
+        vo.setCategoryName(rs.getString("category_name"));
         vo.setBoardWtime(rs.getTimestamp("board_wtime"));
         vo.setBoardView(rs.getInt("board_view"));
         return vo;
