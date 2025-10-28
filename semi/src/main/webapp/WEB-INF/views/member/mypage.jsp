@@ -223,7 +223,7 @@ $(function () {
                         ${board.boardNo }
                     </div>
                     <div class="w-65p content title" style="padding: 0 1.5em 0 1.5em;">
-                        <a href="/infoBoard/detail?boardNo=${board.boardNo}" class="boardTitle">${board.boardTitle }</a>
+                        <a href="/board/${board.categoryName }/detail?boardNo=${board.boardNo}" class="boardTitle">${board.boardTitle }</a>
                     </div>
                     <div class="w-10p center content">
                         <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
