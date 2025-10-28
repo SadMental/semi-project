@@ -22,20 +22,28 @@ public class BoardDto {
 	private int boardView;
 	private Integer boardHeader;
 	private int boardReply;
+	
+	// 251028 board 테이블에 컬럼 추가
+	private int boardAnimalHeader;
+	private int boardTypeHeader;
+	private int boardScore;
+	
 
 	
 
-    public String getFormattedWtime() {
-        LocalDateTime wtime = boardWtime.toLocalDateTime();
-        LocalDateTime now = LocalDateTime.now();
+	public String getFormattedWtime() {
+	    if (boardWtime == null) return "";	
+	    LocalDateTime wtime = boardWtime.toLocalDateTime();
+	    LocalDateTime now = LocalDateTime.now();
 
-        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+	    DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
-            return wtime.format(timeFmt);
-        } else {
-            return wtime.format(dateFmt);
-        }
-    }
+	    if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
+	        return wtime.format(timeFmt);
+	    } else {
+	        return wtime.format(dateFmt);
+	    }
+	}
+
 }

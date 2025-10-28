@@ -126,7 +126,7 @@
 	justify-content: center;
 }
 </style>
-
+<div class="container w-1200">
 <header class="kh-header">
 	<div class="kh-header__wrap">
 		<div class="kh-top">
@@ -142,14 +142,14 @@
 					class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
 					class="kh-pill" href="/board/info/list">INFO</a> <a class="kh-pill"
 					href="/board/adoption/list">SERVICE</a>
-				<c:choose>
-			<c:when test="${sessionScope.loginId != null}">
-				<a class="kh-pill kh-pill--active" href="/member/logout">LOGOUT</a>
-			</c:when>
-			<c:otherwise>
-				<a class="kh-pill kh-pill--active" href="/member/login">LOGIN</a>
-			</c:otherwise>
-		</c:choose>
+				<%-- <c:choose>
+					<c:when test="${sessionScope.loginId != null}">
+						<a class="kh-pill kh-pill--active" href="/member/logout">LOGOUT</a>
+					</c:when>
+					<c:otherwise>
+						<a class="kh-pill kh-pill--active" href="/member/login">LOGIN</a>
+					</c:otherwise>
+				</c:choose> --%>
 				<a class="kh-pill" href="/admin/category/list">MENU</a>
 			</nav>
 		</div>
@@ -157,3 +157,4 @@
 	</div>
 
 </header>
+<div class="cell flex-box">

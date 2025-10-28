@@ -33,9 +33,9 @@
         	margin-left: 75px;
         }
     </style>
-    
+
+<div class="container w-600">
     <form class="check-form" action="join" method="post" enctype="multipart/form-data" autocomplete="off">
-        <div class="container w-600">
             <div class="cell">
                 <label>
                     <span>아이디</span>
@@ -116,7 +116,7 @@
 		<div class="cell">
 			<button type="submit" class="btn btn-positive w-75p">가입하기</button>
 		</div>
-	</div>
-</form>
+	</form>
+</div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

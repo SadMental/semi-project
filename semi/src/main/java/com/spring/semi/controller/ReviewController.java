@@ -26,43 +26,46 @@ import com.spring.semi.vo.PageVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board/fun")
-public class FunBoardController {
-	@Autowired
-	private MediaService mediaService;
+@RequestMapping("/board/review")
+public class ReviewController {
+	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
 	private HeaderDao headerDao;
-
+	
+	ReviewController(MediaService mediaService) {
+        this.mediaService = mediaService;
+    }
+	
 	@RequestMapping("/list")
 	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
 	{
+		pageVO.setSize(12);
 		pageVO.fixPageRange(); // ★ 페이지 범위 보정
-
-		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 24));
-		pageVO.setDataCount(boardDao.count(pageVO, 24));
+		
+		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 5));
+		pageVO.setDataCount(boardDao.count(pageVO, 5));
 		model.addAttribute("pageVO", pageVO);
-
-		return "/WEB-INF/views/board/fun/list.jsp";
+			
+		return "/WEB-INF/views/board/review/list.jsp";
 	}
 
-
+	
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-		       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-		       model.addAttribute("headerList", headerList);
-
-		return "/WEB-INF/views/board/fun/write.jsp";
+       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
+       model.addAttribute("headerList", headerList);
+		     
+       return "/WEB-INF/views/board/review/write.jsp";
 	}
-
+	
     @PostMapping("/write")
     public String write(@ModelAttribute BoardDto boardDto,
                         HttpSession session,
             			@RequestParam MultipartFile media,
-            			@RequestParam MultipartFile video,
             			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
     {
         String loginId = (String) session.getAttribute("loginId");
@@ -71,24 +74,20 @@ public class FunBoardController {
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
 
-
+      
         //  board와 header 연결
-
-        boardDao.insert(boardDto, 24);
-
+      
+        boardDao.insert(boardDto, 5);
+        
 		if(!media.isEmpty()) 
 		{
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardNo, mediaNo);
 		}
-		if(!video.isEmpty()) {
-			int videoNo = mediaService.save(video);
-			boardDao.connect_video(boardNo, videoNo);
-		}
-
+		
 		return "redirect:detail?boardNo=" + boardNo;
 	}
-
+	
 	@RequestMapping("/detail")
 	public String detail(HttpSession session,
 			Model model, 
@@ -108,9 +107,9 @@ public class FunBoardController {
 	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
 	           model.addAttribute("memberDto", memberDto);
 	       }
-		return "/WEB-INF/views/board/fun/detail.jsp";
+		return "/WEB-INF/views/board/review/detail.jsp";
 	}
-
+	
 	  @GetMapping("/edit")
 	   public String edit(Model model, @RequestParam int boardNo) {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
@@ -118,9 +117,9 @@ public class FunBoardController {
 	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
 	       model.addAttribute("headerList", headerList);
 	       model.addAttribute("boardDto", boardDto);
-		return "/WEB-INF/views/board/fun/edit.jsp";
+		return "/WEB-INF/views/board/review/edit.jsp";
 	}
-
+	
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute BoardDto boardDto,
 			@RequestParam MultipartFile media,
@@ -134,7 +133,7 @@ public class FunBoardController {
 				mediaService.delete(mediaNo);
 			}
 			catch(Exception e) {}
-
+			
 			int mediaNo = mediaService.save(media);
 			boardDao.connect(boardDto.getBoardNo(), mediaNo);
 		}
@@ -150,7 +149,7 @@ public class FunBoardController {
 				catch(Exception e) { /*아무것도 안함*/ }
 			}				
 		}
-
+		
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
 		if (beforeDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
@@ -180,14 +179,14 @@ public class FunBoardController {
 		boardDao.update(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}
-
+	
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int boardNo)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
-
+		
 //		if (boardDto.getBoardContent() == null)
 //			throw new TargetNotfoundException("게시글에 Content가 없음");		
 //		
@@ -203,27 +202,14 @@ public class FunBoardController {
 		boardDao.delete(boardNo);
 		return "redirect:list";
 	}
-
+	
 	@GetMapping("/image")
 	public String image(@RequestParam int boardNo) 
 	{
 		try 
 		{
 			int mediaNo = boardDao.findMedia(boardNo);
-			return "redirect:/media/download?mediaNo=" + mediaNo;
-		}
-		catch(Exception e) 
-		{
-			return "redirect:/image/error/no-image.png";
-		}
-	}
-	@GetMapping("/video")
-	public String video(@RequestParam int boardNo) 
-	{
-		try 
-		{
-			int mediaNo = boardDao.findVideo(boardNo);
-			return "redirect:/media/download?mediaNo=" + mediaNo;
+			return "redirect:/media/download?mediaNo=" + mediaNo;			
 		}
 		catch(Exception e) 
 		{

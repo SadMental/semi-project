@@ -36,7 +36,7 @@ $(function(){
 						}
                     }
                 });
-            }
+            },
         }
     });
 	$(".text-summernote-editor").summernote({
@@ -60,4 +60,23 @@ $(function(){
 	            }
 	        }
 	    });
+		$(".note-editable").on("input compositionend", function(){
+			var limit = $("#total-char").attr("data-maxLength");
+			var char = $(this).text();
+			var totalChar = char.length;
+			$("#total-char").text(totalChar); // 글자수 표시
+			    if(totalChar > limit){
+					totalChar = limit;
+					$("#total-char").text(totalChar); // 글자수 표시
+			        $(this).text(char.substring(0, limit)); // 제한
+			        // 커서를 맨 끝으로 이동
+			        var el = this;
+			        var range = document.createRange();
+			        var sel = window.getSelection();
+			        range.selectNodeContents(el);
+			        range.collapse(false);
+			        sel.removeAllRanges();
+			        sel.addRange(range);
+			    }
+		})
 });

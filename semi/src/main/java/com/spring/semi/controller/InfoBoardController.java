@@ -1,5 +1,6 @@
 package com.spring.semi.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -82,28 +83,38 @@ public class InfoBoardController {
 
 	}
 
-	// 목록
-	@RequestMapping("/list")
-	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) {
-		  int boardType = 2;
-		   CategoryDto categoryDto = categoryDao.selectOne(boardType); 
-	       pageVO.setSize(10);
-	       pageVO.setDataCount(boardDao.count(pageVO, boardType));
-	       List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO, boardType);
-	       // BoardDto마다 HeaderDto를 만들어 Map으로 매핑
-	       Map<Integer, HeaderDto> headerMap = new HashMap<>();
-	       for (BoardDto b : boardList) {
-	           HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
-	           if (headerDto != null) {
-	               headerMap.put(b.getBoardNo(), headerDto);
-	           }
-	       }
-	       model.addAttribute("category", categoryDto);
-	       model.addAttribute("boardList", boardList);
-	       model.addAttribute("headerMap", headerMap); // JSP에서 사용
-	       model.addAttribute("pageVO", pageVO);
-		return "/WEB-INF/views/board/info/list.jsp";
-	}
+	 @RequestMapping("/list")
+	 public String list(
+	         Model model,
+	         @ModelAttribute("pageVO") PageVO pageVO,
+	         @RequestParam(required = false, defaultValue = "wtime") String orderBy
+	 ) {
+	     int boardType = 2;
+	     CategoryDto categoryDto = categoryDao.selectOne(boardType);
+
+	     pageVO.setSize(10);
+	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
+
+	     List<BoardDto> boardList = boardDao.selectList(
+	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
+
+	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
+	     for (BoardDto b : boardList) {
+	         HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
+	         if (headerDto != null) {
+	             headerMap.put(b.getBoardNo(), headerDto);
+	         }
+	     }
+
+	     model.addAttribute("category", categoryDto);
+	     model.addAttribute("boardList", boardList);
+	     model.addAttribute("headerMap", headerMap);
+	     model.addAttribute("pageVO", pageVO);
+	     model.addAttribute("orderBy", orderBy);
+
+	     return "/WEB-INF/views/board/info/list.jsp";
+	 }
+
 
 	// 상세
 	@RequestMapping("/detail")

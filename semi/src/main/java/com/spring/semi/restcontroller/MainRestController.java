@@ -1,8 +1,5 @@
 package com.spring.semi.restcontroller;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
+import com.spring.semi.vo.BoardListVO;
 
 @CrossOrigin
 @RestController
@@ -32,8 +30,8 @@ public class MainRestController {
 	}
 	
 	@PostMapping("/newboard")
-	public List<BoardDto> newboard() {
-		List<BoardDto> result = boardDao.selectListByWriteTime(1, 8);		
+	public List<BoardListVO> newboard() {
+		List<BoardListVO> result = boardDao.selectListByWriteTime(1, 8);		
 		return result;
 	}
 }
