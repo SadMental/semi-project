@@ -82,7 +82,8 @@ public class BoardDao {
 	public BoardDto selectOne(int boardNo) {
         String sql = "SELECT board_no, board_category_no, board_writer, "
                    + "board_title, board_content, board_view, board_like, "
-                   + "board_wtime, board_etime, board_header, board_reply "
+                   + "board_wtime, board_etime, board_header, board_reply, "
+                   + "board_animal_header, board_type_header, board_score "
                    + "FROM board "
                    + "WHERE board_no=?";
         Object[] params = { boardNo };
