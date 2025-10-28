@@ -11,7 +11,6 @@
 			<a class="btn btn-neutral mt-10 w-50p" href="member/list">회원 관리 페이지</a>
 			<a class="btn btn-neutral mt-10 w-50p" href="animal/list">동물 관리 페이지</a>
 		</div>
-	
 	</div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
