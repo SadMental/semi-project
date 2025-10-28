@@ -50,22 +50,21 @@ public class BoardDao {
 	    jdbcTemplate.update(sql, params);
 	}
 
-	public List<BoardDto> selectList(int boardType) {
-	    String sql = "SELECT b.*, h.header_name " +
-	                 "FROM board b " +
-	                 "LEFT JOIN header h ON b.board_header = h.header_no " +
-	                 "WHERE b.board_category_no = ? " +
-	                 "ORDER BY CASE h.header_name " +
-	                 "           WHEN '공지사항(필독)' THEN 1 " +
-	                 "           WHEN 'FAQ(자주 묻는 질문)' THEN 2 " +
-	                 "           WHEN '이벤트' THEN 3 " +
-	                 "           ELSE 4 " +
-	                 "         END, " +
-	                 "         b.board_no DESC";
-	    Object[] params = { boardType };
-	    return jdbcTemplate.query(sql, boardListMapper, params);
-	}
-
+//	public List<BoardDto> selectList(int boardType) {
+//	    String sql = "SELECT b.*, h.header_name " +
+//	                 "FROM board b " +
+//	                 "LEFT JOIN header h ON b.board_header = h.header_no " +
+//	                 "WHERE b.board_category_no = ? " +
+//	                 "ORDER BY CASE h.header_name " +
+//	                 "           WHEN '공지사항(필독)' THEN 1 " +
+//	                 "           WHEN 'FAQ(자주 묻는 질문)' THEN 2 " +
+//	                 "           WHEN '이벤트' THEN 3 " +
+//	                 "           ELSE 4 " +
+//	                 "         END, " +
+//	                 "         b.board_no DESC";
+//	    Object[] params = { boardType };
+//	    return jdbcTemplate.query(sql, boardListMapper, params);
+//	}
 
 	// 검색
 	public List<BoardDto> searchList(String column, String keyword) {
@@ -185,6 +184,7 @@ public class BoardDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
+	//최신순 목록
 	public List<BoardDto> selectListByWriteTime(int min, int max)
 	{
 		String sql = "select * from ("
@@ -194,6 +194,29 @@ public class BoardDao {
 		Object[] params = {min, max};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
+//	조회순 추천순 시간순 목록 조회
+	// categoryNo를 추가해서 특정 카테고리 게시글만 조회
+	public List<BoardDto> selectList(int min, int max, String orderBy, int categoryNo) {
+	    String orderColumn;
+	    switch(orderBy) {
+	        case "view": orderColumn = "board_view"; break;
+	        case "like": orderColumn = "board_like"; break;
+	        case "wtime":
+	        default: orderColumn = "board_wtime"; break;
+	    }
+
+	    String sql = "SELECT * FROM ( " +
+	                 "  SELECT rownum rn, TMP.* FROM ( " +
+	                 "    SELECT * FROM board " +
+	                 "    WHERE board_category_no = ? " + 
+	                 "    ORDER BY " + orderColumn + " DESC " +
+	                 "  ) TMP " +
+	                 ") WHERE rn BETWEEN ? AND ?";
+
+	    Object[] params = {categoryNo, min, max};
+	    return jdbcTemplate.query(sql, boardMapper, params);
+	}
+
 
 public void connect(int boardNo, int mediaNo) 
 	{
