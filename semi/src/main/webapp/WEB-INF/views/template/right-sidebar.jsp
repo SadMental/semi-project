@@ -9,7 +9,7 @@
         <img src="#" style="width:32px" class="ranking-profile ms-10">
 
         <div class="ranking-wrapper flex-box flex-vertical" style="width:60%">
-            <span class="ranking-nickname left">닉네임</span>
+            <a class="ranking-nickname left link" href="#">닉네임</a>
             <span class="ranking-description text-ellipsis left" style="color:gray; font-size: 0.8em;">설명</span>
         </div>
         
@@ -20,9 +20,13 @@
     </div>
 </script>
 <script type="text/template" id="new-board-template">
-    <div class="cell w-100p new-board-wrapper">
-        <span class="new-board-title w-50p">제목</span>
-        <span class="new-board-time w-50p" style="color:#e67e22;">시간</span>
+    <div class="cell w-100p new-board-wrapper flex-box">
+		<div class="left flex-fill">
+        	<a class="new-board-title link" href="#">제목</a>
+		</div>
+		<div class="right">
+        	<span class="new-board-time" style="color:#e67e22;">시간</span>
+		</div>
     </div>
 </script>
 
@@ -57,8 +61,9 @@
 	
 	                    var html = $($.parseHTML($("#new-board-template").text()))
 	                    
-	
-	                    html.find(".new-board-title").text(newboard.boardTitle);
+	                    var url = "/board/" + newboard.categoryName + "/detail?boardNo=" + newboard.boardNo
+						
+	                    html.find(".new-board-title").text(newboard.boardTitle).attr("href", url);
 	                    html.find(".new-board-time").text(newboard.formattedWtime);
 	                    
 	                    htmlBuffer.push(html);
@@ -91,8 +96,10 @@
 	                    html.find(".ranking-profile").attr("src", "/member/profile?member_id=" + ranking.memberId);
 	                    html.find(".number").text(number);
 	                    number++;
+	                    
+	                    var url = "/member/detail?memberNickname=" + ranking.memberNickname
 	
-	                    html.find(".ranking-nickname").text(ranking.memberNickname);
+	                    html.find(".ranking-nickname").text(ranking.memberNickname).attr("href", url);
 	                    html.find(".ranking-description").text(ranking.memberDescription);
 	
 	                    html.find(".ranking-member-point").text(ranking.memberPoint);
