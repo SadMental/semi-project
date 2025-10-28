@@ -105,6 +105,8 @@ create table board(
 	board_view number default 0 not null,
     -- 게시글의 머리글 번호
 	board_header references header(header_no) on delete set null
+	-- 게시글 삭제시 DB에 남아있게 추가
+	ALTER TABLE board ADD deleted NUMBER(1) DEFAULT 0 NOT NULL;
 );
 
 create sequence board_seq;
