@@ -1,9 +1,9 @@
 package com.spring.semi.restcontroller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,6 @@ public class BoardRestController {
 	private BoardLikeDao boardLikeDao;
 	@Autowired
 	private BoardDao boardDao;
-	
 	//좋아요 확인
 	@GetMapping("/check")
 	public BoardLikeVO check(HttpSession session, @RequestParam int boardNo) {
@@ -52,6 +51,6 @@ public class BoardRestController {
 		boardDao.updateBoardLike(boardNo, count);
 		boardLikeVO.setCount(count);
 		return boardLikeVO;
-	}	
-	
+	}
+
 }

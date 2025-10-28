@@ -44,28 +44,33 @@ public class CreateBoardController {
         this.mediaService = mediaService;
     }
 	
-    // ✅ 목록
+ // 목록 + 정렬 기능 (카테고리별)
     @GetMapping("/{categoryName}/list")
     public String list(
             @PathVariable String categoryName,
+            @RequestParam(required = false, defaultValue = "wtime") String orderBy,
             @ModelAttribute("pageVO") PageVO pageVO,
             Model model) {
 
+        // URL 디코딩
         categoryName = URLDecoder.decode(categoryName, StandardCharsets.UTF_8);
 
+        // 카테고리 조회
         CategoryDto category = categoryDao.selectOneByName(categoryName);
-        if (category == null)
+        if (category == null) {
             throw new TargetNotfoundException("존재하지 않는 게시판입니다.");
-
+        }
         int categoryNo = category.getCategoryNo();
 
-        // ✅ 게시글 목록 정렬 순서 보장
+        // 페이징 설정
         pageVO.setSize(10);
         int dataCount = boardDao.count(pageVO, categoryNo);
         pageVO.setDataCount(dataCount);
-        List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO, categoryNo);
 
-        // ✅ header 매핑 추가 (header 이름 표시용)
+        List<BoardDto> boardList = boardDao.selectList(
+                pageVO.getBegin(), pageVO.getEnd(), orderBy, categoryNo);
+
+        // 헤더 매핑
         Map<Integer, HeaderDto> headerMap = new HashMap<>();
         for (BoardDto board : boardList) {
             if (board.getBoardHeader() >= 1) {
@@ -76,15 +81,20 @@ public class CreateBoardController {
             }
         }
 
+        // 모델에 데이터 담기
         model.addAttribute("category", category);
         model.addAttribute("boardList", boardList);
         model.addAttribute("headerMap", headerMap);
         model.addAttribute("pageVO", pageVO);
+        model.addAttribute("orderBy", orderBy);
 
         return "/WEB-INF/views/board/common/list.jsp";
     }
 
-    // ✅ 작성 폼
+
+
+    //작성
+
     @GetMapping("/{categoryName}/write")
     public String writeForm(@PathVariable String categoryName, Model model) {
         categoryName = URLDecoder.decode(categoryName, StandardCharsets.UTF_8);
@@ -93,14 +103,14 @@ public class CreateBoardController {
         if (category == null)
             throw new TargetNotfoundException("존재하지 않는 게시판입니다.");
 
-        // ✅ header 리스트 추가 (선택 가능하도록)
+ 
         List<HeaderDto> headerList = headerDao.selectAll();
         model.addAttribute("headerList", headerList);
         model.addAttribute("category", category);
         return "/WEB-INF/views/board/common/write.jsp";
     }
 
-    // ✅ 작성 처리
+
     @PostMapping("/{categoryName}/write")
     public String write(
             @PathVariable String categoryName,
@@ -135,7 +145,8 @@ public class CreateBoardController {
         return "redirect:/board/" + encodedCategory + "/detail?boardNo=" + boardNo;
     }
 
-    // ✅ 상세
+    //상세
+
     @GetMapping("/{categoryName}/detail")
     public String detail(
             @PathVariable String categoryName,
@@ -152,7 +163,7 @@ public class CreateBoardController {
         if (boardDto == null)
             throw new TargetNotfoundException("존재하지 않는 게시글입니다.");
 
-        // ✅ headerName 표시용
+ 
         HeaderDto header = headerDao.selectOne(boardDto.getBoardHeader());
         if (header != null) {
             model.addAttribute("headerDto", header);
@@ -168,7 +179,7 @@ public class CreateBoardController {
         return "/WEB-INF/views/board/common/detail.jsp";
     }
 
-    // ✅ 삭제
+    //삭제
     @PostMapping("/{categoryName}/delete")
     public String delete(
             @PathVariable String categoryName,
@@ -194,7 +205,8 @@ public class CreateBoardController {
         return "redirect:/board/" + encodedCategory + "/list";
     }
 
-    // ✅ 수정 폼
+
+    //수정
     @GetMapping("/{categoryName}/edit")
     public String editForm(
             @PathVariable String categoryName,
@@ -226,7 +238,7 @@ public class CreateBoardController {
         return "/WEB-INF/views/board/common/edit.jsp";
     }
 
-    // 
+
     @PostMapping("/{categoryName}/edit")
     public String edit(
             @PathVariable String categoryName,
@@ -244,7 +256,7 @@ public class CreateBoardController {
             throw new TargetNotfoundException("수정 권한이 없습니다.");
         }
 
-        // ✅ header 유효성 검사
+
         Integer headerNo = boardDto.getBoardHeader();
         if (headerNo != null) {
             HeaderDto headerCheck = headerDao.selectOne(headerNo);

@@ -31,17 +31,19 @@ public class BoardDto {
 
 	
 
-    public String getFormattedWtime() {
-        LocalDateTime wtime = boardWtime.toLocalDateTime();
-        LocalDateTime now = LocalDateTime.now();
+	public String getFormattedWtime() {
+	    if (boardWtime == null) return "";	
+	    LocalDateTime wtime = boardWtime.toLocalDateTime();
+	    LocalDateTime now = LocalDateTime.now();
 
-        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+	    DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
-            return wtime.format(timeFmt);
-        } else {
-            return wtime.format(dateFmt);
-        }
-    }
+	    if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
+	        return wtime.format(timeFmt);
+	    } else {
+	        return wtime.format(dateFmt);
+	    }
+	}
+
 }
