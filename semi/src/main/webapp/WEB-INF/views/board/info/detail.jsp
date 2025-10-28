@@ -197,11 +197,11 @@ $(function() {
 </script>
 
 <div class="container w-800">
-<c:if test="${not empty headerDto}">
-    <tr>
-       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
-    </tr>
-</c:if>
+	<c:if test="${not empty headerDto}">
+		<tr>
+			<h1>[${headerDto.headerName}] ${boardDto.boardTitle}</h1>
+		</tr>
+	</c:if>
 
 
 	<div class="meta">
@@ -212,24 +212,27 @@ $(function() {
 			</tr>
 			<tr>
 				<th>[작성자] :</th>
-				<td>${boardDto.boardWriter}</td>
+				<td>${memberVO.memberNickname} <span
+					class="grade-badge ${memberVO.grade}"> ${memberVO.emoji}
+						${memberVO.badgeName} </span>
+				</td>
 			</tr>
+
 			<tr>
 				<th>[작성일] :</th>
 				<td>${boardDto.boardWtime}</td>
 			</tr>
 			<tr>
-			    <th>[수정일] :</th>
-			    <td>
-			        <c:choose>
-			            <c:when test="${not empty boardDto.boardEtime}">
-			                <fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm"/>
-			            </c:when>
-			            <c:otherwise>
-			                
-			            </c:otherwise>
-			        </c:choose>
-			    </td>
+				<th>[수정일] :</th>
+				<td><c:choose>
+						<c:when test="${not empty boardDto.boardEtime}">
+							<fmt:formatDate value="${boardDto.boardEtime}"
+								pattern="yyyy-MM-dd HH:mm" />
+						</c:when>
+						<c:otherwise>
+
+						</c:otherwise>
+					</c:choose></td>
 			</tr>
 		</table>
 	</div>
