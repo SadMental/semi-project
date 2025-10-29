@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,63 +18,45 @@ public class AdminHeaderController {
 	@Autowired
    private HeaderDao headerDao;
    /** 목록 페이지 */
-	@GetMapping("/{type}/list")
-	public String list(
-			Model model,
-			@PathVariable String type
-			) {
-	    List<HeaderDto> headerList = headerDao.selectList(type);
+	@GetMapping("/list")
+	public String list(Model model) {
+	    List<HeaderDto> headerList = headerDao.selectAll();
 	    model.addAttribute("headerList", headerList);
 	    return "/WEB-INF/views/admin/header/list.jsp";
 	}
-	
    /** 등록 페이지 */
-   @GetMapping("/{type}/add")
-   public String addPage(
-		   @PathVariable String type
-		   ) {
+   @GetMapping("/add")
+   public String addPage() {
        return "/WEB-INF/views/admin/header/add.jsp";
    }
    /** 등록 처리 */
-   @PostMapping("/{type}/add")
-   public String add(
-		   @ModelAttribute HeaderDto headerDto,
-		   @PathVariable String type
-		   ) {
-	   int seq = headerDao.sequence(type);
-	   headerDto.setHeaderNo(seq);
-	   headerDao.insert(headerDto, type); // DTO로 전달
-	   return "redirect:list";
+   @PostMapping("/add")
+   public String add(@RequestParam String headerName) {
+       HeaderDto headerDto = new HeaderDto();
+       headerDto.setHeaderNo(headerDao.sequence());
+       headerDto.setHeaderName(headerName);
+       headerDao.insert(headerDto); // DTO로 전달
+       return "redirect:list";
    }
  
    /** 수정 페이지 */
-   @GetMapping("/{type}/edit")
-   public String editPage(
-		   @RequestParam int headerNo, 
-		   @PathVariable String type,
-		   Model model
-		   ) {
-       HeaderDto headerDto = headerDao.selectOne(headerNo, type);
+   @GetMapping("/edit")
+   public String editPage(@RequestParam int headerNo, Model model) {
+       HeaderDto headerDto = headerDao.selectOne(headerNo);
 
        model.addAttribute("headerDto", headerDto);
        return "/WEB-INF/views/admin/header/edit.jsp";
    }
    /** 수정 처리 */
-   @PostMapping("/{type}/edit")
-   public String edit(
-		   @ModelAttribute HeaderDto headerDto,
-		   @PathVariable String type
-		   ) {
+   @PostMapping("/edit")
+   public String edit(@ModelAttribute HeaderDto headerDto) {
      
-       headerDao.update(headerDto, type);
-       return "redirect:list";
+       headerDao.update(headerDto);
+       return "redirect:/admin/header/list";
    }
-   @PostMapping("/{type}/delete")
-   public String delete(
-		   @RequestParam int headerNo,
-		   @PathVariable String type
-		   ) {
-       headerDao.delete(headerNo, type);
+   @PostMapping("/delete")
+   public String delete(@RequestParam int headerNo) {
+       headerDao.delete(headerNo);
        return "redirect:list";
    }
 }

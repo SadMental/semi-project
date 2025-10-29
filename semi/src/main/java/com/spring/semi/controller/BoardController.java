@@ -212,6 +212,7 @@ public class BoardController {
 
 		return "redirect:list";
 	}
+// test용 주석
 	
 	@PostMapping("/mypageDelete")
 	@ResponseBody
