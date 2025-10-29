@@ -209,9 +209,11 @@ public class BoardController {
 //		model.addAttribute("memberPoint", member.getMemberPoint());
 //				
 //		}
+
 		return "redirect:list";
 	}
-
+// test용 주석
+	
 	@PostMapping("/mypageDelete")
 	@ResponseBody
 	public String mypageDelete(@RequestParam("boardNo") List<Integer> boardNoList) {
