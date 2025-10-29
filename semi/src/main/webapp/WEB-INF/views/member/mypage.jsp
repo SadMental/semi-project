@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-
+<script src="/js/member-profile.js"></script>
 <style>
 .green {
 	color: rgb(126, 49, 35) !important;
@@ -151,6 +151,17 @@ $(function () {
 <div class="container w-900">
         <div class="cell">
             <table class="table">
+            	<tr>
+            		<th>프로필 이미지</th>
+            		<td>
+		            	<div class="cell center">
+					        <img class="image-profile" src="profile?member_id=${memberDto.memberId }" width="100">
+					        <label for="profile-input" class="flex-box flex-center">변경</label>
+					        <label id="profile-delete" class="flex-box flex-center">제거</label>
+					        <input type="file" id="profile-input" name="media" style="display: none;">
+					    </div>
+				    </td>
+			    </tr>
                 <tr>
                     <th>아이디</th>
                     <td>${memberDto.memberId }</td>
@@ -199,6 +210,7 @@ $(function () {
             <div class="cell">
                 <a type="button" class="btn btn-neutral" href="edit">정보 수정하기</a>
                 <a type="button" class="btn btn-neutral" href="password">비밀번호 변경</a>
+                <a type="button" class="btn btn-neutral" href="/animal/list">동물 관리</a>
                 <a type="button" class="btn btn-negative" href="drop">회원 탈퇴하기</a>
             </div>
             <br><br>
