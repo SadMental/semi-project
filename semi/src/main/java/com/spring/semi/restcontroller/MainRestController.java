@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.MemberDao;
-import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.vo.BoardListVO;
 

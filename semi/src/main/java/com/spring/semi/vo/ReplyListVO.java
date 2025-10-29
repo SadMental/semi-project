@@ -18,4 +18,5 @@ public class ReplyListVO {
 	private Timestamp replyEtime;
 	private boolean writer;
 	private boolean owner;
+	private int replyLike;
 }

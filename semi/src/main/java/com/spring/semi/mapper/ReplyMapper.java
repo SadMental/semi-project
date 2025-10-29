@@ -2,7 +2,6 @@ package com.spring.semi.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -22,6 +21,7 @@ public class ReplyMapper implements RowMapper<ReplyDto> {
 				.replyWriter(rs.getString("reply_writer"))
 				.replyWtime(rs.getTimestamp("reply_wtime"))
 				.replyEtime(rs.getTimestamp("reply_etime"))
+				.replyLike(rs.getInt("reply_like"))
 				.build();
 	}
 }

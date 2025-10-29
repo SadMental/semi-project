@@ -9,6 +9,37 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
 <style>
+	.board-meta {
+	  background-color: #fffdf9;
+	  border: 2px solid #d8c3a5;
+	  border-radius: 12px;
+	  padding: 15px 20px;
+	  margin: 20px 0;
+	  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+	}
+	.board-meta table {
+	  width: 100%;
+	  border-collapse: collapse;
+	}
+	.board-meta th {
+	  width: 100px;
+	  text-align: left;
+	  padding: 6px 10px;
+	  color: #6b4f34;
+	  font-weight: 600;
+	}
+	.board-meta td {
+	  padding: 6px 10px;
+	  color: #3e3e3e;
+	}
+	.board-title {
+	  font-size: 1.8rem;
+	  font-weight: bold;
+	  color: #5b3a29;
+	  border-bottom: 3px double #d6c2a6;
+	  padding-bottom: 10px;
+	  margin-bottom: 15px;
+	}	
 body {
 	background-color: #f4ede6;
 	color: #5b3a29;
@@ -199,39 +230,28 @@ $(function() {
 <div class="container w-800">
 <c:if test="${not empty headerDto}">
     <tr>
-       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
+       <h1> [${typeHeaderDto.typeHeaderName}]   ${boardDto.boardTitle}</h1>      
     </tr>
 </c:if>
 
 
-	<div class="meta">
-		<table>
-			<tr>
-				<th>[번호] :</th>
-				<td>${boardDto.boardNo}</td>
-			</tr>
-			<tr>
-				<th>[작성자] :</th>
-				<td>${boardDto.boardWriter}</td>
-			</tr>
-			<tr>
-				<th>[작성일] :</th>
-				<td>${boardDto.boardWtime}</td>
-			</tr>
-			<tr>
-			    <th>[수정일] :</th>
-			    <td>
-			        <c:choose>
-			            <c:when test="${not empty boardDto.boardEtime}">
-			                <fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm"/>
-			            </c:when>
-			            <c:otherwise>
-			                
-			            </c:otherwise>
-			        </c:choose>
-			    </td>
-			</tr>
-		</table>
+<div class="board-meta">
+    <table>
+        <tr>
+            <th>작성자</th>
+            <td>${boardDto.boardWriter}</td>
+            <th>작성일</th>
+            <td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm" /></td>
+        </tr>
+        <tr>
+            <th>수정일</th>
+            <td colspan="3"><fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm" /></td>
+        </tr>
+        <tr>
+            <th>동물분류</th>
+            <td>[${animalHeaderDto.animalHeaderName}]</td>
+        </tr>
+    </table>
 	</div>
 
 	<div class="content">
