@@ -159,7 +159,7 @@ public class MemberController {
 		List<BoardListVO> boardListVO = boardDao.selectByMemberId(loginId);
 		
 		//삭제된 글 리스트 
-		List<BoardListVO> deletedBoardListVO = boardDao.selectDeletedByMemberId(login_id);
+		List<BoardListVO> deletedBoardListVO = boardDao.selectDeletedByMemberId(loginId);
 		
 		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);

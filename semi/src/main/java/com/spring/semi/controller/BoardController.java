@@ -204,7 +204,7 @@ public class BoardController {
 		//게시글 포인트 차감
 		String loginId = (String) session.getAttribute("loginId");
 		if(loginId != null) {
-		memberDao.minusPoint(loginId, 50);
+//		memberDao.minusPoint(loginId, 50);
 		MemberDto member = memberDao.selectOne(loginId);
 		model.addAttribute("memberPoint", member.getMemberPoint());
 				
