@@ -86,9 +86,9 @@ public class PetfluencerController {
 		}
 		
 		//게시글 포인트
-//		memberDao.addPoint(loginId, 50);
-//		MemberDto member = memberDao.selectOne(loginId);
-//		model.addAttribute("memberPoint", member.getMemberPoint());
+		memberDao.addPoint(loginId, 50);
+		MemberDto member = memberDao.selectOne(loginId);
+		model.addAttribute("memberPoint", member.getMemberPoint());
 		
 		
 		return "redirect:detail?boardNo=" + boardNo;

@@ -76,7 +76,7 @@ public class AdoptionBoardController {
        boardDao.insert(boardDto, boardType);
        
        //게시글 포인트
-       memberDao.addPoint(loginId, 70);
+       memberDao.addPoint(loginId, 60);
        MemberDto member = memberDao.selectOne(loginId);
        model.addAttribute("memberPoint", member.getMemberPoint());
        
@@ -184,4 +184,3 @@ public class AdoptionBoardController {
        return "/WEB-INF/views/board/adoption/detail.jsp";
    }
 }
-

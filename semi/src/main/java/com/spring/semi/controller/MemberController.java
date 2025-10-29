@@ -158,9 +158,13 @@ public class MemberController {
 		//작성글 리스트
 		List<BoardListVO> boardListVO = boardDao.selectByMemberId(loginId);
 		
+		//삭제된 글 리스트 
+		List<BoardListVO> deletedBoardListVO = boardDao.selectDeletedByMemberId(login_id);
+		
 		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("boardListVO", boardListVO);
+		model.addAttribute("deletedBoardListVO", deletedBoardListVO);
 				
 		return "/WEB-INF/views/member/mypage.jsp";
 	}
