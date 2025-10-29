@@ -192,4 +192,18 @@ $(function () {
 		}
 		return true
 	})
+	
+	$("[name=media]").on('input', function () {
+        var originUrl = $(".img-preview").prop("src")
+        if(originUrl.startsWith("blob:")){
+            URL.revokeObjectURL(originUrl);
+        }
+
+        if(this.files.length == 0) { //파일 선택을 취소한 것
+            $(".img-preview").prop("src", "/images/error/no-image.png");
+        } else { // 파일을 선택한 것
+            var imageUrl = URL.createObjectURL(this.files[0]);
+            $(".img-preview").prop("src", imageUrl);
+        }
+    });
 });

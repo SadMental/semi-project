@@ -79,6 +79,12 @@ public class AnimalDao {
 		return list.isEmpty()? null : list.get(0);
 	}
 	
+	public int findMediaNo(String animal_no) {
+		String sql = "select media_no from animal_profile where animal_no = ?";
+		Object[] params = { animal_no };
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	
 	//페이징용
 		public int count(PageVO pageVO) {
 			if(pageVO.isList()) {
@@ -114,5 +120,13 @@ public class AnimalDao {
 				Object[] params = {pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()};
 				return jdbcTemplate.query(sql, animalMapper, params);
 			}
+		}
+		public void connect(int animalNo, int mediaNo) {
+			String sql = "insert into animal_profile values(?, ?)";
+			
+			Object[] params = {animalNo, mediaNo};
+			
+			jdbcTemplate.update(sql, params);
+			
 		}
 }
