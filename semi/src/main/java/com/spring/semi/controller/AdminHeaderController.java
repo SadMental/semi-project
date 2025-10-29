@@ -14,19 +14,14 @@ import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dto.HeaderDto;
 @Controller
 @RequestMapping("/admin/header")
-public class HeaderController {
+public class AdminHeaderController {
 	@Autowired
    private HeaderDao headerDao;
    /** 목록 페이지 */
 	@GetMapping("/list")
 	public String list(Model model) {
 	    List<HeaderDto> headerList = headerDao.selectAll();
-	   
-	 	    for(HeaderDto header : headerList) {
-	        System.out.println(header.getHeaderNo() + " / " + header.getHeaderName());
-	    }
 	    model.addAttribute("headerList", headerList);
-	  
 	    return "/WEB-INF/views/admin/header/list.jsp";
 	}
    /** 등록 페이지 */
@@ -38,8 +33,8 @@ public class HeaderController {
    @PostMapping("/add")
    public String add(@RequestParam String headerName) {
        HeaderDto headerDto = new HeaderDto();
+       headerDto.setHeaderNo(headerDao.sequence());
        headerDto.setHeaderName(headerName);
-
        headerDao.insert(headerDto); // DTO로 전달
        return "redirect:list";
    }
