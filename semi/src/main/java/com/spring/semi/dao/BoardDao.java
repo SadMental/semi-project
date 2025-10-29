@@ -37,11 +37,11 @@ public class BoardDao {
 	// 등록
 	public void insert(BoardDto boardDto, int boardType) {
 		String sql = "insert into board ("
-				+ "board_category_no, board_no, board_writer, board_title, board_content, board_header"
-				+ ") values (?, ?, ?, ?, ?, ?)";
+				+ "board_category_no, board_no, board_writer, board_title, board_content, board_animal_header, board_type_header"
+				+ ") values (?, ?, ?, ?, ?, ?, ?)";
 
 		Object[] params = { boardType, boardDto.getBoardNo(), boardDto.getBoardWriter(), boardDto.getBoardTitle(),
-				boardDto.getBoardContent(), boardDto.getBoardHeader() //
+				boardDto.getBoardContent(), boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader() //
 		};
 
 		jdbcTemplate.update(sql, params);
@@ -101,9 +101,9 @@ public class BoardDao {
 
 	// 수정
 	public boolean update(BoardDto boardDto) {
-		String sql = "update board " + "set board_title=?, board_content=?, board_header=? "
+		String sql = "update board " + "set board_title=?, board_content=?, board_header=?, board_animal_header = ?, board_type_header = ? "
 				+ ", board_etime=systimestamp " + "where board_no=?";
-		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardHeader(),
+		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader(),
 				boardDto.getBoardNo() };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
