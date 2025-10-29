@@ -173,12 +173,12 @@ public class BoardDao {
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from (select b.*, "
 					+ "h.header_name, "
-					+ "a.animal_header_name, "
-					+ "t.type_header_name "
+					+ "a.header_name as animal_header_name, "
+					+ "t.header_name as type_header_name "
 					+ "from board b "
 					+ "left join header h on b.board_header = h.header_no "
-					+ "left join animal_header a on b.board_animal_header = a.animal_header_no "
-					+ "left join type_header t on b.board_type_header = t.type_header_no "
+					+ "left join animal_header a on b.board_animal_header = a.header_no "
+					+ "left join type_header t on b.board_type_header = t.header_no "
 					+ "where b.board_category_no=? and b.deleted = 0 order by b.board_no desc) TMP"
 					+ ") where rn between ? and ?";
 			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
@@ -187,12 +187,12 @@ public class BoardDao {
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from (select b.*, "
 					+ "h.header_name, "
-					+ "a.animal_header_name, "
-					+ "t.type_header_name "
+					+ "a.header_name as animal_header_name, "
+					+ "t.header_name as type_header_name "
 					+ "from board b "
 					+ "left join header h on b.board_header = h.header_no "
-					+ "left join animal_header a on b.board_animal_header = a.animal_header_no "
-					+ "left join type_header t on b.board_type_header = t.type_header_no "
+					+ "left join animal_header a on b.board_animal_header = a.header_no "
+					+ "left join type_header t on b.board_type_header = t.header_no "
 					+ "where instr(#1, ?) > 0 and b.board_category_no=? and b.deleted = 0 order by b.board_no desc) TMP"
 					+ ") where rn between ? and ?";
 			sql = sql.replace("#1", pageVO.getColumn());
@@ -288,10 +288,14 @@ public class BoardDao {
 	public List<BoardDto> selectListWithPagingForMainPageReview(int pageType, int min, int max) {
 
 		String sql = "select * from ("
-				+ "select rownum rn, TMP.* from (select b.*, h.header_name,  a.animal_header_name, t.type_header_name from board b "
+				+ "select rownum rn, TMP.* from (select b.*, "
+				+ "h.header_name,  "
+				+ "a.header_name as animal_header_name, "
+				+ "t.header_name as type_header_name "
+				+ "from board b "
 				+ "left join header h on b.board_header = h.header_no "
-				+ "left join animal_header a on b.board_animal_header = a.animal_header_no "
-				+ "left join type_header t on b.board_type_header = t.type_header_no "
+				+ "left join animal_header a on b.board_animal_header = a.header_no "
+				+ "left join type_header t on b.board_type_header = t.header_no "
 				+ "where b.board_category_no=? order by b.board_no desc) TMP"
 				+ ") where rn between ? and ?";
 

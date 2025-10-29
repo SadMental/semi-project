@@ -39,8 +39,8 @@ public class AdminAnimalHeaderController {
     @PostMapping("/add")
     public String add(@RequestParam String animalHeaderName) {
         AnimalHeaderDto dto = new AnimalHeaderDto();
-        dto.setAnimalHeaderNo(animalHeaderDao.sequence()); // 시퀀스로 번호 채움
-        dto.setAnimalHeaderName(animalHeaderName);
+        dto.setHeaderNo(animalHeaderDao.sequence()); // 시퀀스로 번호 채움
+        dto.setHeaderName(animalHeaderName);
 
         animalHeaderDao.insert(dto);
         return "redirect:list";

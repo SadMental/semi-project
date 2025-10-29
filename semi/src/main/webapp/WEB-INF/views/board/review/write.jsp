@@ -77,7 +77,7 @@
             zeroAvailable:true,
             send:{
                 sendable:true,
-                name:"boardScore",//star
+                name:"reviewScore",//star
             },
         });
     });

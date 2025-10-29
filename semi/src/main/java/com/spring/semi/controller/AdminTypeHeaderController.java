@@ -39,8 +39,8 @@ public class AdminTypeHeaderController {
     @PostMapping("/add")
     public String add(@RequestParam String typeHeaderName) {
         TypeHeaderDto dto = new TypeHeaderDto();
-        dto.setTypeHeaderNo(typeHeaderDao.sequence()); 
-        dto.setTypeHeaderName(typeHeaderName);
+        dto.setHeaderNo(typeHeaderDao.sequence()); 
+        dto.setHeaderName(typeHeaderName);
         typeHeaderDao.insert(dto);
         return "redirect:list";
     }

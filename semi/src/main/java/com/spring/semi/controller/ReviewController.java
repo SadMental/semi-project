@@ -81,10 +81,13 @@ public class ReviewController {
     public String write(@ModelAttribute BoardDto boardDto,
                         HttpSession session,
             			@RequestParam MultipartFile media,
-            			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
+            			@RequestParam(required = false) String remove, String reviewScore) throws IllegalStateException, IOException 
     {
         String loginId = (String) session.getAttribute("loginId");
         boardDto.setBoardWriter(loginId);
+        
+        int score = Integer.parseInt(reviewScore.trim());
+        boardDto.setBoardScore(score);
 
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
