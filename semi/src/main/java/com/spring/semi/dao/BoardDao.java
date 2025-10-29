@@ -74,10 +74,10 @@ public class BoardDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
-	// 마이페이지에서 글 삭제
-//	public boolean mypageDelete (int boardNo) {
-//		return delete(boardNo);
-//	}
+	 //마이페이지에서 글 삭제
+	public boolean mypageDelete(int boardNo) {
+		return delete(boardNo);
+	}
 	
 	// 삭제된 글 조회
 	public List<BoardListVO> selectDeletedByMemberId(String login_id) {
@@ -87,12 +87,6 @@ public class BoardDao {
 				+ "order by board_wtime desc";
 		Object[] params = {login_id};
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
-	}
-
-	public boolean mypageDelete(int boardNo) {
-		String sql = "delete board where board_no = ?";
-		Object[] params = { boardNo };
-		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	// 수정
