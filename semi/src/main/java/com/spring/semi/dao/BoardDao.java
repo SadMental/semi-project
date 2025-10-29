@@ -77,7 +77,7 @@ public class BoardDao {
 	 //마이페이지에서 글 삭제
 	public boolean mypageDelete(int boardNo) {
 		return delete(boardNo);
-	}
+	} 
 	
 	// 삭제된 글 조회
 	public List<BoardListVO> selectDeletedByMemberId(String login_id) {
