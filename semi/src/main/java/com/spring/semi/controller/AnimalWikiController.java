@@ -56,10 +56,12 @@ public class AnimalWikiController {
 	
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-       model.addAttribute("headerList", headerList);
+		List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
+		List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 header 조회
+		model.addAttribute("animalList", animalList);
+		model.addAttribute("typeList", typeList);
 		     
-       return "/WEB-INF/views/board/animal/write.jsp";
+		return "/WEB-INF/views/board/animal/write.jsp";
 	}
 	
     @PostMapping("/write")
@@ -96,12 +98,15 @@ public class AnimalWikiController {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
 	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
 	       model.addAttribute("boardDto", boardDto);
-	    // 헤더 조회
-	       HeaderDto headerDto = headerDao.selectOne(boardDto.getBoardHeader());
-	    // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
-	    if(headerDto != null) {
-	        model.addAttribute("headerDto", headerDto); // Model에 HeaderDto 자체를 추가
-	    }
+	       HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");
+	       HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
+	       // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
+	       if(animalHeaderDto != null) {
+		    	   model.addAttribute("animalHeaderDto", animalHeaderDto); // Model에 animalHeaderDto 자체를 추가
+	       }
+	       if(typeHeaderDto != null) {
+		    	   model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가
+	       }
 	       // 작성자 정보
 	       if (boardDto.getBoardWriter() != null) {
 	           MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
@@ -110,13 +115,15 @@ public class AnimalWikiController {
 		return "/WEB-INF/views/board/animal/detail.jsp";
 	}
 	
-	  @GetMapping("/edit")
-	   public String edit(Model model, @RequestParam int boardNo) {
-	       BoardDto boardDto = boardDao.selectOne(boardNo);
-	       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
-	       model.addAttribute("headerList", headerList);
-	       model.addAttribute("boardDto", boardDto);
+	@GetMapping("/edit")
+	public String edit(Model model, @RequestParam int boardNo) {
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
+		List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
+		List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 header 조회
+		model.addAttribute("animalList", animalList);
+		model.addAttribute("typeList", typeList);	       
+		model.addAttribute("boardDto", boardDto);
 		return "/WEB-INF/views/board/animal/edit.jsp";
 	}
 	
@@ -175,7 +182,6 @@ public class AnimalWikiController {
 //		minus.removeAll(after);
 //		for(int mediaNo : minus)
 //			mediaService.delete(mediaNo);
-		 HeaderDto header = headerDao.selectOne(boardDto.getBoardHeader());
 		boardDao.update(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}

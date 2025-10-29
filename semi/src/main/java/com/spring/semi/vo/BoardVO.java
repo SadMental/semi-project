@@ -20,7 +20,9 @@ public class BoardVO {
 	private int boardLike;
 	private int boardView;
 	private int boardReply;
-	private String headerName;
+	private int deleted;
+	private String typeHeaderName;
+	private String animalHeaderName;
 	
 
 	

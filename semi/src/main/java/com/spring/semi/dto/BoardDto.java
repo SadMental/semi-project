@@ -28,6 +28,9 @@ public class BoardDto {
 	private int boardTypeHeader;
 	private int boardScore;
 	
+	// 251030 deleted 추가
+	private int deleted;
+	
 
 	
 

@@ -37,11 +37,11 @@ public class BoardDao {
 	// 등록
 	public void insert(BoardDto boardDto, int boardType) {
 		String sql = "insert into board ("
-				+ "board_category_no, board_no, board_writer, board_title, board_content, board_header"
-				+ ") values (?, ?, ?, ?, ?, ?)";
+				+ "board_category_no, board_no, board_writer, board_title, board_content, board_type_header, board_animal_header "
+				+ ") values (?, ?, ?, ?, ?, ?, ?)";
 
 		Object[] params = { boardType, boardDto.getBoardNo(), boardDto.getBoardWriter(), boardDto.getBoardTitle(),
-				boardDto.getBoardContent(), boardDto.getBoardHeader() //
+				boardDto.getBoardContent(), boardDto.getBoardTypeHeader(), boardDto.getBoardAnimalHeader()
 		};
 
 		jdbcTemplate.update(sql, params);
@@ -61,10 +61,7 @@ public class BoardDao {
 	}
 
 	public BoardDto selectOne(int boardNo) {
-        String sql = "SELECT board_no, board_category_no, board_writer, "
-                   + "board_title, board_content, board_view, board_like, "
-                   + "board_wtime, board_etime, board_header, board_reply, "
-                   + "board_animal_header, board_type_header, board_score "
+        String sql = "SELECT * "
                    + "FROM board "
                    + "WHERE board_no=?";
         Object[] params = { boardNo };
@@ -95,10 +92,17 @@ public class BoardDao {
 
 	// 수정
 	public boolean update(BoardDto boardDto) {
-		String sql = "update board " + "set board_title=?, board_content=?, board_header=? "
-				+ ", board_etime=systimestamp " + "where board_no=?";
-		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardHeader(),
-				boardDto.getBoardNo() };
+		String sql = "update board " 
+				+ "set board_title=?, board_content=?, board_type_header=?, board_animal_header=? "
+				+ ", board_etime=systimestamp " 
+				+ "where board_no=?";
+		Object[] params = { 
+				boardDto.getBoardTitle(), 
+				boardDto.getBoardContent(), 
+				boardDto.getBoardTypeHeader(),
+				boardDto.getBoardAnimalHeader(),
+				boardDto.getBoardNo() 
+			};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
@@ -124,23 +128,25 @@ public class BoardDao {
 		}
 	}
 
-	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
+	public List<BoardVO> selectListWithPaging(PageVO pageVO, int pageType) {
 		if (pageVO.isList()) {
-			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
-					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where b.board_category_no=? and b.deleted = 0 order by b.board_no desc" + "  ) TMP"
-					+ ") where rn between ? and ?";
+			String sql = "select * from (" + 
+						 "  select rownum rn, TMP.* from (" +
+						 "    select * from board_header_view " +
+						 "    where board_category_no=? and deleted = 0 order by board_no desc" +
+						 "  ) TMP" +
+						 ") where rn between ? and ?";
 			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
-			return jdbcTemplate.query(sql, boardListMapper, params);
+			return jdbcTemplate.query(sql, boardVOMapper, params);
 		} else {
-			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
-					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where instr(#1, ?) > 0 and b.board_category_no=? and b.deleted = 0 "
-					+ "    order by #1 asc, b.board_no desc" + "  ) TMP" + ") where rn between ? and ?";
+			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select * "
+					+ "    from board_header_view "
+					+ "    where instr(#1, ?) > 0 and board_category_no=? and deleted = 0 "
+					+ "    order by #1 asc, board_no desc" + "  ) TMP" + ") where rn between ? and ?";
 
 			sql = sql.replace("#1", pageVO.getColumn());
 			Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
-			return jdbcTemplate.query(sql, boardListMapper, params);
+			return jdbcTemplate.query(sql, boardVOMapper, params);
 		}
 	}
 
@@ -193,6 +199,8 @@ public class BoardDao {
 	}
 	// categoryNo를 추가해서 특정 카테고리 게시글만 조회 ver2. - 위섭
 	public List<BoardVO> selectList2(int min, int max, String orderBy, int categoryNo) {
+		List<String> allows = List.of("view", "like", "wtime");
+		if(allows.contains(orderBy) == false ) return List.of();
 		String orderColumn;
 		switch (orderBy) {
 		case "view":
@@ -208,17 +216,11 @@ public class BoardDao {
 		}
 		
 		String sql = 
-			    "SELECT rn, board_category_no, board_no, board_title, " +
-			    "       board_writer, board_wtime, board_etime, board_like, " +
-			    "       board_view, board_reply, header_name " +
-			    "FROM ( " +
+			    "SELECT * " +
+			    "FROM ( " + 
 			    "    SELECT rownum rn, TMP.* FROM ( " +
-			    "        SELECT b.board_category_no, b.board_no, b.board_title, b.board_writer, " +
-			    "               b.board_wtime, b.board_etime, b.board_like, b.board_view, " +
-			    "               b.board_reply, t.header_name " +
-			    "        FROM board b " +
-			    "        left JOIN type_header t ON b.board_type_header = t.header_no " +
-			    "        WHERE b.board_category_no = ? " +
+			    "        select * from board_header_view " +
+			    "        WHERE board_category_no = ? " +
 			    "        ORDER BY " + orderColumn + " DESC " +
 			    "    ) TMP " +
 			    ") WHERE rn BETWEEN ? AND ?";

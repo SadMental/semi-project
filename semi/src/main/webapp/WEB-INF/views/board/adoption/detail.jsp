@@ -397,7 +397,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 <div class="detail-wrapper">
 <c:if test="${not empty typeHeaderDto}">
     <tr>
-        <div class="board-title">[${typeHeaderDto.typeHeaderName}] ${boardDto.boardTitle}</div>
+        <div class="board-title">[${typeHeaderDto.headerName}] ${boardDto.boardTitle}</div>
     </tr>
 </c:if>
 
@@ -415,7 +415,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
       </tr>
       <tr>
         <th>동물분류</th>
-        <td colspan="3">[${animalHeaderDto.animalHeaderName}]</td>
+        <td colspan="3">${animalHeaderDto.headerName}</td>
       </tr>
     </table>
   </div>

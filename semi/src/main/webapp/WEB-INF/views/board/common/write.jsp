@@ -87,7 +87,7 @@ button.btn.btn-positive:hover {
 				<input type="text" name="boardTitle" class="field w-100"
 					placeholder="제목을 입력하세요.">
 			</div>
-			<select name="boardHeader" class="field w-100 mt-2">
+			<select name="boardTypeHeader" class="field w-100 mt-2">
 			       <option value="">-- 분류 선택 --</option>
 			       <c:forEach var="headerDto" items="${headerList}">
 			           <option value="${headerDto.headerNo}">${headerDto.headerName}</option>

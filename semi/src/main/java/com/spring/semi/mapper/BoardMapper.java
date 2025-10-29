@@ -24,10 +24,10 @@ public class BoardMapper  implements RowMapper<BoardDto> {
 				.boardLike(rs.getInt("board_like"))
 				.boardView(rs.getInt("board_view"))
 				.boardReply(rs.getInt("board_reply"))
-				.boardHeader(rs.getInt("board_header"))
 				.boardAnimalHeader(rs.getInt("board_animal_header"))
 				.boardTypeHeader(rs.getInt("board_type_header"))
 				.boardScore(rs.getInt("board_score"))
+				.deleted(rs.getInt("deleted"))
 				.build();
 	}
 }

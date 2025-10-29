@@ -101,25 +101,25 @@
       <label for="animalHeader">동물 종류</label>
       <select name="boardAnimalHeader" id="animalHeader" required>
           <option value="">-- 동물 선택 --</option>
-          <c:forEach var="animal" items="${animalHeaderList}" begin="1">
-              <option value="${animal.animalHeaderNo}">
-			  <c:if test="${animal.animalHeaderNo == boardDto.boardAnimalHeader}">"selected"</c:if>
-			                    ${animal.animalHeaderName}
+          <c:forEach var="animal" items="${animalList}">
+              <option value="${animal.headerNo}" ${animal.headerNo != boardDto.boardAnimalHeader? '':'selected'}>
+			                    ${animal.headerName}
               </option>
           </c:forEach>
       </select>
 
       <!-- ✅ 타입 헤더 선택 -->
-      <label for="typeHeader">게시글 분류</label>
-      <select name="boardTypeHeader" id="typeHeader" required>
-          <option value="">-- 분류 선택 --</option>
-          <c:forEach var="type" items="${typeHeaderList}" begin="1">
-              <option value="${type.typeHeaderNo}">
-                  <c:if test="${type.typeHeaderNo == boardDto.boardTypeHeader}">selected</c:if>>
-                  ${type.typeHeaderName}
-              </option>
-          </c:forEach>
-      </select>
+      <c:if test="${sessionScope.loginLevel == 0}">
+	      <label for="typeHeader">게시글 분류</label>
+	      <select name="boardTypeHeader" id="typeHeader" required>
+	          <option value="">-- 분류 선택 --</option>
+	          <c:forEach var="type" items="${typeList}">
+	              <option value="${type.headerNo}" ${type.headerNo != boardDto.boardTypeHeader? '':'selected'}>
+	                  ${type.headerName}
+	              </option>
+	          </c:forEach>
+	      </select>
+      </c:if>
     </div>
 
     <!-- 제목 -->
