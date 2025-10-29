@@ -108,11 +108,11 @@ public class MemberDao {
 		}
 		
 	//포인트 차감
-//		public void minusPoint(String memberId, int point) {
-//			String sql = "update member set member_point = member_point - ? "
-//					+ "where member_id	= ?";
-//			Object[] params = {point, memberId};
-//			int result = jdbcTemplate.update(sql, params);
-//		}
+		public void minusPoint(String memberId, int point) {
+			String sql = "update member set member_point = member_point - ? "
+					+ "where member_id	= ?";
+			Object[] params = {point, memberId};
+			int result = jdbcTemplate.update(sql, params);
+		}
 
 }

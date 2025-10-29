@@ -77,6 +77,9 @@ public class BoardController {
 				headerMap.put(b.getBoardNo(), headerDto);
 			}
 		}
+		
+	
+		
 		model.addAttribute("category", categoryDto);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("headerMap", headerMap); // JSP에서 사용
@@ -195,14 +198,17 @@ public class BoardController {
 			mediaService.delete(mediaNo);
 
 		}
+		
+		boardDao.delete(boardNo);
 
-		// 게시글 포인트 차감
-//		String loginId = (String) session.getAttribute("loginId");
-//		memberDao.minusPoint(loginId, 50);
-//		MemberDto member = memberDao.selectOne(loginId);
-//		model.addAttribute("memberPoint", member.getMemberPoint());
-//				
-
+		//게시글 포인트 차감
+		String loginId = (String) session.getAttribute("loginId");
+		if(loginId != null) {
+		memberDao.minusPoint(loginId, 50);
+		MemberDto member = memberDao.selectOne(loginId);
+		model.addAttribute("memberPoint", member.getMemberPoint());
+				
+		}
 		return "redirect:list";
 	}
 

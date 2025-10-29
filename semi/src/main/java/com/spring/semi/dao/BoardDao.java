@@ -106,19 +106,19 @@ public class BoardDao {
 
 	public int count(PageVO pageVO, int pageType) {
 		if (pageVO.isList()) {
-			String sql = "select count(*) from board where board_category_no=? order by board_no asc";
+			String sql = "select count(*) from board where board_category_no=? and deleted = 0";
 			Object[] params = { pageType };
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		} else {
 			if ("header_name".equalsIgnoreCase(pageVO.getColumn())) {
 				// header 검색
 				String sql = "select count(*) from board b " + "left join header h on b.board_header = h.header_no "
-						+ "where instr(h.header_name, ?) > 0 " + "and b.board_category_no=?";
+						+ "where instr(h.header_name, ?) > 0 " + "and b.board_category_no=? and b.deleted = 0";
 				Object[] params = { pageVO.getKeyword(), pageType };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
 			} else {
 				// 기존검색
-				String sql = "select count(*) from board " + "where instr(#1, ?) > 0 " + "and board_category_no=?";
+				String sql = "select count(*) from board " + "where instr(#1, ?) > 0 " + "and board_category_no=? and deleted = 0";
 				sql = sql.replace("#1", pageVO.getColumn());
 				Object[] params = { pageVO.getKeyword(), pageType };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
@@ -130,14 +130,14 @@ public class BoardDao {
 		if (pageVO.isList()) {
 			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where b.board_category_no=? " + "  and deleted = 0  order by b.board_no desc" + "  ) TMP"
+					+ "    where b.board_category_no=? and b.deleted = 0 order by b.board_no desc" + "  ) TMP"
 					+ ") where rn between ? and ?";
 			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
 			return jdbcTemplate.query(sql, boardListMapper, params);
 		} else {
 			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where instr(#1, ?) > 0 " + "    and b.board_category_no=? "
+					+ "    where instr(#1, ?) > 0 and b.board_category_no=? and b.deleted = 0 "
 					+ "    order by #1 asc, b.board_no desc" + "  ) TMP" + ") where rn between ? and ?";
 
 			sql = sql.replace("#1", pageVO.getColumn());
@@ -241,6 +241,4 @@ public class BoardDao {
 	}
 }
 
-
-}
 
