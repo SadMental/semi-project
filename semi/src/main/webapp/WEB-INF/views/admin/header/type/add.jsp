@@ -71,15 +71,16 @@
 	 }
 </style>
 <div class="container w-800">
-  <h1>새 헤더 추가</h1>
-  <form action="add" method="post">
-      <label for="headerName">헤더 이름</label>
-      <input type="text" id="headerName" name="headerName" required>
-      <div class="cell right">
-          <button type="submit" class="btn btn-positive">등록</button>
-          <a href="list" class="btn btn-positive">목록으로</a>
-      </div>
-  </form>
+    <h1>동물 헤더 등록</h1>
+    <form action="add" method="post">
+        <label for="animalHeaderName">동물 헤더 이름</label>
+        <input type="text" id="animalHeaderName" name="animalHeaderName" required>
+        <div class="cell right">
+            <button type="submit" class="btn btn-positive">등록</button>
+            <a href="list" class="btn btn-positive">목록으로</a>
+        </div>
+    </form>
 </div>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />
 

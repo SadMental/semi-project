@@ -93,10 +93,10 @@
                            <td>${header1.headerName}</td>
                            <td>
                                <a class="btn btn-positive"
-                                  href="${pageContext.request.contextPath}/admin/header/edit?headerNo=${header1.headerNo}">
+                                  href="edit?headerNo=${header1.headerNo}">
                                    수정
                                </a>
-                               <form action="${pageContext.request.contextPath}/admin/header/delete" method="post" style="display:inline;">
+                               <form action="delete" method="post" style="display:inline;">
                                    <input type="hidden" name="headerNo" value="${header1.headerNo}">
                                    <button type="submit" class="btn btn-positive" style="background:#a94442;">삭제</button>
                                </form>
@@ -108,7 +108,7 @@
        </c:otherwise>
    </c:choose>
    <div class="cell right">
-       <a href="${pageContext.request.contextPath}/admin/header/add" class="btn btn-positive">＋ 새 헤더 추가</a>
+       <a href="add" class="btn btn-positive">＋ 새 헤더 추가</a>
    </div>
 </div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />

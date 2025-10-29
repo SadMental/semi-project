@@ -11,7 +11,9 @@ import com.spring.semi.dto.BoardDto;
 import com.spring.semi.mapper.BoardListMapper;
 import com.spring.semi.mapper.BoardListVOMapper;
 import com.spring.semi.mapper.BoardMapper;
+import com.spring.semi.mapper.BoardVOMapper;
 import com.spring.semi.vo.BoardListVO;
+import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 
 @Repository
@@ -24,6 +26,8 @@ public class BoardDao {
 	private BoardListMapper boardListMapper;
 	@Autowired
 	private BoardListVOMapper boardListVOMapper;
+	@Autowired
+	private BoardVOMapper boardVOMapper;
 
 	public int sequence() {
 		String sql = "select board_seq.nextval from dual";
@@ -186,6 +190,42 @@ public class BoardDao {
 
 		Object[] params = { categoryNo, min, max };
 		return jdbcTemplate.query(sql, boardMapper, params);
+	}
+	// categoryNo를 추가해서 특정 카테고리 게시글만 조회 ver2. - 위섭
+	public List<BoardVO> selectList2(int min, int max, String orderBy, int categoryNo) {
+		String orderColumn;
+		switch (orderBy) {
+		case "view":
+			orderColumn = "board_view";
+			break;
+		case "like":
+			orderColumn = "board_like";
+			break;
+		case "wtime":
+		default:
+			orderColumn = "board_wtime";
+			break;
+		}
+		
+		String sql = 
+			    "SELECT rn, board_category_no, board_no, board_title, " +
+			    "       board_writer, board_wtime, board_etime, board_like, " +
+			    "       board_view, board_reply, header_name " +
+			    "FROM ( " +
+			    "    SELECT rownum rn, TMP.* FROM ( " +
+			    "        SELECT b.board_category_no, b.board_no, b.board_title, b.board_writer, " +
+			    "               b.board_wtime, b.board_etime, b.board_like, b.board_view, " +
+			    "               b.board_reply, t.header_name " +
+			    "        FROM board b " +
+			    "        left JOIN type_header t ON b.board_type_header = t.header_no " +
+			    "        WHERE b.board_category_no = ? " +
+			    "        ORDER BY " + orderColumn + " DESC " +
+			    "    ) TMP " +
+			    ") WHERE rn BETWEEN ? AND ?";
+
+		
+		Object[] params = { categoryNo, min, max };
+		return jdbcTemplate.query(sql, boardVOMapper, params);
 	}
 
 	public void connect(int boardNo, int mediaNo) {

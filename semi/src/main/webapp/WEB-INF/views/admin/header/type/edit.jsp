@@ -1,6 +1,6 @@
-	<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
 	body {
 	   background-color: #f4ede6;
@@ -70,16 +70,20 @@
 	   color: #8c6d5b;
 	 }
 </style>
+
 <div class="container w-800">
-  <h1>새 헤더 추가</h1>
-  <form action="add" method="post">
-      <label for="headerName">헤더 이름</label>
-      <input type="text" id="headerName" name="headerName" required>
-      <div class="cell right">
-          <button type="submit" class="btn btn-positive">등록</button>
-          <a href="list" class="btn btn-positive">목록으로</a>
-      </div>
-  </form>
-</div>
+    <h1>동물 헤더 수정</h1>
+<form action="${pageContext.request.contextPath}/admin/animalsetting/edit" method="post">
+    <input type="hidden" name="animalHeaderNo" value="${animalHeaderDto.animalHeaderNo}">
+    <label for="animalHeaderName">동물 헤더 이름</label>
+    <input type="text" id="animalHeaderName" name="animalHeaderName" 
+           value="${animalHeaderDto.animalHeaderName}" required>
+    <div class="cell right">
+        <button type="submit" class="btn btn-positive">수정 완료</button>
+        <a href="${pageContext.request.contextPath}/admin/animalsetting/list" class="btn btn-positive">목록으로</a>
+    </div>
+</form>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp" />
+
 
