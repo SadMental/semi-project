@@ -114,6 +114,15 @@ public class MemberDao {
 
 		}
 		
+
+	//포인트 차감
+		//public void minusPoint(String memberId, int point) {
+			//String sql = "update member set member_point = member_point - ? "
+			//		+ "where member_id	= ?";
+			//Object[] params = {point, memberId};
+			//int result = jdbcTemplate.update(sql, params);
+		//}
+
 	//페이징용
 	public int count(PageVO pageVO) {
 		if(pageVO.isList()) {
@@ -151,4 +160,5 @@ public class MemberDao {
 			return jdbcTemplate.query(sql, memberMapper, params);
 		}
 	}
+
 }
