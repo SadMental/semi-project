@@ -92,28 +92,52 @@
 
 <form action="edit" method="post">
   <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
-  
+
   <div class="container w-800">
     <div class="cell">
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
-	  <select name="boardHeader" required>
-	      <option value="">-- 선택 --</option>
-	      <c:forEach var="headerDto" items="${headerList}">
-	          <option value="${headerDto.headerNo}">
-	              ${headerDto.headerName}
-	          </option>
-	      </c:forEach>
-	  </select>
+
+      <!-- ✅ 동물 헤더 선택 -->
+      <label for="animalHeader">동물 종류</label>
+      <select name="boardAnimalHeader" id="animalHeader" required>
+          <option value="">-- 동물 선택 --</option>
+          <c:forEach var="animal" items="${animalHeaderList}" begin="1">
+              <option value="${animal.animalHeaderNo}">
+			  <c:if test="${animal.animalHeaderNo == boardDto.boardAnimalHeader}">"selected"</c:if>
+			                    ${animal.animalHeaderName}
+              </option>
+          </c:forEach>
+      </select>
+
+      <!-- ✅ 타입 헤더 선택 -->
+      <label for="typeHeader">게시글 분류</label>
+      <select name="boardTypeHeader" id="typeHeader" required>
+          <option value="">-- 분류 선택 --</option>
+          <c:forEach var="type" items="${typeHeaderList}" begin="1">
+              <option value="${type.typeHeaderNo}">
+                  <c:if test="${type.typeHeaderNo == boardDto.boardTypeHeader}">selected</c:if>>
+                  ${type.typeHeaderName}
+              </option>
+          </c:forEach>
+      </select>
+    </div>
+
+    <!-- 제목 -->
     <div class="cell">
       <label for="title">제목 <i class="fa-solid fa-asterisk red"></i></label>
-      <input type="text" name="boardTitle" id="title" value="${boardDto.boardTitle}" class="field w-100">
+      <input type="text" name="boardTitle" id="title"
+             value="${boardDto.boardTitle}" class="field w-100">
     </div>
-    
+
+    <!-- 내용 -->
     <div class="cell">
       <label for="content">내용 <i class="fa-solid fa-asterisk red"></i></label>
-      <textarea name="boardContent" id="content" class="summernote-editor">${boardDto.boardContent}</textarea>
+      <textarea name="boardContent" id="content" class="summernote-editor">
+        ${boardDto.boardContent}
+      </textarea>
     </div>
-    
+
+    <!-- 버튼 -->
     <div class="cell mt-40">
       <button type="submit" class="btn btn-positive w-100">
         <i class="fa-solid fa-edit"></i>

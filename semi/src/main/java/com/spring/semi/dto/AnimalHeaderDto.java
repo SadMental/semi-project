@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class AnimalHeaderDto {
-	private int animalHeaderNo;
-	private String animalHeaderName;
+    private int animalHeaderNo;
+    private String animalHeaderName;
 }
