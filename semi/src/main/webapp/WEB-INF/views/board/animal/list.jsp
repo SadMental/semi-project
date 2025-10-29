@@ -254,7 +254,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="7">
+							<td colspan="9">
 								검색결과 : 
 								${pageVO.begin} - ${pageVO.end}
 								/
@@ -263,7 +263,7 @@
 						</tr>
 						
 						<tr>
-					        <td colspan="7" style="text-align: center;">
+					        <td colspan="9" style="text-align: center;">
 					            <jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 					        </td>
 					    </tr>

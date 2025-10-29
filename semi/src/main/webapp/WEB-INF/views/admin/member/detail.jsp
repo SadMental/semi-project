@@ -71,7 +71,7 @@ input[type="checkbox"] {
 <script type="text/javascript">
 $(function () {
     $(".head.write-board").addClass("green");
-    $(".write-reply-code, .reply-board-code, .like-board-code , .delete-board-code").hide();
+    $(".write-reply-code, .reply-board-code, .like-board-code").hide();
 
     $(".head").on("click", function () {
         $(".head").removeClass("green");
@@ -80,8 +80,8 @@ $(function () {
     
     //클릭했을 떄 작성글 리스트 화면
     $(".write-board").on("click", function () {
-        $(".write-board-code, .checkcheck").show();
-        $(".write-reply-code, .reply-board-code, .like-board-code, .delete-board-code").hide();
+        $(".write-board-code").show();
+        $(".write-reply-code, .reply-board-code, .like-board-code").hide();
     });
 
     //클릭했을 때 작성댓글 리스트 화면
@@ -98,14 +98,8 @@ $(function () {
 
     //클릭했을 떄 좋아요한 글 리스트 화면
     $(".like-board").on("click", function () {
-        $(".like-board-code, .checkcheck").show();
-        $(".write-board-code, .write-reply-code, .reply-board-code, .delete-board-code").hide();
-    });
-
-    //클릭했을 떄 삭제한 글 리스트 화면
-    $(".delete-board").on("click", function () {
-        $(".delete-board-code, .checkcheck").show();
-        $(".write-board-code, .write-reply-code, .reply-board-code, .like-board-code, .checkcheck").hide();
+        $(".like-board-code").show();
+        $(".write-board-code, .write-reply-code, .reply-board-code").hide();
     });
 
     //전체 체크
@@ -130,7 +124,7 @@ $(function () {
     		return;
     	}
     	
-    	if(!confirm("선택한 게시글을 삭제하시겠습니까?")) {   		
+    	if(!confirm("선택한 게시글을 삭제하시겠습니까?")) {
     		return;
     	}
     	
@@ -154,7 +148,7 @@ $(function () {
 });
 </script>
 
-    <div class="container w-900">
+<div class="container w-800">
         <div class="cell">
             <table class="table">
                 <tr>
@@ -203,150 +197,55 @@ $(function () {
                 </tr>
             </table>
             <div class="cell">
-                <a type="button" class="btn btn-neutral" href="edit">정보 수정하기</a>
-                <a type="button" class="btn btn-neutral" href="password">비밀번호 변경</a>
-                <a type="button" class="btn btn-negative" href="drop">회원 탈퇴하기</a>
+                <a class="btn btn-neutral" href="edit">정보 수정하기</a>
+                <a class="btn btn-neutral"  ${memberDto.memberEmail != null? 'href="password?memberEmail=${memberDto.memberEmail }" ':'' }>비밀번호 재설정</a>
+                <a class="btn btn-negative" href="drop?memberId=${memberDto.memberId }">강제 탈퇴</a>
             </div>
-            <br><br>
+            <div class="cell right">
+            	<a class="btn btn-neutral" href="list">목록으로</a>
+            </div>
             <div class="cell flex-box">
                 <div class="w-15p center head write-board">작성글</div>
 <!--                 <div class="w-15p center head write-reply">작성댓글</div> -->
 <!--                 <div class="w-15p center head reply-board">댓글단 글</div> -->
                 <div class="w-15p center head like-board">좋아요한 글</div>
-                <div class="w-15p center head delete-board" style="margin-left: auto;">삭제한 게시글</div>
+                <div class="w-15p center head" style="margin-left: auto;">삭제한 게시글</div>
             </div>
             <hr>
             <div class="cell flex-box">
-                <div class="w-80p center title">제목</div>
-                <div class="w-10p center title">작성일</div>
+                <div class="w-70p center title">제목</div>
+                <div class="w-20p center title">작성일</div>
                 <div class="w-10p center title">조회</div>
             </div>
+            <hr class="hr-details">
             <c:forEach var="board" items="${boardListVO}">
-<!--                 <hr class="hr-details"> -->
-			<c:set var="boardPath" value="/board/"/>
-			<c:choose>
-	    	<c:when test="${board.categoryName eq '자유게시판'}">
-		        <c:set var="boardPath" value="${boardPath}community" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '정보게시판'}">
-		        <c:set var="boardPath" value="${boardPath}info" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '펫플루언서'}">
-		        <c:set var="boardPath" value="${boardPath}petfluencer" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '분양게시판'}">
-		        <c:set var="boardPath" value="${boardPath}adoption" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '사용후기'}">
-		        <c:set var="boardPath" value="${boardPath}review" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq 'short'}">
-		        <c:set var="boardPath" value="${boardPath}short" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '동물위키'}">
-		        <c:set var="boardPath" value="${boardPath}animal" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '체험판123'}">
-		        <c:set var="boardPath" value="${boardPath}" />
-		    </c:when>
-		    <c:otherwise>
-		    </c:otherwise>
-			</c:choose>
-			<c:set var="boardRealPath" value="${boardPath}/detail?boardNo=${board.boardNo}" />
                 <div class="cell flex-box content write-board-code">
                     <input class="w-5p center content one-check" type="checkbox" name="boardNo" value="${board.boardNo}">
                     <div class="w-10p center content no">
                         ${board.boardNo }
                     </div>
-                    <div class="w-65p content title" style="padding: 0 1.5em 0 1.5em;">
-
-                        <a href="${boardRealPath}" class="boardTitle">${board.boardTitle }</a>
+                    <div class="w-55p content title" style="padding: 0 1.5em 0 1.5em;">
+                        <a href="/board/${board.categoryName }/detail?boardNo=${board.boardNo}" class="boardTitle">${board.boardTitle }</a>
                     </div>
-                    <div class="w-10p center content">
+                    <div class="w-20p center content">
                         <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
                     </div>
                     <div class="w-10p center content">
                         ${board.boardView }
                     </div>
                 </div>
+                <hr class="hr-details">
             </c:forEach>
-
-            <!-- 작성댓글 코드 구간 -->
-<%--              <c:forEach>  --%>
-                <div class="cell flex-box content write-reply-code"></div>
-<%--              </c:forEach>  --%>
-
-            <!-- 댓글단 글 코드 구간 -->
-<%--             <c:forEach>  --%>
-<!--                 <div class="cell flex-box content reply-board-code"></div> -->
-<%--             </c:forEach>  --%>
-
-            <!-- 좋아요한 글 코드 구간 -->
-<%--             <c:forEach>  --%>
-<!--                 <div class="cell flex-box content like-board-code"></div> -->
-<%--             </c:forEach>  --%>
-
-            <!-- 삭제한 글 코드 구간 -->
-            <c:forEach var="board" items="${deletedBoardListVO}">
-            <c:set var="boardPath" value="/board/"/>
-			<c:choose>
-	    	<c:when test="${board.categoryName eq '자유게시판'}">
-		        <c:set var="boardPath" value="${boardPath}community" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '정보게시판'}">
-		        <c:set var="boardPath" value="${boardPath}info" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '펫플루언서'}">
-		        <c:set var="boardPath" value="${boardPath}petfluencer" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '분양게시판'}">
-		        <c:set var="boardPath" value="${boardPath}adoption" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '사용후기'}">
-		        <c:set var="boardPath" value="${boardPath}review" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq 'short'}">
-		        <c:set var="boardPath" value="${boardPath}short" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '동물위키'}">
-		        <c:set var="boardPath" value="${boardPath}animal" />
-		    </c:when>
-		    <c:when test="${board.categoryName eq '체험판123'}">
-		        <c:set var="boardPath" value="${boardPath}" />
-		    </c:when>
-		    <c:otherwise>
-		    </c:otherwise>
-			</c:choose>
-			<c:set var="boardRealPath" value="${boardPath}/detail?boardNo=${board.boardNo}" />
-<!--             <hr class="hr-details"> -->
-                <div class="cell flex-box content delete-board-code">
-                    <div class="w-10p center content no">
-                        ${board.boardNo }
-                    </div>
-                    <div class="w-70p content title" style="padding: 0 1.5em 0 1.5em;">
-                        <a href="${boardRealPath}" class="boardTitle">${board.boardTitle }</a>
-                    </div>
-                    <div class="w-10p center content">
-                        <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
-                    </div>
-                    <div class="w-10p center content">
-                        ${board.boardView }
-                    </div>
-                </div>
-            </c:forEach>
-
-<!--             <hr class="hr-details"> -->
-            <div class="cell flex-box checkcheck">
+            <div class="cell flex-box">
                 <input class="w-5p all-check" type="checkbox">
                 <div class="w-10p center">
                     <label style="font-weight: bold;">전체선택</label>
                 </div>
-                <div class="w-65p"></div>
-                <button class="w-10p center btn btn-positive me-10 mypage-delete">삭제</button>
-                <button class="w-10p center btn btn-positive">글쓰기</button>
+                <div class="cell w-100p right">
+	                <button class="w-10p center btn btn-positive me-10 mypage-delete">삭제</button>
+                </div>
                 <!-- 글쓰기 버튼 클릭 시, 게시판 선택 후 작성한 글이 해당 게시판에 자동 등록되도록 하면 좋겠습니다. -->
             </div>
-            
         </div>
     </div>
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.mapper.MemberMapper;
+import com.spring.semi.vo.PageVO;
 
 @Repository
 public class MemberDao {
@@ -74,6 +75,12 @@ public class MemberDao {
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
+	
+	public List<MemberDto> selectList(){
+		String sql = "select * from member";
+		
+		return jdbcTemplate.query(sql, memberMapper);
+	}
 
 	public void connect(String member_id, int media_no) {
 		String sql = "insert into member_profile values(?, ?)";
@@ -106,5 +113,52 @@ public class MemberDao {
 			int result = jdbcTemplate.update(sql, params);
 
 		}
+		
+
+	//포인트 차감
+		//public void minusPoint(String memberId, int point) {
+			//String sql = "update member set member_point = member_point - ? "
+			//		+ "where member_id	= ?";
+			//Object[] params = {point, memberId};
+			//int result = jdbcTemplate.update(sql, params);
+		//}
+
+	//페이징용
+	public int count(PageVO pageVO) {
+		if(pageVO.isList()) {
+			String sql = "select count(*) from member where member_level != 2";
+			return jdbcTemplate.queryForObject(sql, int.class);
+		} else {
+			String sql = "select count(*) from member where instr(#1, ?) > 0 and member_level != 2";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword()};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+		}
+	}
+	//페이징용
+	public List<MemberDto> selectListForPaging(PageVO pageVO){
+		if(pageVO.isList()) {
+			String sql = "select * from ("
+								+ "select rownum rn, TMP.* from ("
+									+ "select * from member "
+									+ "where member_level != 2 "
+									+ "order by member_id asc"
+								+ ") TMP"
+							+ ") where rn between ? and ?";
+			Object[] params = {pageVO.getBegin(), pageVO.getEnd()};
+			return jdbcTemplate.query(sql, memberMapper, params);
+		} else {
+			String sql = "select * from ("
+									+ "select rownum rn, TMP.* from ("
+										+ "select * from member "
+										+ "where instr(#1, ?) > 0 and member_level != 2 "
+										+ "order by #1 asc, member_id asc"
+									+ ") TMP"
+								+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()};
+			return jdbcTemplate.query(sql, memberMapper, params);
+		}
+	}
 
 }

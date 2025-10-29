@@ -111,7 +111,9 @@
 
 <div class="container w-800">
   <h1>게시판 목록</h1>
-
+	<div class="cell right">
+		<a class="btn btn-neutral" href="/admin/home">목록으로</a>
+	</div>
   <table>
     <thead>
       <tr>

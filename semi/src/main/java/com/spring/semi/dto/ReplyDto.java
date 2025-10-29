@@ -16,4 +16,5 @@ public class ReplyDto {
 	private String replyWriter;
 	private Timestamp replyWtime;
 	private Timestamp replyEtime;
+	private int replyLike;
 }
