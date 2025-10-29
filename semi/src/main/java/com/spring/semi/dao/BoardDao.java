@@ -8,9 +8,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.spring.semi.dto.BoardDto;
+import com.spring.semi.mapper.BoardForReviewVOMapper;
 import com.spring.semi.mapper.BoardListMapper;
 import com.spring.semi.mapper.BoardListVOMapper;
 import com.spring.semi.mapper.BoardMapper;
+import com.spring.semi.vo.BoardForReviewVO;
 import com.spring.semi.vo.BoardListVO;
 import com.spring.semi.vo.PageVO;
 
@@ -24,6 +26,8 @@ public class BoardDao {
 	private BoardListMapper boardListMapper;
 	@Autowired
 	private BoardListVOMapper boardListVOMapper;
+	@Autowired
+	private BoardForReviewVOMapper boardForReviewVOMapper;
 
 	public int sequence() {
 		String sql = "select board_seq.nextval from dual";
@@ -38,6 +42,20 @@ public class BoardDao {
 
 		Object[] params = { boardType, boardDto.getBoardNo(), boardDto.getBoardWriter(), boardDto.getBoardTitle(),
 				boardDto.getBoardContent(), boardDto.getBoardHeader() //
+		};
+
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public void insertForReview(BoardDto boardDto, int boardType) {
+		String sql = "insert into board ("
+				+ "board_category_no, board_no, board_writer, board_title, board_content, board_header,"
+				+ "board_animal_header, board_type_header, board_score"
+				+ ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		Object[] params = { boardType, boardDto.getBoardNo(), boardDto.getBoardWriter(), boardDto.getBoardTitle(),
+				boardDto.getBoardContent(), boardDto.getBoardHeader(),
+				boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader(), boardDto.getBoardScore()
 		};
 
 		jdbcTemplate.update(sql, params);
@@ -97,6 +115,16 @@ public class BoardDao {
 				boardDto.getBoardNo() };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	public boolean updateForReview(BoardDto boardDto) {
+		String sql = "update board set board_title=?, board_content=?, board_header=?, board_etime=systimestamp, "
+				+ "board_animal_header=?, board_type_header=?, board_score=? "
+				+ "where board_no=?";
+		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardHeader(), 
+				boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader(), boardDto.getBoardScore(),
+				boardDto.getBoardNo() };
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 
 	public int count(PageVO pageVO, int pageType) {
 		if (pageVO.isList()) {
@@ -137,6 +165,39 @@ public class BoardDao {
 			sql = sql.replace("#1", pageVO.getColumn());
 			Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
 			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
+	}
+	
+	public List<BoardForReviewVO> selectListWithPagingForReview(PageVO pageVO, int pageType) {
+		if (pageVO.isList()) {
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from (select b.*, "
+					+ "h.header_name, "
+					+ "a.animal_header_name, "
+					+ "t.type_header_name "
+					+ "from board b "
+					+ "left join header h on b.board_header = h.header_no "
+					+ "left join animal_header a on b.board_animal_header = a.animal_header_no "
+					+ "left join type_header t on b.board_type_header = t.type_header_no "
+					+ "where b.board_category_no=? and b.deleted = 0 order by b.board_no desc) TMP"
+					+ ") where rn between ? and ?";
+			Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
+			return jdbcTemplate.query(sql, boardForReviewVOMapper, params);
+		} else {
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from (select b.*, "
+					+ "h.header_name, "
+					+ "a.animal_header_name, "
+					+ "t.type_header_name "
+					+ "from board b "
+					+ "left join header h on b.board_header = h.header_no "
+					+ "left join animal_header a on b.board_animal_header = a.animal_header_no "
+					+ "left join type_header t on b.board_type_header = t.type_header_no "
+					+ "where instr(#1, ?) > 0 and b.board_category_no=? and b.deleted = 0 order by b.board_no desc) TMP"
+					+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
+			return jdbcTemplate.query(sql, boardForReviewVOMapper, params);
 		}
 	}
 
@@ -223,6 +284,20 @@ public class BoardDao {
 		Object[] params = { pageType, min, max };
 		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
+	
+	public List<BoardDto> selectListWithPagingForMainPageReview(int pageType, int min, int max) {
+
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from (select b.*, h.header_name,  a.animal_header_name, t.type_header_name from board b "
+				+ "left join header h on b.board_header = h.header_no "
+				+ "left join animal_header a on b.board_animal_header = a.animal_header_no "
+				+ "left join type_header t on b.board_type_header = t.type_header_no "
+				+ "where b.board_category_no=? order by b.board_no desc) TMP"
+				+ ") where rn between ? and ?";
+
+		Object[] params = { pageType, min, max };
+		return jdbcTemplate.query(sql, boardListMapper, params);
+	}
 
 	// 마이페이지 내글 보기 관련
 	public List<BoardListVO> selectByMemberId(String login_id) {
@@ -234,5 +309,3 @@ public class BoardDao {
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
 }
-
-
