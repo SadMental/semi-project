@@ -138,8 +138,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-15p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">댓글 쓰기</a>
-                    <!-- 자유게시판 링크 -->
+                    <a href="/" class="move ms-10">댓글 쓰기</a>
                 </span>
                 <span class="w-50p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -155,8 +154,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">펫플루언서 글쓰기</a>
-                    <!-- 펫플루언서 링크 -->
+                    <a href="/board/petfluencer/list" class="move ms-10">펫플루언서 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -172,8 +170,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">자유게시판 글쓰기</a>
-                    <!-- 자유게시판 링크 -->
+                    <a href="/board/community/list" class="move ms-10">자유게시판 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -189,8 +186,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">분양게시판 글쓰기</a>
-                    <!-- 정보게시판 링크 -->
+                    <a href="/board/adoption/list" class="move ms-10">분양게시판 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -206,8 +202,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">정보게시판 글쓰기</a>
-                    <!-- 정보게시판 링크 -->
+                    <a href="/board/info/list" class="move ms-10">정보게시판 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
