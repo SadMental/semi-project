@@ -48,13 +48,13 @@
             padding: 3px;
             cursor: pointer;
         }
-        .reply-bonus,
-        .petfluencer-bonus,
-        .community-bonus,
-        .adoption-bonus,
-        .info-bonus {
-            display: none; 
-        }
+/*         .reply-bonus, */
+/*         .petfluencer-bonus, */
+/*         .community-bonus, */
+/*         .adoption-bonus, */
+/*         .info-bonus { */
+/*             display: none;  */
+/*         } */
     </style>
     
     <script src="./confirm.js"></script>
@@ -94,6 +94,8 @@
                         break;
                 }
             }
+            
+            
         });
 
     </script>

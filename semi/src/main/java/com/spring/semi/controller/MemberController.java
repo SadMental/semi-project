@@ -154,7 +154,7 @@ public class MemberController {
 		String loginId = (String) session.getAttribute("loginId");
 		
 		if(loginId == null) {
-			return "redirect:/memer/login";
+			return "redirect:/member/join";
 		}
 		
 		MemberDto memberDto = memberDao.selectOne(loginId);
@@ -263,9 +263,13 @@ public class MemberController {
 	        HttpSession session) {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
-
+		
+		if(loginId == null) {
+			return "redirect:/member/join";
+		}
+		
 		model.addAttribute("point", memberDto.getMemberPoint());
-		 model.addAttribute("rewardType", rewardType);
+		model.addAttribute("rewardType", rewardType);
 		 
 		return "/WEB-INF/views/member/donation.jsp";
 	}
