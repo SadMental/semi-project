@@ -71,7 +71,6 @@ public class CreateBoardController {
                 pageVO.getBegin(), pageVO.getEnd(), orderBy, categoryNo);
         System.out.println("boardVo : " + boardList.toString());
 
-        // 모델에 데이터 담기
         model.addAttribute("category", category);
         model.addAttribute("boardList", boardList);
 //        model.addAttribute("headerMap", headerMap);
@@ -86,7 +85,7 @@ public class CreateBoardController {
     //작성
 
     @GetMapping("/{categoryName}/write")
-    public String writeForm(@PathVariable String categoryName, Model model) {
+    public String write(@PathVariable String categoryName, Model model) {
         categoryName = URLDecoder.decode(categoryName, StandardCharsets.UTF_8);
 
         CategoryDto category = categoryDao.selectOneByName(categoryName);

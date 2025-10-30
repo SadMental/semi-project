@@ -5,31 +5,35 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3d Semi-Project</title>
-  
-    <!-- css import -->
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    
-    <!-- jquery cdn -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!-- momentjs CDN-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script>
-    <!-- reCAPTCHA api -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3d Semi-Project</title>
+
+<!-- css import -->
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+<!-- jquery cdn -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- momentjs CDN-->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script>
+<!-- reCAPTCHA api -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <style>
-:root{
-  --brown:#4e3d2a;
-  --beige:#eadac1;
-  --bg:#fff;
-  --line:#eadac1;
-  --text:#4e3d2a;
+:root {
+	--brown: #4e3d2a;
+	--beige: #eadac1;
+	--bg: #fff;
+	--line: #eadac1;
+	--text: #4e3d2a;
 }
 
 .kh-header {
@@ -127,34 +131,26 @@
 }
 </style>
 <div class="container w-1200">
-<header class="kh-header">
-	<div class="kh-header__wrap">
-		<div class="kh-top">
-			<aside class="kh-brand">
-				<div class="kh-brand__logoCard">
-					<img src="${cp}/image/petCafe.png" alt="KH PETIQUE"
-						class="kh-brand__logoImg">
-				</div>
-				<div class="kh-brand__title">KH PETIQUE</div>
-			</aside>
-			<nav class="kh-nav">
-				<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
-					class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
-					class="kh-pill" href="/board/info/list">INFO</a> <a class="kh-pill"
-					href="/board/adoption/list">SERVICE</a>
-				<%-- <c:choose>
-					<c:when test="${sessionScope.loginId != null}">
-						<a class="kh-pill kh-pill--active" href="/member/logout">LOGOUT</a>
-					</c:when>
-					<c:otherwise>
-						<a class="kh-pill kh-pill--active" href="/member/login">LOGIN</a>
-					</c:otherwise>
-				</c:choose> --%>
-				<a class="kh-pill" href="/admin/category/list">MENU</a>
-			</nav>
+	<header class="kh-header">
+		<div class="kh-header__wrap">
+			<div class="kh-top">
+				<aside class="kh-brand">
+					<div class="kh-brand__logoCard">
+						<img src="${cp}/image/petCafe.png" alt="KH PETIQUE"
+							class="kh-brand__logoImg">
+					</div>
+					<div class="kh-brand__title">KH PETIQUE</div>
+				</aside>
+				<nav class="kh-nav">
+					<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
+						class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
+						class="kh-pill" href="/board/info/list">INFO</a> <a
+						class="kh-pill" href="/board/adoption/list">SERVICE</a>
+					<a class="kh-pill" href="/admin/category/list">MENU</a>
+				</nav>
+			</div>
+
 		</div>
 
-	</div>
-
-</header>
-<div class="cell flex-box">
+	</header>
+	<div class="cell flex-box">
