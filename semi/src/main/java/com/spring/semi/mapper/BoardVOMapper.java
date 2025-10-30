@@ -26,6 +26,7 @@ public class BoardVOMapper  implements RowMapper<BoardVO> {
 				.deleted(rs.getInt("deleted"))
 				.animalHeaderName(rs.getString("animal_header_name"))
 				.typeHeaderName(rs.getString("type_header_name"))
+				.boardScore(rs.getInt("board_score"))
 				.build();
 	}
 }

@@ -20,6 +20,7 @@ public class MemberLevelMapper implements RowMapper<MemberLevelDto> {
 				.minPoint(rs.getInt("min_point"))
 				.maxPoint(rs.getInt("max_point"))
 				.description(rs.getString("description"))
+				.badgeImage(rs.getString("badge_image"))
 				.build();
 	}
 }

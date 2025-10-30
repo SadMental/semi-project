@@ -23,9 +23,7 @@ public class BoardVO {
 	private int deleted;
 	private String typeHeaderName;
 	private String animalHeaderName;
-	
-
-	
+	private int boardScore;	
 
 	public String getFormattedWtime() {
 	    if (boardWtime == null) return "";	
