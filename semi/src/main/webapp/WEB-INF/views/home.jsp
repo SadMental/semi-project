@@ -140,6 +140,21 @@
         gap: 6px;
         margin-top: 2px;
     }
+    .banner {
+            border: none;
+            background: linear-gradient(90deg, rgb(235, 160, 0) 0%, rgb(238, 174, 0) 35%, rgb(255, 246, 167) 100%);
+            padding: 1em;
+            padding: 1em;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 0 10px rgba(122, 122, 122, 0.5);
+        }
+     .do {
+            text-decoration: none;
+            color: white;
+        }
 </style>
 <script type="text/javascript">
 $(function () {
@@ -172,8 +187,9 @@ $(function () {
                     <p>1</p>
                     <p>2</p>
                     메인
-                    <p>3</p>
-                    <p>4</p>
+                    <div class="cell banner">
+                		<a class="do" href="/member/donation">펫콩 쌓기</a>
+        			</div>
                 </div>
             </div>
             <div class="cell ms-10 me-10">
