@@ -38,7 +38,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/board/community")
 public class BoardController {
 	private final MediaService mediaService;
-	@Autowired
+	@Autowired 
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
@@ -50,7 +50,7 @@ public class BoardController {
 	BoardController(MediaService mediaService) {
 		this.mediaService = mediaService;
 	}
-
+ 
 //	@RequestMapping("/list")
 //	public String list(Model model) 
 //	{	
