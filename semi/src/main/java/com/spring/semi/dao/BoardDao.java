@@ -56,17 +56,18 @@ public class BoardDao {
 
 	}
 
+	// 상세
 	public BoardDto selectOne(int boardNo) {
-        String sql = "SELECT board_no, board_category_no, board_writer, "
-                   + "board_title, board_content, board_view, board_like, "
-                   + "board_wtime, board_etime, board_header, board_reply, "
-                   + "board_animal_header, board_type_header, board_score "
-                   + "FROM board "
-                   + "WHERE board_no=?";
-        Object[] params = { boardNo };
-        List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
-        return list.isEmpty() ? null : list.get(0);
-    }
+		String sql = "SELECT board_no, board_category_no, board_writer, "
+				+ "board_title, board_content, board_view, board_like, "
+				+ "board_wtime, board_etime, board_header, board_reply, "
+				+ "board_animal_header, board_type_header, board_score " + "FROM board "
+				+ "WHERE board_no=? and deleted=0";
+		Object[] params = { boardNo };
+		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+	}
+
 	// 삭제
 	public boolean delete(int boardNo) {
 		String sql = "update board set deleted = 1 where board_no = ?";
@@ -78,14 +79,13 @@ public class BoardDao {
 //	public boolean mypageDelete (int boardNo) {
 //		return delete(boardNo);
 //	}
-	
+
 	// 삭제된 글 조회
 	public List<BoardListVO> selectDeletedByMemberId(String login_id) {
 		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
-				+ "join category on category_no = board_category_no "
-				+ "where board_writer = ? and deleted = 1 "
+				+ "join category on category_no = board_category_no " + "where board_writer = ? and deleted = 1 "
 				+ "order by board_wtime desc";
-		Object[] params = {login_id};
+		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
 
@@ -106,25 +106,26 @@ public class BoardDao {
 
 	public int count(PageVO pageVO, int pageType) {
 		if (pageVO.isList()) {
-			String sql = "select count(*) from board where board_category_no=? order by board_no asc";
+			String sql = "select count(*) from board where board_category_no=? and deleted =0";
 			Object[] params = { pageType };
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		} else {
 			if ("header_name".equalsIgnoreCase(pageVO.getColumn())) {
 				// header 검색
 				String sql = "select count(*) from board b " + "left join header h on b.board_header = h.header_no "
-						+ "where instr(h.header_name, ?) > 0 " + "and b.board_category_no=?";
+						+ "where instr(h.header_name, ?) > 0 " + "and b.board_category_no=? and deleted=0";
 				Object[] params = { pageVO.getKeyword(), pageType };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
 			} else {
 				// 기존검색
-				String sql = "select count(*) from board " + "where instr(#1, ?) > 0 " + "and board_category_no=?";
+				String sql = "select count(*) from board " + "where instr(#1, ?) > 0 "
+						+ "and board_category_no=? and deleted=0";
 				sql = sql.replace("#1", pageVO.getColumn());
 				Object[] params = { pageVO.getKeyword(), pageType };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
 			}
 		}
-	}
+	} 
 
 	public List<BoardDto> selectListWithPaging(PageVO pageVO, int pageType) {
 		if (pageVO.isList()) {
@@ -137,7 +138,7 @@ public class BoardDao {
 		} else {
 			String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 					+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-					+ "    where instr(#1, ?) > 0 " + "    and b.board_category_no=? "
+					+ "    where instr(#1, ?) > 0 " + "    and b.board_category_no=? and b.deleted=0 "
 					+ "    order by #1 asc, b.board_no desc" + "  ) TMP" + ") where rn between ? and ?";
 
 			sql = sql.replace("#1", pageVO.getColumn());
@@ -163,7 +164,7 @@ public class BoardDao {
 	public List<BoardListVO> selectListByWriteTime(int min, int max) {
 		String sql = "select * from (" + "select rownum rn, TMP.* from ("
 				+ "select board_no, board_title, board_wtime, board_view, category_name "
-				+ "from board join category on category_no = board_category_no "
+				+ "from board join category on category_no = board_category_no where deleted= 0 "
 				+ "order by board_wtime desc" + ")TMP) where rn between ? and ?";
 		Object[] params = { min, max };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
@@ -187,8 +188,8 @@ public class BoardDao {
 		}
 
 		String sql = "SELECT * FROM ( " + "  SELECT rownum rn, TMP.* FROM ( " + "    SELECT * FROM board "
-				+ "    WHERE board_category_no = ? " + "    ORDER BY " + orderColumn + " DESC " + "  ) TMP "
-				+ ") WHERE rn BETWEEN ? AND ?";
+				+ "    WHERE board_category_no = ? and deleted = 0" + "    ORDER BY " + orderColumn + " DESC "
+				+ "  ) TMP " + ") WHERE rn BETWEEN ? AND ?";
 
 		Object[] params = { categoryNo, min, max };
 		return jdbcTemplate.query(sql, boardMapper, params);
@@ -223,7 +224,7 @@ public class BoardDao {
 
 		String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
 				+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-				+ "    where b.board_category_no=? " + "    order by b.board_no desc" + "  ) TMP"
+				+ "    where b.board_category_no=? and b.deleted=0" + "    order by b.board_no desc" + "  ) TMP"
 				+ ") where rn between ? and ?";
 
 		Object[] params = { pageType, min, max };
@@ -233,14 +234,9 @@ public class BoardDao {
 	// 마이페이지 내글 보기 관련
 	public List<BoardListVO> selectByMemberId(String login_id) {
 		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
-				+ "join category on category_no = board_category_no " 
-				+ "where board_writer = ? and deleted = 0"
+				+ "join category on category_no = board_category_no " + "where board_writer = ? and deleted = 0 "
 				+ "order by board_wtime desc";
 		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
 	}
 }
-
-
-}
-

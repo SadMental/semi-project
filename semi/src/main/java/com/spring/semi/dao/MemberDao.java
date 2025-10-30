@@ -16,6 +16,8 @@ public class MemberDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private MemberMapper memberMapper;
+	@Autowired
+	private MemberLevelDao memberLevelDao;
 
 	public void insert(MemberDto memberDto) {
 		String sql = "insert into " + "member(member_id, member_pw, member_nickname, member_email, "
@@ -48,37 +50,37 @@ public class MemberDao {
 
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	
+
 	public void updateForLogin(String member_id) {
 		String sql = "update member set member_login = systimestamp where member_id = ?";
-		Object[] params = {member_id};
+		Object[] params = { member_id };
 		jdbcTemplate.update(sql, params);
 	}
-	
+
 	public MemberDto selectOne(String member_id) {
 		String sql = "select * from member where member_id = ?";
 		Object[] params = { member_id };
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
-	
+
 	public MemberDto selectForEmail(String memberEmail) {
 		String sql = "select * from member where member_email = ?";
-		Object[] params = {memberEmail};
+		Object[] params = { memberEmail };
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
-	
+
 	public MemberDto selectForNickname(String memberNickname) {
 		String sql = "select * from member where member_nickname = ?";
-		Object[] params = {memberNickname};
+		Object[] params = { memberNickname };
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
-	
-	public List<MemberDto> selectList(){
+
+	public List<MemberDto> selectList() {
 		String sql = "select * from member";
-		
+
 		return jdbcTemplate.query(sql, memberMapper);
 	}
 
@@ -93,62 +95,51 @@ public class MemberDao {
 		Object[] params = { member_id };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-	
+
 	// member_point가 가장 높은 10명의 회원들
-	public List<MemberDto> selectListByMemberPoint(int min, int max)
-	{
-		String sql = "select * from ("
-				+ "select rownum rn, TMP.* from ("
-				+ "select * from member order by member_point desc"
-				+ ")TMP) where rn between ? and ?";
-		Object[] params = {min, max};
+	public List<MemberDto> selectListByMemberPoint(int min, int max) {
+		String sql = "select * from (" + "select rownum rn, TMP.* from ("
+				+ "select * from member order by member_point desc" + ")TMP) where rn between ? and ?";
+		Object[] params = { min, max };
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
-	
-	//포인트 쌓기
-		public void addPoint(String memberId, int point) {
-			String sql = "update member set member_point = member_point + ? "
-					+ "where member_id = ?";
-			Object[] params = {point, memberId};
-			int result = jdbcTemplate.update(sql, params);
 
-		}
-		
-	//페이징용
+	// 포인트 쌓기
+	public void addPoint(String memberId, int point) {
+		String sql = "update member set member_point = member_point + ? " + "where member_id = ?";
+		Object[] params = { point, memberId };
+		int result = jdbcTemplate.update(sql, params);
+
+	}
+	
+	// 페이징용
 	public int count(PageVO pageVO) {
-		if(pageVO.isList()) {
+		if (pageVO.isList()) {
 			String sql = "select count(*) from member where member_level != 2";
 			return jdbcTemplate.queryForObject(sql, int.class);
 		} else {
 			String sql = "select count(*) from member where instr(#1, ?) > 0 and member_level != 2";
 			sql = sql.replace("#1", pageVO.getColumn());
-			Object[] params = {pageVO.getKeyword()};
+			Object[] params = { pageVO.getKeyword() };
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		}
 	}
-	//페이징용
-	public List<MemberDto> selectListForPaging(PageVO pageVO){
-		if(pageVO.isList()) {
-			String sql = "select * from ("
-								+ "select rownum rn, TMP.* from ("
-									+ "select * from member "
-									+ "where member_level != 2 "
-									+ "order by member_id asc"
-								+ ") TMP"
-							+ ") where rn between ? and ?";
-			Object[] params = {pageVO.getBegin(), pageVO.getEnd()};
+
+	// 페이징용
+	public List<MemberDto> selectListForPaging(PageVO pageVO) {
+		if (pageVO.isList()) {
+			String sql = "select * from (" + "select rownum rn, TMP.* from (" + "select * from member "
+					+ "where member_level != 2 " + "order by member_id asc" + ") TMP" + ") where rn between ? and ?";
+			Object[] params = { pageVO.getBegin(), pageVO.getEnd() };
 			return jdbcTemplate.query(sql, memberMapper, params);
 		} else {
-			String sql = "select * from ("
-									+ "select rownum rn, TMP.* from ("
-										+ "select * from member "
-										+ "where instr(#1, ?) > 0 and member_level != 2 "
-										+ "order by #1 asc, member_id asc"
-									+ ") TMP"
-								+ ") where rn between ? and ?";
+			String sql = "select * from (" + "select rownum rn, TMP.* from (" + "select * from member "
+					+ "where instr(#1, ?) > 0 and member_level != 2 " + "order by #1 asc, member_id asc" + ") TMP"
+					+ ") where rn between ? and ?";
 			sql = sql.replace("#1", pageVO.getColumn());
-			Object[] params = {pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()};
+			Object[] params = { pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd() };
 			return jdbcTemplate.query(sql, memberMapper, params);
 		}
 	}
+	
 }

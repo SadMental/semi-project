@@ -168,12 +168,7 @@ a:hover {
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>
-								<td><c:set var="writer" value="${boardDto.boardWriter}" />
-									${memberMap[writer].memberNickname} <span
-									class="grade-badge ${memberMap[writer].grade}">
-										${memberMap[writer].emoji} ${memberMap[writer].badgeName} </span></td>
-
-
+								<td>${boardDto.boardWriter}</td>
 								<td>${boardDto.boardView}</td>
 								<td>${boardDto.boardLike}</td>
 								<td>${boardDto.formattedWtime}</td>

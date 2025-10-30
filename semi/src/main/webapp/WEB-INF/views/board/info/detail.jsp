@@ -212,9 +212,8 @@ $(function() {
 			</tr>
 			<tr>
 				<th>[작성자] :</th>
-				<td>${memberVO.memberNickname} <span
-					class="grade-badge ${memberVO.grade}"> ${memberVO.emoji}
-						${memberVO.badgeName} </span>
+				<td>${boardDto.boardWriter}
+				
 				</td>
 			</tr>
 

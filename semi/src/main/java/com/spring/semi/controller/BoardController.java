@@ -203,8 +203,9 @@ public class BoardController {
 //		model.addAttribute("memberPoint", member.getMemberPoint());
 //				
 
+		boardDao.delete(boardNo);
 		return "redirect:list";
-	}
+}
 
 	@PostMapping("/mypageDelete")
 	@ResponseBody
