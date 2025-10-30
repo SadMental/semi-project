@@ -104,7 +104,6 @@ public class InfoBoardController {
 
 	     List<BoardVO> boardList = boardDao.selectList2(
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
-
 //	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
 
 
@@ -151,6 +150,7 @@ public class InfoBoardController {
 		 if (boardDto == null)
 			 throw new TargetNotfoundException("존재하지 않는 글");
 		 boardDao.delete(boardNo);
+		 
 		 return "redirect:list";
 	 }
 

@@ -221,11 +221,10 @@ public class BoardDao {
 			    "FROM ( " + 
 			    "    SELECT rownum rn, TMP.* FROM ( " +
 			    "        select * from board_header_view " +
-			    "        WHERE board_category_no = ? " +
+			    "        WHERE board_category_no = ? and deleted = 0" +
 			    "        ORDER BY " + orderColumn + " DESC " +
 			    "    ) TMP " +
 			    ") WHERE rn BETWEEN ? AND ?";
-
 		
 		Object[] params = { categoryNo, min, max };
 		return jdbcTemplate.query(sql, boardVOMapper, params);
