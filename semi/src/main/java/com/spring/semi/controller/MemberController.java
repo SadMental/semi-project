@@ -102,9 +102,9 @@ public class MemberController {
 			HttpSession session,
 			Model model
 			) {
-		String login_id = (String) session.getAttribute("loginId");
-		MemberDto memberDto = memberDao.selectOne(login_id);
-		List<AnimalDto> animalList = animalDao.selectList(login_id);
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		List<AnimalDto> animalList = animalDao.selectList(loginId);
 		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);
 		return "/WEB-INF/views/member/edit.jsp";
@@ -115,12 +115,12 @@ public class MemberController {
 			HttpSession session,
 			@ModelAttribute MemberDto memberDto
 			) throws IllegalStateException, IOException {
-		String login_id = (String) session.getAttribute("loginId");
-		MemberDto originDto = memberDao.selectOne(login_id);
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto originDto = memberDao.selectOne(loginId);
 		if(originDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:edit?error";
 		
 		
-		memberDto.setMemberId(login_id);
+		memberDto.setMemberId(loginId);
 		memberDao.updateForUser(memberDto);
 		
 		return "redirect:mypage";
@@ -138,8 +138,8 @@ public class MemberController {
 			@RequestParam(name = "change_pw") String change_pw,
 			@RequestParam(name = "current_pw") String member_pw
 			) {
-		String login_id = (String) session.getAttribute("loginId");
-		MemberDto findDto = memberDao.selectOne(login_id);
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto findDto = memberDao.selectOne(loginId);
 		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:password?error";
 		memberDao.updateForUserPassword(change_pw, findDto.getMemberId());
 		
@@ -151,15 +151,15 @@ public class MemberController {
 			Model model, 
 			HttpSession session
 			) {
-		String login_id = (String) session.getAttribute("loginId");
-		MemberDto memberDto = memberDao.selectOne(login_id);
-		List<AnimalDto> animalList = animalDao.selectList(login_id);
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		List<AnimalDto> animalList = animalDao.selectList(loginId);
 		
 		//작성글 리스트
-		List<BoardListVO> boardListVO = boardDao.selectByMemberId(login_id);
+		List<BoardListVO> boardListVO = boardDao.selectByMemberId(loginId);
 		
 		//삭제된 글 리스트 
-		List<BoardListVO> deletedBoardListVO = boardDao.selectDeletedByMemberId(login_id);
+		List<BoardListVO> deletedBoardListVO = boardDao.selectDeletedByMemberId(loginId);
 		
 		model.addAttribute("animalList", animalList);
 		model.addAttribute("memberDto", memberDto);
@@ -179,10 +179,10 @@ public class MemberController {
 			HttpSession session,
 			@RequestParam String member_pw
 			) {
-		String login_id = (String) session.getAttribute("loginId");
-		MemberDto findDto = memberDao.selectOne(login_id);
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto findDto = memberDao.selectOne(loginId);
 		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:drop?error";
-		memberDao.delete(login_id);
+		memberDao.delete(loginId);
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginLevel");
 		return "/WEB-INF/views/member/thankyou.jsp";

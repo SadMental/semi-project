@@ -1,12 +1,14 @@
 package com.spring.semi.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.spring.semi.dto.HeaderDto;
+import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.mapper.HeaderMapper;
 
 @Repository
@@ -17,57 +19,96 @@ public class HeaderDao {
 
     @Autowired
     private HeaderMapper headerMapper;
+    
+    private final Map<String, String> typeMap = Map.of(
+    		"animal", "animal_header",
+    		"type", "type_header"
+    		);
+    		
 
     /** 시퀀스 조회 */
-    public int sequence() {
-        String sql = "SELECT header_seq.NEXTVAL FROM dual";
+    public int sequence(String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "SELECT #1_seq.NEXTVAL FROM dual";
+        sql = sql.replace("#1", typeName);
         return jdbcTemplate.queryForObject(sql, int.class);
+    }
+    
+    public List<HeaderDto> selectList(String type){
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+    	String sql = "select * from #1 order by header_no asc";
+    	sql = sql.replace("#1", typeName);
+    	
+    	return jdbcTemplate.query(sql, headerMapper);
     }
 
     /** 등록 (INSERT) */
-    public boolean insert(HeaderDto headerDto) {
-        String sql = "INSERT INTO header (header_no, header_name) VALUES (?, ?)";
+    public boolean insert(HeaderDto headerDto, String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "INSERT INTO #1 VALUES (?, ?)";
+        sql = sql.replace("#1", typeName);
         Object[] params = { headerDto.getHeaderNo(), headerDto.getHeaderName() };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 수정 (UPDATE) */
-    public boolean update(HeaderDto headerDto) {
-        String sql = "UPDATE header SET header_name = ? WHERE header_no = ?";
+    public boolean update(HeaderDto headerDto, String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "UPDATE #1 SET header_name = ? WHERE header_no = ?";
+        sql = sql.replace("#1", typeName);
         Object[] params = { headerDto.getHeaderName(), headerDto.getHeaderNo() };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 번호로 수정 */
-    public boolean updateByHeaderNo(int headerNo, String newHeaderName) {
-        String sql = "UPDATE header SET header_name = ? WHERE header_no = ?";
+    public boolean updateByHeaderNo(int headerNo, String newHeaderName, String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "UPDATE #1 SET header_name = ? WHERE header_no = ?";
+        sql = sql.replace("#1", typeName);
         Object[] params = { newHeaderName, headerNo };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 삭제 */
-    public boolean delete(int headerNo) {
-        String sql = "DELETE FROM header WHERE header_no = ?";
+    public boolean delete(int headerNo, String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "DELETE FROM #1 WHERE header_no = ?";
+        sql = sql.replace("#1", typeName);
         Object[] params = { headerNo };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 이름으로 조회 */
-    public List<HeaderDto> selectByHeaderName(String headerName) {
-        String sql = "SELECT * FROM header WHERE header_name = ?";
+    public List<HeaderDto> selectByHeaderName(String headerName, String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "SELECT * FROM #1 WHERE header_name = ?";
+        sql = sql.replace("#1", typeName);
         Object[] params = { headerName };
         return jdbcTemplate.query(sql, headerMapper, params);
     }
 
     /** 전체 조회 */
-    public List<HeaderDto> selectAll() {
-        String sql = "SELECT * FROM header ORDER BY header_no ASC";
+    public List<HeaderDto> selectAll(String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "SELECT * FROM #1 ORDER BY header_no ASC";
+        sql = sql.replace("#1", typeName);
         return jdbcTemplate.query(sql, headerMapper);
     }
 
     /** 단일 조회 */
-    public HeaderDto selectOne(int headerNo) {
-        String sql = "SELECT * FROM header WHERE header_no = ?";
+    public HeaderDto selectOne(int headerNo, String type) {
+    	String typeName = typeMap.get(type);
+    	if(typeName == null) throw new TargetNotfoundException();
+        String sql = "SELECT * FROM #1 WHERE header_no = ?";
+        sql = sql.replace("#1", typeName);
         Object[] params = { headerNo };
         List<HeaderDto> list = jdbcTemplate.query(sql, headerMapper, params);
         return list.isEmpty() ? null : list.get(0);

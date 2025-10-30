@@ -110,7 +110,7 @@
 		</div>
 		<br>
 		<div class="cell center">
-			<input type="file"  name="media" class="field w-100p" accept="image/*"><br><br>
+			<input type="file"  name="media" class="field w-100p" accept="image/*" ><br><br>
 			<img class="img-preview" src="/image/error/no-image.png" width="100">
 		</div><br>
 		<div class="cell">

@@ -197,11 +197,7 @@ $(function() {
 </script>
 
 <div class="container w-800">
-<c:if test="${not empty headerDto}">
-    <tr>
-       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
-    </tr>
-</c:if>
+    <h1> [${typeHeaderDto.headerName}]   ${boardDto.boardTitle}</h1>      
 
 
 	<div class="meta">
@@ -230,6 +226,10 @@ $(function() {
 			            </c:otherwise>
 			        </c:choose>
 			    </td>
+			</tr>
+			<tr>
+				<th>[동물 분류] :</th>
+				<td>${animalHeaderDto.headerName}</td>
 			</tr>
 		</table>
 	</div>
