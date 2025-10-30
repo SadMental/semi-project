@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.semi.dao.CertDao;
 import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.CertDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.service.EmailService;

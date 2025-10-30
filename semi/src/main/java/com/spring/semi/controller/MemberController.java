@@ -155,6 +155,11 @@ public class MemberController {
 			HttpSession session
 			) {
 		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			return "redirect:/member/join";
+		}
+		
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		List<AnimalDto> animalList = animalDao.selectList(loginId);
 		
@@ -254,7 +259,19 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/donation")
-	public String donation() {
+	public String donation( @RequestParam(name = "rewardType", required = false) String rewardType, // <-- 콤마 필요
+	        Model model,
+	        HttpSession session) {
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		
+		if(loginId == null) {
+			return "redirect:/member/join";
+		}
+		
+		model.addAttribute("point", memberDto.getMemberPoint());
+		model.addAttribute("rewardType", rewardType);
+		 
 		return "/WEB-INF/views/member/donation.jsp";
 	}
 	
@@ -262,4 +279,7 @@ public class MemberController {
 	public String pointUse() {
 		return "/WEB-INF/views/member/pointUse.jsp";
 	}
+	
+	
+	
 }

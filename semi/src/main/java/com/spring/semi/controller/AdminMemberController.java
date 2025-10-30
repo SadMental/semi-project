@@ -16,7 +16,7 @@ import com.spring.semi.dao.AnimalDao;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
-import com.spring.semi.dto.BoardDto;
+
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
@@ -120,5 +120,5 @@ public class AdminMemberController {
 		
 		return "redirect:list";
 	}
-	
+
 }

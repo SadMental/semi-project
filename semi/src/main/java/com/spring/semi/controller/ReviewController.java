@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.CategoryDao;
 import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.BoardDto;
+import com.spring.semi.dto.CategoryDto;
 import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -35,24 +38,36 @@ public class ReviewController {
 	private MemberDao memberDao;
 	@Autowired
 	private HeaderDao headerDao;
+	@Autowired
+	private CategoryDao categoryDao;
 	
 	ReviewController(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 	
 	@RequestMapping("/list")
-	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
-	{
-		pageVO.setSize(12);
-		pageVO.fixPageRange(); // ★ 페이지 범위 보정
-		
-		model.addAttribute("boardList", boardDao.selectListWithPaging(pageVO, 5));
-		pageVO.setDataCount(boardDao.count(pageVO, 5));
-		model.addAttribute("pageVO", pageVO);
-			
-		return "/WEB-INF/views/board/review/list.jsp";
-	}
+	 public String list(
+	         Model model,
+	         @ModelAttribute("pageVO") PageVO pageVO,
+	         @RequestParam(required = false, defaultValue = "wtime") String orderBy
+	 ) {
+	     int boardType = 5;
+	     CategoryDto categoryDto = categoryDao.selectOne(boardType);
 
+	     pageVO.setSize(10);
+	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
+
+	     List<BoardVO> boardList = boardDao.selectList2(
+	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
+
+	     model.addAttribute("category", categoryDto);
+	     model.addAttribute("boardList", boardList);
+
+	     model.addAttribute("pageVO", pageVO);
+	     model.addAttribute("orderBy", orderBy);
+
+	     return "/WEB-INF/views/board/review/list.jsp";
+	 }
 	
 	@GetMapping("/write")
 	public String writeForm(Model model) {
