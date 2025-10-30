@@ -230,7 +230,7 @@
             <div class="cell flex-box">
                 <div style="font-weight: 700; font-size: 18px;" class="w-70p">
                     <i class="fa-brands fa-gratipay mb-20 me-20" style="color: rgb(230, 233, 70);"></i>
-                    펫콩 획득 / 사용내역
+                    펫콩 획득 / 사용내역 (아직 미구현)
                 </div>
             </div>
             <div style="color: transparent; font-size: 8px;">공백</div>
