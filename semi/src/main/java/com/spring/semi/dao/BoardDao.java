@@ -232,7 +232,7 @@ public class BoardDao {
 				+ "order by board_wtime desc";
 		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
-	}
+	} 
 }
 
 
