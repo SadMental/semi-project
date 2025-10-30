@@ -31,7 +31,6 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.BoardVO;
-import com.spring.semi.vo.MemberVO;
 import com.spring.semi.vo.PageVO;
 import com.spring.semi.service.MemberService;
 
@@ -107,24 +106,11 @@ public class InfoBoardController {
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
 
 //	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
-	     Map<String, MemberVO> memberMap = new HashMap<>();
-	     for (BoardVO b : boardList) {
-//	         HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
-//	         if (headerDto != null) {
-//	             headerMap.put(b.getBoardNo(), headerDto);
-//	         }
-	         // 작성자 정보 (MemberVO)
-	         if (b.getBoardWriter() != null && !memberMap.containsKey(b.getBoardWriter())) {
-	             MemberVO memberVO = memberService.getMemberInfo(b.getBoardWriter());
-	             memberMap.put(b.getBoardWriter(), memberVO);
-	         }
-	     }
-	     System.out.println("memberMap : " + memberMap.toString());
+
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
-//	     model.addAttribute("headerMap", headerMap);
-	     model.addAttribute("memberMap", memberMap);
+
 	     model.addAttribute("pageVO", pageVO);
 	     model.addAttribute("orderBy", orderBy);
 
@@ -149,13 +135,12 @@ public class InfoBoardController {
 			 model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가
 		 }
 		 
-		 // 작성자 정보 조회
-		 if (boardDto.getBoardWriter() != null) {
-			 MemberVO memberVO = memberService.getMemberInfo(boardDto.getBoardWriter());
-			 model.addAttribute("memberVO", memberVO);
-		 }
-		 
-		 return "/WEB-INF/views/board/info/detail.jsp";
+			// 작성자 정보
+			if (boardDto.getBoardWriter() != null) {
+				MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
+				model.addAttribute("memberDto", memberDto);
+			}
+			return "/WEB-INF/views/board/info/detail.jsp";
 	 }
 
 

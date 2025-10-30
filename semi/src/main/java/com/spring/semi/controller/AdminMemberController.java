@@ -15,10 +15,11 @@ import com.spring.semi.dao.AnimalDao;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
-import com.spring.semi.dto.BoardDto;
+
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
+import com.spring.semi.service.MemberService;
 import com.spring.semi.vo.BoardListVO;
 import com.spring.semi.vo.PageVO;
 
@@ -36,6 +37,7 @@ public class AdminMemberController {
 	private BoardDao boardDao;
 	@Autowired
 	private EmailService emailService;
+
 	
 	@GetMapping("/list")
 	public String list(
@@ -84,5 +86,6 @@ public class AdminMemberController {
 		
 		return "redirect:list";
 	}
+
 	
 }

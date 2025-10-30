@@ -205,7 +205,6 @@ public class BoardController {
 			mediaService.delete(mediaNo);
 
 		}
-		
 		boardDao.delete(boardNo);
 
 		//게시글 포인트 차감
@@ -218,8 +217,9 @@ public class BoardController {
 //		}
  
 		return "redirect:list";
-	}
+}
 	
+
 	@PostMapping("/mypageDelete")
 	@ResponseBody
 	public String mypageDelete(@RequestParam("boardNo") List<Integer> boardNoList) {
