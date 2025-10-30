@@ -105,9 +105,6 @@ public class InfoBoardController {
 	     List<BoardVO> boardList = boardDao.selectList2(
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
 
-//	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
-
-
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
 
@@ -116,7 +113,6 @@ public class InfoBoardController {
 
 	     return "/WEB-INF/views/board/info/list.jsp";
 	 }
-
 
 	 @RequestMapping("/detail")
 	 public String detail(Model model, @RequestParam int boardNo) {
@@ -144,16 +140,21 @@ public class InfoBoardController {
 	 }
 
 
-	// 삭제
-	 @RequestMapping("/delete")
-	 public String delete(@RequestParam int boardNo) {
-		 BoardDto boardDto = boardDao.selectOne(boardNo);
-		 if (boardDto == null)
-			 throw new TargetNotfoundException("존재하지 않는 글");
-		 boardDao.delete(boardNo);
-		 return "redirect:list";
-	 }
-
+	   @RequestMapping("/delete")
+	   public String delete(@RequestParam int boardNo) {
+	       BoardDto boardDto = boardDao.selectOne(boardNo);
+	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
+	       // 글 내용에서 이미지 삭제 처리
+	       Document document = Jsoup.parse(boardDto.getBoardContent());
+	       Elements elements = document.select(".custom-image"); // <img>를 찾고
+	       for (Element element : elements) {
+	           int attachmentNo = Integer.parseInt(element.attr("data-pk"));
+	           mediaService.delete(attachmentNo);
+	       }
+	       // 글 삭제
+	       boardDao.delete(boardNo);
+	       return "redirect:list";
+	   }
 	// 수정
 	 @GetMapping("/edit")
 	 public String edit(Model model, @RequestParam int boardNo) {

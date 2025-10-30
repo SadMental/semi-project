@@ -140,6 +140,21 @@
         gap: 6px;
         margin-top: 2px;
     }
+    .banner {
+            border: none;
+            background: linear-gradient(90deg, rgb(235, 160, 0) 0%, rgb(238, 174, 0) 35%, rgb(255, 246, 167) 100%);
+            padding: 1em;
+            padding: 1em;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 0 10px rgba(122, 122, 122, 0.5);
+        }
+     .do {
+            text-decoration: none;
+            color: white;
+        }
 </style>
 <script type="text/javascript">
 	$(function () {
@@ -193,8 +208,9 @@
                     <p>1</p>
                     <p>2</p>
                     메인
-                    <p>3</p>
-                    <p>4</p>
+                    <div class="cell banner">
+                		<a class="do" href="/member/donation">펫콩 쌓기</a>
+        			</div>
                 </div>
             </div>
             <div class="cell ms-10 me-10">
@@ -318,22 +334,6 @@
             </div>
 
             <div class="cell ms-10 me-10">
-                <label>쇼츠</label>
-            </div>
-            <div class="cell ms-10 me-10 center" style="background-color:green">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                쇼츠 가로형 스크롤
-                <p>4</p>
-                <p>5</p>
-                <p>6</p>
-            </div>
-            <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">쇼츠 더보기 ></a>
-            </div>
-
-            <div class="cell ms-10 me-10">
                 <label>사용후기</label>
             </div>
             <div class="cell ms-10 me-10 center">
@@ -447,28 +447,6 @@
             </div>
             <div class="cell ms-10 me-10 center">
                 <a href="/board/animal/list" class="link">동물위키 더보기 ></a>
-            </div>
-
-            <div class="cell ms-10 me-10">
-                <label>체험단</label>
-            </div>
-            <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>체험단 1</p>
-                    <p>체험단 3</p>
-                    <p>체험단 5</p>
-                    <p>체험단 7</p>
-                </div>
-
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>체험단 2</p>
-                    <p>체험단 4</p>
-                    <p>체험단 6</p>
-                    <p>체험단 8</p>
-                </div>
-            </div>
-            <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">체험단 더보기 ></a>
             </div>
         </div>
 

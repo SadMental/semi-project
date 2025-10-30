@@ -189,8 +189,10 @@ $(function () {
                     <td>${memberDto.memberDescription }</td>
                 </tr>
                 <tr>
-                    <th>포인트</th>
-                    <td>${memberDto.memberPoint }</td>
+                    <th>펫콩</th>
+                    <td>
+                    	<fmt:formatNumber value="${memberDto.memberPoint }" pattern="###,###"/>
+                    </td>
                 </tr>
                 <tr>
                     <c:forEach var="animalDto" items="${animalList }">
@@ -336,7 +338,7 @@ $(function () {
                         ${board.boardNo }
                     </div>
                     <div class="w-70p content title" style="padding: 0 1.5em 0 1.5em;">
-                        <a href="${boardRealPath}" class="boardTitle">${board.boardTitle }</a>
+                        <span class="boardTitle">${board.boardTitle }</span>
                     </div>
                     <div class="w-10p center content">
                         <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
