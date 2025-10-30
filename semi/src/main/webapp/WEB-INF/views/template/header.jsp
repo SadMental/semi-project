@@ -1,35 +1,37 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="cp" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3d Semi-Project</title>
-  
-    <!-- css import -->
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    
-    <!-- jquery cdn -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!-- momentjs CDN-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script>
-    <!-- reCAPTCHA api -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3d Semi-Project</title>
+
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- momentjs CDN-->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script>
+<!-- reCAPTCHA api -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <style>
-:root{
-  --brown:#4e3d2a;
-  --beige:#eadac1;
-  --bg:#fff;
-  --line:#eadac1;
-  --text:#4e3d2a;
+:root {
+	--brown: #4e3d2a;
+	--beige: #eadac1;
+	--bg: #fff;
+	--line: #eadac1;
+	--text: #4e3d2a;
 }
 
 .kh-header {
@@ -79,10 +81,10 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	padding: 16px 24px; /* 내부 공간 */
-	border: 1px solid var(--line); /* 기존 색상 사용 */
-	border-radius: 12px; /* 모서리 둥글게 */
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* 약한 그림자 */
+	padding: 16px 24px;
+	border: 1px solid var(--line);
+	border-radius: 12px; 
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
 }
 
 .kh-pill {
@@ -127,34 +129,26 @@
 }
 </style>
 <div class="container w-1200">
-<header class="kh-header">
-	<div class="kh-header__wrap">
-		<div class="kh-top">
-			<aside class="kh-brand">
-				<div class="kh-brand__logoCard">
-					<img src="${cp}/image/petCafe.png" alt="KH PETIQUE"
-						class="kh-brand__logoImg">
-				</div>
-				<div class="kh-brand__title">KH PETIQUE</div>
-			</aside>
-			<nav class="kh-nav">
-				<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
-					class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
-					class="kh-pill" href="/board/info/list">INFO</a> <a class="kh-pill"
-					href="/board/adoption/list">SERVICE</a>
-				<%-- <c:choose>
-					<c:when test="${sessionScope.loginId != null}">
-						<a class="kh-pill kh-pill--active" href="/member/logout">LOGOUT</a>
-					</c:when>
-					<c:otherwise>
-						<a class="kh-pill kh-pill--active" href="/member/login">LOGIN</a>
-					</c:otherwise>
-				</c:choose> --%>
-				<a class="kh-pill" href="/admin/category/list">MENU</a>
-			</nav>
+	<header class="kh-header">
+		<div class="kh-header__wrap">
+			<div class="kh-top">
+				<aside class="kh-brand">
+					<div class="kh-brand__logoCard">
+						<img src="${cp}/image/petCafe.png" alt="KH PETIQUE"
+							class="kh-brand__logoImg">
+					</div>
+					<div class="kh-brand__title">KH PETIQUE</div>
+				</aside>
+				<nav class="kh-nav">
+					<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
+						class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
+						class="kh-pill" href="/board/info/list">INFO</a> <a
+						class="kh-pill" href="/board/adoption/list">SERVICE</a>
+					<a class="kh-pill" href="/admin/category/list">MENU</a>
+				</nav>
+			</div>
+
 		</div>
 
-	</div>
-
-</header>
-<div class="cell flex-box">
+	</header>
+	<div class="cell flex-box">

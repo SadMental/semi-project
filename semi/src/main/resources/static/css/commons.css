@@ -1,6 +1,6 @@
 
 div {
-    box-shadow: 0 0 1px 0 grey;
+/*     box-shadow: 0 0 1px 0 grey; */
 }
 
 * {
@@ -29,44 +29,64 @@ div {
     margin: 0 auto;
 }
 
+/* --------------------------
+   버튼 기본 스타일
+---------------------------*/
 .btn {
-    font-size: 16px;
-    outline: none;
-    padding: 0.5em 0.75em;
-    cursor: pointer;
-    border: 1px solid #636e72;
-    border-radius: 0.1em;
-    
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+    font-weight: 600;
     text-decoration: none;
-    color: #2c3e50;
-    background-color: #f2f2f2;
     display: inline-block;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
     text-align: center;
 }
-.btn:hover{
-    filter: brightness(92%);
+
+/* 편집 버튼 */
+.btn-edit {
+    background-color: #a67c52;
+    color: #fff5e9;
 }
-.btn.btn-positive {
-    background-color: rgb(133, 107, 78);
-    border-color: rgb(78, 61, 42);
-    color: rgb(255, 250, 241);
-    border-radius: 15px;
+
+.btn-edit:hover {
+    background-color: #ba8f65;
+}
+
+/* 삭제 버튼 */
+.btn-delete {
+    background-color: #a94442;
+    color: #fff2f0;
+}
+
+.btn-delete:hover {
+    background-color: #922d2b;
+}
+
+/* 중립 버튼 */
+.btn-neutral {
+    background-color: #d9c7b3;
+    color: #5b3a29;
+}
+
+.btn-neutral:hover {
+    background-color: #cbb7a3;
+}
+
+/* 긍정 버튼 (새로운 클래스 예시) */
+.btn-positive {
+    background-color: #7e5a3c;
+    color: #fff5e9;
     font-weight: 700;
-}
-.btn.btn-negative {
-    background-color: #d63031;
-    border-color: #d63031;
-    color: white !important;
     border-radius: 15px;
-    font-weight: 700;
 }
-.btn.btn-neutral {
-    background-color:#7f8c8d;
-    border-color: #7f8c8d;
-    color: white !important;
-    border-radius: 15px;
-    font-weight: 700;
+
+.btn-positive:hover {
+    background-color: #a67849;
 }
+
 
 .field {
     outline: none;
@@ -100,6 +120,8 @@ textarea.field {
 .w-70p{width: 70% !important;}
 .w-75p{width: 75% !important;}
 .w-80p{width: 80% !important;}
+.w-85p{width: 85% !important;}
+.w-90p{width: 90% !important;}
 .w-100p{width: 100% !important;}
 
 .w-200 { width: 200px !important;}
@@ -465,28 +487,5 @@ textarea.field {
  {
     display: block;
 }
-/* 작성자 등급 뱃지 */
-.grade-badge {
-    display: inline-block;
-    padding: 2px 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #fff;
-    border-radius: 4px;
-    margin-left: 8px;
-    vertical-align: middle;
-}
-
-/* 회원 등급별 색상 */
-.grade-badge.level1 { background-color: #D9C4A8; }
-.grade-badge.level2 { background-color: #BFA280; }
-.grade-badge.level3 { background-color: #A37C50; }
-.grade-badge.level4 { background-color: #855C3B; }
-.grade-badge.level5 { background-color: #4B2E1E; }
-
-
-
-
-
 
 

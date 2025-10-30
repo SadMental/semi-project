@@ -38,6 +38,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board/community")
 public class BoardController {
+
 	@Autowired
 	private MediaService mediaService;
 	@Autowired
@@ -49,6 +50,7 @@ public class BoardController {
 	@Autowired
 	private CategoryDao categoryDao;
 
+
 //	@RequestMapping("/list")
 //	public String list(Model model) 
 //	{	
@@ -58,32 +60,29 @@ public class BoardController {
 //		return "/WEB-INF/views/board/free/list.jsp";
 //	}
 
-	// 글목록
-	@RequestMapping("/list")
-	public String list(@ModelAttribute PageVO pageVO, Model model) {
+	 @RequestMapping("/list")
+	 public String list(
+	         Model model,
+	         @ModelAttribute("pageVO") PageVO pageVO,
+	         @RequestParam(required = false, defaultValue = "wtime") String orderBy
+	 ) {
+	     int boardType = 1;
+	     CategoryDto categoryDto = categoryDao.selectOne(boardType);
 
-		int boardType = 1;
-		CategoryDto categoryDto = categoryDao.selectOne(boardType);
-		pageVO.setSize(10);
-		pageVO.setDataCount(boardDao.count(pageVO, boardType));
-		List<BoardVO> boardList = boardDao.selectListWithPaging(pageVO, boardType);
-		// BoardDto마다 HeaderDto를 만들어 Map으로 매핑
-//		Map<Integer, HeaderDto> headerMap = new HashMap<>();
-//		for (BoardDto b : boardList) {
-//			HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
-//			if (headerDto != null) {
-//				headerMap.put(b.getBoardNo(), headerDto);
-//			}
-//		}
-		
-	
-		
-		model.addAttribute("category", categoryDto);
-		model.addAttribute("boardList", boardList);
-//		model.addAttribute("headerMap", headerMap); // JSP에서 사용
-		model.addAttribute("pageVO", pageVO);
-		return "/WEB-INF/views/board/community/list.jsp";
-	}
+	     pageVO.setSize(10);
+	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
+
+	     List<BoardVO> boardList = boardDao.selectList2(
+	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
+
+	     model.addAttribute("category", categoryDto);
+	     model.addAttribute("boardList", boardList);
+
+	     model.addAttribute("pageVO", pageVO);
+	     model.addAttribute("orderBy", orderBy);
+
+	     return "/WEB-INF/views/board/community/list.jsp";
+	 }
 
 	@GetMapping("/write")
 	public String writeForm(Model model) {
@@ -203,7 +202,6 @@ public class BoardController {
 			mediaService.delete(mediaNo);
 
 		}
-		
 		boardDao.delete(boardNo);
 
 		//게시글 포인트 차감
@@ -214,10 +212,11 @@ public class BoardController {
 //		model.addAttribute("memberPoint", member.getMemberPoint());
 //				
 //		}
-
+ 
 		return "redirect:list";
-	}
+}
 	
+
 	@PostMapping("/mypageDelete")
 	@ResponseBody
 	public String mypageDelete(@RequestParam("boardNo") List<Integer> boardNoList) {

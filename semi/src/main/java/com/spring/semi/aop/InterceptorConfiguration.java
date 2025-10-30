@@ -21,5 +21,5 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		.addPathPatterns("/board/community/detail", "/infoBoard/detail", "/board/petfluence/detail",
 				"/board/fun/detail", "/board/**/detail")
 		.order(10);
-	}
+	} 
 }
