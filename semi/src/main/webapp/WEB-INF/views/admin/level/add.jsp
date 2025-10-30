@@ -7,10 +7,19 @@
 <head>
     <title>회원 등급 추가</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
+    <style>
+
+    </style>
+    <script>
+        function selectBadge(radio) {
+            document.querySelectorAll('.badge-preview').forEach(span => span.classList.remove('selected'));
+            radio.nextElementSibling.classList.add('selected');
+        }
+    </script>
 </head>
 <body>
 
-<div class="container w-600 mt-50 mb-50"">
+<div class="container w-600 mt-50 mb-50">
     <h2 class="center mb-20">회원 등급 등록</h2>
 
     <form action="${pageContext.request.contextPath}/admin/level/add" method="post">
@@ -35,6 +44,37 @@
         <div class="cell">
             <label for="description">설명</label>
             <textarea id="description" name="description" rows="3" class="field w-100p" placeholder="이 등급에 대한 설명을 입력하세요."></textarea>
+        </div>
+
+        <!-- 이모지 선택 -->
+        <div class="cell">
+            <label>뱃지 선택 (이모지)</label>
+            <div class="flex-box gap-10">
+                <label>
+                    <input type="radio" name="badgeImage" value="🌱" required onchange="selectBadge(this)">
+                    <span class="badge-preview">🌱</span>
+                </label>
+                <label>
+                    <input type="radio" name="badgeImage" value="🌿" required onchange="selectBadge(this)">
+                    <span class="badge-preview">🌿</span>
+                </label>
+                <label>
+                    <input type="radio" name="badgeImage" value="☘️💎" required onchange="selectBadge(this)">
+                    <span class="badge-preview">☘️</span>
+                </label>
+                <label>
+                    <input type="radio" name="badgeImage" value="🍀" required onchange="selectBadge(this)">
+                    <span class="badge-preview">🍀</span>
+                </label>
+                <label>
+                    <input type="radio" name="badgeImage" value="🌳" required onchange="selectBadge(this)">
+                    <span class="badge-preview">🌳</span>
+                </label>
+                <label>
+                    <input type="radio" name="badgeImage" value="🍁" required onchange="selectBadge(this)">
+                    <span class="badge-preview">🍁</span>
+                </label>
+            </div>
         </div>
 
         <div class="cell center">

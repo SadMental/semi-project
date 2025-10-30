@@ -1,4 +1,4 @@
-package com.spring.semi.dao;
+	package com.spring.semi.dao;
 
 import java.util.List;
 
@@ -128,6 +128,8 @@ public class MemberDao {
 			int result = jdbcTemplate.update(sql, params);
 
 		}
+		
+		
 		
 
 	//포인트 차감
