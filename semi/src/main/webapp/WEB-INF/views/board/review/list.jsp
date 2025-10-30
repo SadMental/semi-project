@@ -170,12 +170,30 @@
 	  overflow: hidden;          /* 넘친 텍스트 숨기기 */
 	  text-overflow: ellipsis;   /* ... 표시 */
 	}
+	
+	.score-badge {
+/*          position: absolute; */
+		right: 8px;
+/*         background-color: #fdcb6e; */
+/*         color: white; */
+/*         font-size: 14px; */
+/*         border: 1px solid #2d3436; */
+/*         border-radius: 10px; */
+/*         padding: 4px 8px; */
+/*         display: flex; */
+/*         align-items: center; */
+/*         gap: 4px; */
+		background-color: #fdcb6e;
+		border: 1px solid #2d3436;
+		border-radius: 11px;
+		padding: 0 0.25em;
+    }
 </style>
 
 <div class="container w-800">
 
 	<div class="cell center">
-		<h1>동물위키</h1>	
+		<h1>사용후기</h1>	
 	</div>
 	<div class="cell center mt-30 mb-50">
 		<form action="list">
@@ -232,8 +250,12 @@
 							        	<a href="detail?boardNo=${boardDto.boardNo}">
 							        		<div class="cell flex-box w-100p">
 							        			<img src="/board/review/image?boardNo=${boardDto.boardNo}" style="width:100px;">
-							        			<div class="animal-container">
-							        				<div class="top-container flex-box w-400">
+							        			<div class="review-container">
+							        				<div class="top-container flex-box w-600">
+							        					<div class="flex-box">
+														   <div class="badge me-10">${boardDto.animalHeaderName}</div>
+														   <div class="badge me-10">${boardDto.typeHeaderName}</div>
+														</div>
 							        					<label>${boardDto.boardTitle}</label>
 							        					<label class="red">[${boardDto.boardReply}]</label>
 							        				</div>
@@ -242,7 +264,10 @@
 							        					<label style="font-size:0.8em;" class="ms-10 me-10">${boardDto.boardWriter}</label> 
 							        					<fmt:formatDate value="${boardDto.boardWtime}" pattern="MM-dd"/> 
 							        					<i class="fa fa-eye ms-10"></i> ${boardDto.boardView} 
-							        					<i class="fa fa-heart red ms-10"></i> ${boardDto.boardLike} 
+							        					<i class="fa fa-heart red ms-10"></i> ${boardDto.boardLike}
+							        					<div class="score-badge">						        					
+								        					<i class="fa-solid fa-star"></i> ${boardDto.boardScore}
+							        					</div>
 							        				</div>
 							        			</div>
 										    </div>

@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class TypeHeaderDto {
-	   private int typeHeaderNo;
-	    private String typeHeaderName;
+	   private int headerNo;
+	   private String headerName;
 }
