@@ -164,6 +164,9 @@ public class AdoptionBoardController {
        }
        // 글 삭제
        boardDao.delete(boardNo);
+		if(boardDto.getBoardWriter() != null) {
+		memberDao.minusPoint(boardDto.getBoardWriter(), 60);
+		}
        return "redirect:list";
    }
    //글상세보기

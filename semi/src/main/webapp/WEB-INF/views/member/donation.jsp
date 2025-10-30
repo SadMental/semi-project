@@ -74,6 +74,27 @@
                     });
             });
             
+            $(".point-use").on("click", function () {
+            	
+            	if(!confirm("한국유기동물복지협회(https://animalwa.org/)로 기부하시겠습니까?")){
+            		return;
+            	}
+            	
+            $.ajax({
+            	url:"/member/usePoint",
+            	method:"get",
+            	data:{'a':'a'},
+            	success: function(response) {
+            		if(response == "success") {
+            			alert("기부가 완료되었습니다.");
+            			location.reload();
+            		}
+            	}
+            });
+            
+            
+            });
+            
             var rewardType = "${rewardType}";
             if(rewardType) {
                 switch(rewardType) {
@@ -108,7 +129,7 @@
                 <span style="font-size: 25px;">
                 <fmt:formatNumber value="${point }" pattern="###,###"/>
                 </span>
-                <a href="#" class="point-use">펫콩 사용하기</a>
+                <a href="" class="point-use">펫콩 기부하기</a>
             </div>
         </div>
         <div style="font-size: 10px; color: transparent;">빈공간1</div>
