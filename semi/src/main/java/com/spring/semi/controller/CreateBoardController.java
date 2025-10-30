@@ -1,5 +1,6 @@
 package com.spring.semi.controller;
 
+import java.lang.System.Logger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -119,11 +120,11 @@ public class CreateBoardController {
         boardDto.setBoardCategoryNo(categoryNo);
 
      
-        Integer headerNo = boardDto.getBoardHeader();
-        if (headerNo != null) {
-            HeaderDto headerCheck = headerDao.selectOne(headerNo, "type");
-            if (headerCheck == null) throw new IllegalArgumentException("존재하지 않는 헤더입니다.");
-        }
+//        Integer headerNo = boardDto.getBoardHeader();
+//        if (headerNo != null) {
+//            HeaderDto headerCheck = headerDao.selectOne(headerNo, "type");
+//            if (headerCheck == null) throw new IllegalArgumentException("존재하지 않는 헤더입니다.");
+//        }
 
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
@@ -153,7 +154,7 @@ public class CreateBoardController {
             throw new TargetNotfoundException("존재하지 않는 게시글입니다.");
 
  
-        HeaderDto header = headerDao.selectOne(boardDto.getBoardHeader());
+        HeaderDto header = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
         if (header != null) {
             model.addAttribute("headerDto", header);
         }
@@ -219,7 +220,7 @@ public class CreateBoardController {
         }
 
         //
-        List<HeaderDto> headerList = headerDao.selectAll();
+        List<HeaderDto> headerList = headerDao.selectAll("type");
         model.addAttribute("headerList", headerList);
 
         model.addAttribute("category", category);
@@ -246,11 +247,11 @@ public class CreateBoardController {
         }
 
 
-        Integer headerNo = boardDto.getBoardHeader();
-        if (headerNo != null) {
-            HeaderDto headerCheck = headerDao.selectOne(headerNo);
-            if (headerCheck == null) throw new IllegalArgumentException("존재하지 않는 헤더입니다.");
-        }
+//        Integer headerNo = boardDto.getBoardTypeHeader();
+//        if (headerNo != null) {
+//            HeaderDto headerCheck = headerDao.selectOne(headerNo, "type");
+//            if (headerCheck == null) throw new IllegalArgumentException("존재하지 않는 헤더입니다.");
+//        }
 
         boardDao.update(boardDto);
 

@@ -23,7 +23,9 @@ public class BoardVOMapper  implements RowMapper<BoardVO> {
 				.boardLike(rs.getInt("board_like"))
 				.boardView(rs.getInt("board_view"))
 				.boardReply(rs.getInt("board_reply"))
-				.headerName(rs.getString("header_name"))
+				.deleted(rs.getInt("deleted"))
+				.animalHeaderName(rs.getString("animal_header_name"))
+				.typeHeaderName(rs.getString("type_header_name"))
 				.build();
 	}
 }

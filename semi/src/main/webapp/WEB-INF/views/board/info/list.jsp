@@ -164,14 +164,16 @@ a:hover {
 						<c:forEach var="boardDto" items="${boardList}">
 							<tr>
 								<td>${boardDto.boardNo}</td>
-								<td>${headerMap[boardDto.boardNo].headerName}</td>
+								<td>${boardDto.typeHeaderName}</td>
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>
 								<td><c:set var="writer" value="${boardDto.boardWriter}" />
-									${memberMap[writer].memberNickname} <span
+									${memberMap[writer].memberNickname} 
+									 <span
 									class="grade-badge ${memberMap[writer].grade}">
-										${memberMap[writer].emoji} ${memberMap[writer].badgeName} </span></td>
+										${memberMap[writer].emoji} ${memberMap[writer].badgeName} </span> 
+								</td>
 
 
 								<td>${boardDto.boardView}</td>

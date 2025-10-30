@@ -96,14 +96,14 @@
   <div class="container w-800">
     <div class="cell">
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
-	  <select name="boardHeader" required>
-	        <option value="">-- 선택 --</option>
-	        <c:forEach var="headerDto" items="${headerList}">
-	            <option value="${headerDto.headerNo}">
-	                ${headerDto.headerName}
-	            </option>
-	        </c:forEach>
-	    </select>
+	  <select name="boardTypeHeader" required>
+        <option value="">-- 선택 --</option>
+        <c:forEach var="headerDto" items="${headerList}">
+            <option value="${headerDto.headerNo}">
+                ${headerDto.headerName}
+            </option>
+        </c:forEach>
+  	  </select>
     </div>
     
     <div class="cell">

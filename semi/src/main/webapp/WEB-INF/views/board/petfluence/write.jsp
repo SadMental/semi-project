@@ -77,10 +77,16 @@
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
         <div class="cell">
-			<select name="boardHeader" class="field w-100 mt-2">
+			<select name="boardAnimalHeader" class="field w-100 mt-2" required>
 		      <option value="">-- 분류 선택 --</option>
-	             <c:forEach var="headerDto" items="${headerList}">
-				  	 <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+	             <c:forEach var="animalHeader" items="${animalList}">
+				  	 <option value="${animalHeader.headerNo}">${animalHeader.headerName}</option>
+				 </c:forEach>
+			</select>
+			<select name="boardTypeHeader" class="field w-100 mt-2" required>
+		      <option value="">-- 분류 선택 --</option>
+	             <c:forEach var="typeHeader" items="${typeList}">
+				  	 <option value="${typeHeader.headerNo}">${typeHeader.headerName}</option>
 				 </c:forEach>
 			</select>
       <div class="cell mt-20">

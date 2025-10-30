@@ -76,11 +76,11 @@ h1 {
 </style>
 
 <div class="container w-800">
-<c:if test="${not empty headerDto}">
-    <tr>
-       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
-    </tr>
-</c:if>
+	<c:if test="${not empty typeHeaderDto}">
+	    <tr>
+	       <h1> [${typeHeaderDto.headerName}]   ${boardDto.boardTitle}</h1>      
+	    </tr>
+	</c:if>
 
 
 	<div class="meta">
@@ -108,6 +108,12 @@ h1 {
 
 			            </c:otherwise>
 			        </c:choose>
+			    </td>
+		  	</tr>
+			<tr>
+			    <th>[동물 분류] :</th>
+			    <td>
+			        ${animalHeaderDto.headerName}
 			    </td>
 		  	</tr>
 		</table>
