@@ -118,13 +118,13 @@
 			<select name="boardAnimalHeader" class="field w-100 mt-2">
 			    <option value="">-- 분류 선택 --</option>
 			    <c:forEach var="animalHeaderDto" items="${animalHeaderList}">
-					<option value="${animalHeaderDto.animalHeaderNo}">${animalHeaderDto.animalHeaderName}</option>
+					<option value="${animalHeaderDto.headerNo}">${animalHeaderDto.headerName}</option>
 				</c:forEach>
 			</select>
 			<select name="boardTypeHeader" class="field w-100 mt-2">
 			    <option value="">-- 분류 선택 --</option>
 			    <c:forEach var="typeHeaderDto" items="${typeHeaderList}">
-					<option value="${typeHeaderDto.typeHeaderNo}">${typeHeaderDto.typeHeaderName}</option>
+					<option value="${typeHeaderDto.headerNo}">${typeHeaderDto.headerName}</option>
 				</c:forEach>
 			</select>
 		</div>
