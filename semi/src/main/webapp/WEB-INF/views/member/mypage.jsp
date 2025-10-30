@@ -296,9 +296,53 @@ $(function () {
 <%--             </c:forEach>  --%>
 
             <!-- 좋아요한 글 코드 구간 -->
-<%--             <c:forEach>  --%>
-<!--                 <div class="cell flex-box content like-board-code"></div> -->
-<%--             </c:forEach>  --%>
+			<c:forEach var="board" items="${likeBoardListVO}">
+            <c:set var="boardPath" value="/board/"/>
+			<c:choose>
+	    	<c:when test="${board.categoryName eq '자유게시판'}">
+		        <c:set var="boardPath" value="${boardPath}community" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '정보게시판'}">
+		        <c:set var="boardPath" value="${boardPath}info" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '펫플루언서'}">
+		        <c:set var="boardPath" value="${boardPath}petfluencer" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '분양게시판'}">
+		        <c:set var="boardPath" value="${boardPath}adoption" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '사용후기'}">
+		        <c:set var="boardPath" value="${boardPath}review" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq 'short'}">
+		        <c:set var="boardPath" value="${boardPath}short" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '동물위키'}">
+		        <c:set var="boardPath" value="${boardPath}animal" />
+		    </c:when>
+		    <c:when test="${board.categoryName eq '체험판123'}">
+		        <c:set var="boardPath" value="${boardPath}" />
+		    </c:when>
+		    <c:otherwise>
+		    </c:otherwise>
+			</c:choose>
+			<c:set var="boardRealPath" value="${boardPath}/detail?boardNo=${board.boardNo}" />
+<!--             <hr class="hr-details"> -->
+                <div class="cell flex-box content like-board-code">
+                    <div class="w-10p center content no">
+                        ${board.boardNo }
+                    </div>
+                    <div class="w-70p content title" style="padding: 0 1.5em 0 1.5em;">
+                        <span class="boardTitle">${board.boardTitle }</span>
+                    </div>
+                    <div class="w-10p center content">
+                        <fmt:formatDate value="${board.boardWtime}" pattern="yyyy.MM.dd" />
+                    </div>
+                    <div class="w-10p center content">
+                        ${board.boardView }
+                    </div>
+                </div>
+            </c:forEach>
 
             <!-- 삭제한 글 코드 구간 -->
             <c:forEach var="board" items="${deletedBoardListVO}">

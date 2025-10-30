@@ -48,13 +48,13 @@
             padding: 3px;
             cursor: pointer;
         }
-        .reply-bonus,
-        .petfluencer-bonus,
-        .community-bonus,
-        .adoption-bonus,
-        .info-bonus {
-            display: none; 
-        }
+/*         .reply-bonus, */
+/*         .petfluencer-bonus, */
+/*         .community-bonus, */
+/*         .adoption-bonus, */
+/*         .info-bonus { */
+/*             display: none;  */
+/*         } */
     </style>
     
     <script src="./confirm.js"></script>
@@ -94,6 +94,8 @@
                         break;
                 }
             }
+            
+            
         });
 
     </script>
@@ -136,8 +138,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-15p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">댓글 쓰기</a>
-                    <!-- 자유게시판 링크 -->
+                    <a href="/" class="move ms-10">댓글 쓰기</a>
                 </span>
                 <span class="w-50p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -153,8 +154,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">펫플루언서 글쓰기</a>
-                    <!-- 펫플루언서 링크 -->
+                    <a href="/board/petfluencer/list" class="move ms-10">펫플루언서 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -170,8 +170,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">자유게시판 글쓰기</a>
-                    <!-- 자유게시판 링크 -->
+                    <a href="/board/community/list" class="move ms-10">자유게시판 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -187,8 +186,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">분양게시판 글쓰기</a>
-                    <!-- 정보게시판 링크 -->
+                    <a href="/board/adoption/list" class="move ms-10">분양게시판 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -204,8 +202,7 @@
                     style="color: rgb(101, 158, 8, 0.733); padding: 10px; font-size: 20px;"></i>
                 <span class="w-5p ms-5" style="font-weight: 700; color: #5899ff">[일일]</span>
                 <span class="w-30p" style="font-weight: 700;">
-                    <a href="#" class="move ms-10">정보게시판 글쓰기</a>
-                    <!-- 정보게시판 링크 -->
+                    <a href="/board/info/list" class="move ms-10">정보게시판 글쓰기</a>
                 </span>
                 <span class="w-35p"></span>
                 <span class="w-20p ms-30" style="color: gray;">
@@ -233,7 +230,7 @@
             <div class="cell flex-box">
                 <div style="font-weight: 700; font-size: 18px;" class="w-70p">
                     <i class="fa-brands fa-gratipay mb-20 me-20" style="color: rgb(230, 233, 70);"></i>
-                    펫콩 획득 / 사용내역
+                    펫콩 획득 / 사용내역 (아직 미구현)
                 </div>
             </div>
             <div style="color: transparent; font-size: 8px;">공백</div>
