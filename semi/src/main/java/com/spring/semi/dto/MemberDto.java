@@ -15,6 +15,7 @@ public class MemberDto {
 	private String memberEmail;
 	private String memberDescription;
 	private int memberPoint;
+	private int memberUsedPoint;
 	private int memberLevel;
 	private String memberAuth;
 	private Timestamp memberJoin;
