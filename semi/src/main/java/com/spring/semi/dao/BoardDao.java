@@ -18,6 +18,7 @@ import com.spring.semi.vo.PageVO;
 
 @Repository
 public class BoardDao {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -45,6 +46,19 @@ public class BoardDao {
 
         jdbcTemplate.update(sql, params);
     }
+  
+    public void insertForReview(BoardDto boardDto, int boardType) {
+		String sql = "insert into board ("
+				+ "board_category_no, board_no, board_writer, board_title, board_content, "
+				+ "board_animal_header, board_type_header, board_score"
+				+ ") values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		Object[] params = { boardType, boardDto.getBoardNo(), boardDto.getBoardWriter(), boardDto.getBoardTitle(), boardDto.getBoardContent(),
+				boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader(), boardDto.getBoardScore()
+		};
+
+		jdbcTemplate.update(sql, params);
+	}
 
     // 검색
     public List<BoardDto> searchList(String column, String keyword) {
@@ -102,6 +116,16 @@ public class BoardDao {
         };
         return jdbcTemplate.update(sql, params) > 0;
     }
+  
+  	public boolean updateForReview(BoardDto boardDto) {
+		String sql = "update board set board_title=?, board_content=?, board_etime=systimestamp, "
+				+ "board_animal_header=?, board_type_header=?, board_score=? "
+				+ "where board_no=?";
+		Object[] params = { boardDto.getBoardTitle(), boardDto.getBoardContent(), 
+				boardDto.getBoardAnimalHeader(), boardDto.getBoardTypeHeader(), boardDto.getBoardScore(),
+				boardDto.getBoardNo() };
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 
     // 전체 글 수 조회
     public int count(PageVO pageVO, int pageType) {

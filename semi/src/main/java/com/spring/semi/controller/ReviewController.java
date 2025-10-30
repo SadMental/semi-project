@@ -2,7 +2,8 @@ package com.spring.semi.controller;
 
 import java.io.IOException;
 import java.util.List;
-
+import java.io.IOException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.CategoryDao;
 import com.spring.semi.dao.HeaderDao;
@@ -25,7 +25,6 @@ import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -37,7 +36,9 @@ public class ReviewController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
-	private HeaderDao headerDao;
+	private AnimalHeaderDao animalHeaderDao;
+	@Autowired
+	private TypeHeaderDao typeHeaderDao;
 	@Autowired
 	private CategoryDao categoryDao;
 	
@@ -45,8 +46,8 @@ public class ReviewController {
         this.mediaService = mediaService;
     }
 	
-	@RequestMapping("/list")
-	 public String list(
+  @RequestMapping("/list")
+	public String list(
 	         Model model,
 	         @ModelAttribute("pageVO") PageVO pageVO,
 	         @RequestParam(required = false, defaultValue = "wtime") String orderBy
@@ -71,10 +72,10 @@ public class ReviewController {
 	
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-		List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
-		List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 header 조회
-		model.addAttribute("animalList", animalList);
-		model.addAttribute("typeList", typeList);
+		 List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
+	     model.addAttribute("animalHeaderList", animalHeaderList);
+	     List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	     model.addAttribute("typeHeaderList", typeHeaderList);
 		     
 		return "/WEB-INF/views/board/review/write.jsp";
 	}
@@ -83,7 +84,7 @@ public class ReviewController {
     public String write(@ModelAttribute BoardDto boardDto,
                         HttpSession session,
             			@RequestParam MultipartFile media,
-            			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
+            			@RequestParam(required = false) String remove, String reviewScore) throws IllegalStateException, IOException 
     {
         String loginId = (String) session.getAttribute("loginId");
         boardDto.setBoardWriter(loginId);
@@ -91,10 +92,13 @@ public class ReviewController {
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
 
-      
+        String scoreText=reviewScore.trim().replace(".0", "");
+        int score = Integer.parseInt(scoreText);
+        boardDto.setBoardScore(score);
+
         //  board와 header 연결
       
-        boardDao.insert(boardDto, 5);
+        boardDao.insertForReview(boardDto, 5);
         
 		if(!media.isEmpty()) 
 		{
@@ -109,43 +113,45 @@ public class ReviewController {
 	public String detail(HttpSession session,
 			Model model, 
 			@RequestParam int boardNo) {
-	      // 게시글 조회
+		
+		// 게시글 조회
 		BoardDto boardDto = boardDao.selectOne(boardNo);
-		if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
+		if (boardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 글 번호");
 		model.addAttribute("boardDto", boardDto);
-		HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");      
-		HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");            
-		// Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.                                             
-		if(animalHeaderDto != null) {                                                                    
-			model.addAttribute("animalHeaderDto", animalHeaderDto); // Model에 animalHeaderDto 자체를 추가     
-		}                                                                                                
-		if(typeHeaderDto != null) {                                                                      
-			model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가           
-		}  
+		
 		// 작성자 정보
 		if (boardDto.getBoardWriter() != null) {
 			MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
 			model.addAttribute("memberDto", memberDto);
 		}
+
+		AnimalHeaderDto animalHeaderDto = animalHeaderDao.selectOne(boardDto.getBoardAnimalHeader());
+		model.addAttribute("animalHeaderDto", animalHeaderDto);
+		TypeHeaderDto typeHeaderDto = typeHeaderDao.selectOne(boardDto.getBoardTypeHeader());
+		model.addAttribute("typeHeaderDto", typeHeaderDto);
+
 		return "/WEB-INF/views/board/review/detail.jsp";
 	}
 	
 	  @GetMapping("/edit")
 	   public String edit(Model model, @RequestParam int boardNo) {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
-	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
-	       List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
-	       List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 header 조회
-	       model.addAttribute("animalList", animalList);
-	       model.addAttribute("typeList", typeList);
+	       List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
+	       List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	       if (boardDto == null) 
+	    	   throw new TargetNotfoundException("존재하지 않는 글");
 	       model.addAttribute("boardDto", boardDto);
+	       model.addAttribute("animalHeaderList", animalHeaderList);
+	       model.addAttribute("typeHeaderList", typeHeaderList);
+	       
 		return "/WEB-INF/views/board/review/edit.jsp";
 	}
 	
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute BoardDto boardDto,
 			@RequestParam MultipartFile media,
-			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
+			@RequestParam(required = false) String remove, String reviewScore) throws IllegalStateException, IOException 
 	{
 		if (!media.isEmpty())
 		{
@@ -171,6 +177,10 @@ public class ReviewController {
 				catch(Exception e) { /*아무것도 안함*/ }
 			}				
 		}
+
+        String scoreText=reviewScore.trim().replace(".0", "");
+        int score = Integer.parseInt(scoreText);
+	    boardDto.setBoardScore(score);
 		
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
 		if (beforeDto == null) 
@@ -197,7 +207,7 @@ public class ReviewController {
 //		minus.removeAll(after);
 //		for(int mediaNo : minus)
 //			mediaService.delete(mediaNo);
-		boardDao.update(boardDto);
+		boardDao.updateForReview(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}
 	

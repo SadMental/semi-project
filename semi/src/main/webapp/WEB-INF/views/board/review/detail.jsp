@@ -121,7 +121,7 @@ h1 {
 		</table>
 	</div>
 	<div class="content">
-		<img src = "/board/animal/image?boardNo=${boardDto.boardNo}">
+		<img src = "/board/review/image?boardNo=${boardDto.boardNo}">
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
 	

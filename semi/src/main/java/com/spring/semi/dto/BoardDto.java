@@ -20,7 +20,6 @@ public class BoardDto {
 	private Timestamp boardEtime;
 	private int boardLike;
 	private int boardView;
-	private Integer boardHeader;
 	private int boardReply;
 	
 	// 251028 board 테이블에 컬럼 추가
