@@ -100,9 +100,17 @@
     </div>
 	  <select name="boardHeader" required>
 	          <option value="">-- 선택 --</option>
-	          <c:forEach var="headerDto" items="${headerList}">
-	              <option value="${headerDto.headerNo}">
-	                  ${headerDto.headerName}
+	          <c:forEach var="animalHeader" items="${animalList}">
+	              <option value="${animalHeader.headerNo}">
+	                  ${animalHeader.headerName}
+	              </option>
+	          </c:forEach>
+	  </select>
+	  <select name="boardHeader" required>
+	          <option value="">-- 선택 --</option>
+	          <c:forEach var="typeHeader" items="${typeList}">
+	              <option value="${typeHeader.headerNo}">
+	                  ${typeHeader.headerName}
 	              </option>
 	          </c:forEach>
 	  </select>

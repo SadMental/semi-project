@@ -230,7 +230,7 @@ $(function() {
 <div class="container w-800">
 <c:if test="${not empty headerDto}">
     <tr>
-       <h1> [${typeHeaderDto.typeHeaderName}]   ${boardDto.boardTitle}</h1>      
+       <h1> [${headerDto.headerName}]   ${boardDto.boardTitle}</h1>      
     </tr>
 </c:if>
 
@@ -246,10 +246,6 @@ $(function() {
         <tr>
             <th>수정일</th>
             <td colspan="3"><fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm" /></td>
-        </tr>
-        <tr>
-            <th>동물분류</th>
-            <td>[${animalHeaderDto.animalHeaderName}]</td>
         </tr>
     </table>
 	</div>

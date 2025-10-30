@@ -98,14 +98,18 @@
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
       <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
     </div>
-	  <select name="boardHeader" required>
-	          <option value="">-- 선택 --</option>
-	          <c:forEach var="headerDto" items="${headerList}">
-	              <option value="${headerDto.headerNo}">
-	                  ${headerDto.headerName}
-	              </option>
-	          </c:forEach>
-	  </select>
+	  <select name="boardAnimalHeader" class="field w-100 mt-2" required>
+	      <option value="">-- 분류 선택 --</option>
+             <c:forEach var="animalHeader" items="${animalList}">
+			  	 <option value="${animalHeader.headerNo}">${animalHeader.headerName}</option>
+			 </c:forEach>
+		</select>
+		<select name="boardTypeHeader" class="field w-100 mt-2" required>
+	      <option value="">-- 분류 선택 --</option>
+             <c:forEach var="typeHeader" items="${typeList}">
+			  	 <option value="${typeHeader.headerNo}">${typeHeader.headerName}</option>
+			 </c:forEach>
+		</select>
     
     <div class="cell">
       <label for="title">제목 <i class="fa-solid fa-asterisk red"></i></label>

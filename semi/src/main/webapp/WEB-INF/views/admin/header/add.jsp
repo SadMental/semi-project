@@ -72,12 +72,12 @@
 </style>
 <div class="container w-800">
   <h1>새 헤더 추가</h1>
-  <form action="${pageContext.request.contextPath}/admin/header/add" method="post">
+  <form action="add" method="post">
       <label for="headerName">헤더 이름</label>
       <input type="text" id="headerName" name="headerName" required>
       <div class="cell right">
           <button type="submit" class="btn btn-positive">등록</button>
-          <a href="${pageContext.request.contextPath}/admin/header/list" class="btn btn-positive">목록으로</a>
+          <a href="list" class="btn btn-positive">목록으로</a>
       </div>
   </form>
 </div>

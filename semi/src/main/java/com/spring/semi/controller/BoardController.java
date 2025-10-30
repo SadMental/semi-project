@@ -30,6 +30,7 @@ import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -37,8 +38,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board/community")
 public class BoardController {
-	private final MediaService mediaService;
-	@Autowired 
+
+	@Autowired
+	private MediaService mediaService;
+	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
@@ -47,10 +50,7 @@ public class BoardController {
 	@Autowired
 	private CategoryDao categoryDao;
 
-	BoardController(MediaService mediaService) {
-		this.mediaService = mediaService;
-	}
- 
+
 //	@RequestMapping("/list")
 //	public String list(Model model) 
 //	{	
@@ -68,29 +68,31 @@ public class BoardController {
 		CategoryDto categoryDto = categoryDao.selectOne(boardType);
 		pageVO.setSize(10);
 		pageVO.setDataCount(boardDao.count(pageVO, boardType));
-		List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO, boardType);
+		List<BoardVO> boardList = boardDao.selectListWithPaging(pageVO, boardType);
 		// BoardDto마다 HeaderDto를 만들어 Map으로 매핑
-		Map<Integer, HeaderDto> headerMap = new HashMap<>();
-		for (BoardDto b : boardList) {
-			HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
-			if (headerDto != null) {
-				headerMap.put(b.getBoardNo(), headerDto);
-			}
-		}
+//		Map<Integer, HeaderDto> headerMap = new HashMap<>();
+//		for (BoardDto b : boardList) {
+//			HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
+//			if (headerDto != null) {
+//				headerMap.put(b.getBoardNo(), headerDto);
+//			}
+//		}
 		
 	
 		
 		model.addAttribute("category", categoryDto);
 		model.addAttribute("boardList", boardList);
-		model.addAttribute("headerMap", headerMap); // JSP에서 사용
+//		model.addAttribute("headerMap", headerMap); // JSP에서 사용
 		model.addAttribute("pageVO", pageVO);
 		return "/WEB-INF/views/board/community/list.jsp";
 	}
 
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-		List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-		model.addAttribute("headerList", headerList);
+		List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 animalHeader 조회
+		List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 typeHeader 조회
+		model.addAttribute("animalList", animalList);
+		model.addAttribute("typeList", typeList);
 
 		return "/WEB-INF/views/board/community/write.jsp";
 
@@ -129,11 +131,15 @@ public class BoardController {
 			throw new TargetNotfoundException("존재하지 않는 글 번호");
 		model.addAttribute("boardDto", boardDto);
 		// 헤더 조회
-		HeaderDto headerDto = headerDao.selectOne(boardDto.getBoardHeader());
-		// Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
-		if (headerDto != null) {
-			model.addAttribute("headerDto", headerDto); // Model에 HeaderDto 자체를 추가
-		}
+		HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");
+		HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
+	    // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
+	    if(animalHeaderDto != null) {
+	        model.addAttribute("animalHeaderDto", animalHeaderDto); // Model에 animalHeaderDto 자체를 추가
+	    }
+	    if(typeHeaderDto != null) {
+	    		model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가
+	    }
 		// 작성자 정보
 		if (boardDto.getBoardWriter() != null) {
 			MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
@@ -145,12 +151,14 @@ public class BoardController {
 	@GetMapping("/edit")
 	public String edit(Model model, @RequestParam int boardNo) {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
-		List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
 		if (boardDto == null)
 			throw new TargetNotfoundException("존재하지 않는 글");
-		model.addAttribute("headerList", headerList);
+		List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 animalHeader 조회
+		List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 typeHeader 조회
+		model.addAttribute("animalList", animalList);
+		model.addAttribute("typeList", typeList);
 		model.addAttribute("boardDto", boardDto);
-		return "/WEB-INF/views/board/free/edit.jsp";
+		return "/WEB-INF/views/board/community/edit.jsp";
 	}
 
 	@PostMapping("/edit")
@@ -180,7 +188,6 @@ public class BoardController {
 		for (int attachmentNo : minus) {
 			mediaService.delete(attachmentNo);
 		}
-		HeaderDto header = headerDao.selectOne(boardDto.getBoardHeader());
 		boardDao.update(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}
@@ -209,10 +216,9 @@ public class BoardController {
 //		model.addAttribute("memberPoint", member.getMemberPoint());
 //				
 //		}
-
+ 
 		return "redirect:list";
 	}
-// test용 주석
 	
 	@PostMapping("/mypageDelete")
 	@ResponseBody

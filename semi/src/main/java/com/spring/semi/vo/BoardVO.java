@@ -1,4 +1,4 @@
-package com.spring.semi.dto;
+package com.spring.semi.vo;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -10,26 +10,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class BoardDto {
+public class BoardVO {
 	private int boardCategoryNo;
 	private int boardNo;
 	private String boardTitle;
-	private String boardContent;
 	private String boardWriter;
 	private Timestamp boardWtime;
 	private Timestamp boardEtime;
 	private int boardLike;
 	private int boardView;
-	private Integer boardHeader;
 	private int boardReply;
-	
-	// 251028 board 테이블에 컬럼 추가
-	private int boardAnimalHeader;
-	private int boardTypeHeader;
-	private int boardScore;
-	
-	// 251030 deleted 추가
 	private int deleted;
+	private String typeHeaderName;
+	private String animalHeaderName;
 	
 
 	
@@ -48,5 +41,4 @@ public class BoardDto {
 	        return wtime.format(dateFmt);
 	    }
 	}
-
 }

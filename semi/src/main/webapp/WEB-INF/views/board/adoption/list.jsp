@@ -300,9 +300,9 @@ a:hover {
 	            <span class="group-title">동물 분류</span>
 	            <span class="header-group animal-group">
 	                <c:forEach var="animal" items="${animalList}" varStatus="st" begin="1">
-	                    <a href="list?animalHeaderNo=${animal.animalHeaderNo}&typeHeaderNo=${selectedTypeHeader}"
-	                        class="category-btn ${selectedAnimalHeader == animal.animalHeaderNo ? 'active' : ''}">
-	                        ${st.count}. ${animal.animalHeaderName}
+	                    <a href="list?animalHeaderNo=${animal.headerNo}&typeHeaderNo=${selectedTypeHeader}"
+	                        class="category-btn ${selectedAnimalHeader == animal.headerNo ? 'active' : ''}">
+	                        ${st.count}. ${animal.headerName}
 	                    </a>
 	                </c:forEach>
 	            </span>
@@ -312,9 +312,9 @@ a:hover {
 	            <span class="group-title">게시판 타입</span>
 	            <span class="header-group type-group">
 	                <c:forEach var="type" items="${typeList}" varStatus="typeSt" begin="1">
-	                    <a href="list?animalHeaderNo=${selectedAnimalHeader}&typeHeaderNo=${type.typeHeaderNo}"
-	                        class="type-btn ${selectedTypeHeader == type.typeHeaderNo ? 'type-active' : ''}">
-	                        ${typeSt.count}. ${type.typeHeaderName}
+	                    <a href="list?animalHeaderNo=${selectedAnimalHeader}&typeHeaderNo=${type.headerNo}"
+	                        class="type-btn ${selectedTypeHeader == type.headerNo ? 'type-active' : ''}">
+	                        ${typeSt.count}. ${type.headerName}
 	                    </a>
 	                </c:forEach>
 	            </span>
@@ -356,8 +356,8 @@ a:hover {
 		                        <c:forEach var="boardDto" items="${boardList}">
 		                            <tr>
 		                                <td>${boardDto.boardNo}</td>
-		                                <td>${headerMap[boardDto.boardNo].typeHeaderName}</td>
-		                                <td>${animalMap[boardDto.boardNo].animalHeaderName}</td>
+		                                <td>${boardDto.typeHeaderName}</td>
+		                                <td>${boardDto.animalHeaderName}</td>
 		                                <td><a href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a></td>
 		                                <td>${boardDto.boardWriter}</td>
 		                                <td>${boardDto.boardView}</td>

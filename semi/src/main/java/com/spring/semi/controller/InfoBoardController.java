@@ -30,6 +30,7 @@ import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.MemberVO;
 import com.spring.semi.vo.PageVO;
 import com.spring.semi.service.MemberService;
@@ -59,8 +60,10 @@ public class InfoBoardController {
 	// 글 등록
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-		List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-		model.addAttribute("headerList", headerList);
+		List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
+		List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 header 조회
+		model.addAttribute("animalList", animalList);
+	    model.addAttribute("typeList", typeList);
 		return "/WEB-INF/views/board/info/write.jsp";
 	}
 
@@ -100,26 +103,27 @@ public class InfoBoardController {
 	     pageVO.setSize(10);
 	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
 
-	     List<BoardDto> boardList = boardDao.selectList(
+	     List<BoardVO> boardList = boardDao.selectList2(
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
 
-	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
+//	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
 	     Map<String, MemberVO> memberMap = new HashMap<>();
-	     for (BoardDto b : boardList) {
-	         HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
-	         if (headerDto != null) {
-	             headerMap.put(b.getBoardNo(), headerDto);
-	         }
+	     for (BoardVO b : boardList) {
+//	         HeaderDto headerDto = headerDao.selectOne(b.getBoardHeader());
+//	         if (headerDto != null) {
+//	             headerMap.put(b.getBoardNo(), headerDto);
+//	         }
 	         // 작성자 정보 (MemberVO)
 	         if (b.getBoardWriter() != null && !memberMap.containsKey(b.getBoardWriter())) {
 	             MemberVO memberVO = memberService.getMemberInfo(b.getBoardWriter());
 	             memberMap.put(b.getBoardWriter(), memberVO);
 	         }
 	     }
+	     System.out.println("memberMap : " + memberMap.toString());
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
-	     model.addAttribute("headerMap", headerMap);
+//	     model.addAttribute("headerMap", headerMap);
 	     model.addAttribute("memberMap", memberMap);
 	     model.addAttribute("pageVO", pageVO);
 	     model.addAttribute("orderBy", orderBy);
@@ -130,76 +134,81 @@ public class InfoBoardController {
 
 	 @RequestMapping("/detail")
 	 public String detail(Model model, @RequestParam int boardNo) {
-	     // 게시글 조회
-	     BoardDto boardDto = boardDao.selectOne(boardNo);
-	     if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
-	     model.addAttribute("boardDto", boardDto);
-
-	     // 헤더 조회
-	     HeaderDto headerDto = headerDao.selectOne(boardDto.getBoardHeader());
-	     if (headerDto != null) {
-	         model.addAttribute("headerDto", headerDto);
-	     }
-
-	     // 작성자 정보 조회
-	     if (boardDto.getBoardWriter() != null) {
-	         MemberVO memberVO = memberService.getMemberInfo(boardDto.getBoardWriter());
-	         model.addAttribute("memberVO", memberVO);
-	     }
-
-	     return "/WEB-INF/views/board/info/detail.jsp";
+		 // 게시글 조회
+		 BoardDto boardDto = boardDao.selectOne(boardNo);
+		 if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
+		 model.addAttribute("boardDto", boardDto);
+		 
+		 HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");
+		 HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
+		 // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
+		 if(animalHeaderDto != null) {
+			 model.addAttribute("animalHeaderDto", animalHeaderDto); // Model에 animalHeaderDto 자체를 추가
+		 }
+		 if(typeHeaderDto != null) {
+			 model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가
+		 }
+		 
+		 // 작성자 정보 조회
+		 if (boardDto.getBoardWriter() != null) {
+			 MemberVO memberVO = memberService.getMemberInfo(boardDto.getBoardWriter());
+			 model.addAttribute("memberVO", memberVO);
+		 }
+		 
+		 return "/WEB-INF/views/board/info/detail.jsp";
 	 }
 
 
 	// 삭제
-	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo) {
-		BoardDto boardDto = boardDao.selectOne(boardNo);
-		if (boardDto == null)
-			throw new TargetNotfoundException("존재하지 않는 글");
-		boardDao.delete(boardNo);
-		return "redirect:list";
-	}
+	 @RequestMapping("/delete")
+	 public String delete(@RequestParam int boardNo) {
+		 BoardDto boardDto = boardDao.selectOne(boardNo);
+		 if (boardDto == null)
+			 throw new TargetNotfoundException("존재하지 않는 글");
+		 boardDao.delete(boardNo);
+		 return "redirect:list";
+	 }
 
 	// 수정
-	@GetMapping("/edit")
-	public String edit(Model model, @RequestParam int boardNo) {
+	 @GetMapping("/edit")
+	 public String edit(Model model, @RequestParam int boardNo) {
 		 BoardDto boardDto = boardDao.selectOne(boardNo);
-	       List<HeaderDto> headerList = headerDao.selectAll(); // DB에서 모든 header 조회
-	       if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
-	       model.addAttribute("headerList", headerList);
-	       model.addAttribute("boardDto", boardDto);
-		return "/WEB-INF/views/board/info/edit.jsp";
-	}
+		 if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글");
+		 List<HeaderDto> animalList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
+		 List<HeaderDto> typeList = headerDao.selectAll("type"); // DB에서 모든 header 조회
+		 model.addAttribute("animalList", animalList);
+		 model.addAttribute("typeList", typeList);
+		 model.addAttribute("boardDto", boardDto);
+		 return "/WEB-INF/views/board/info/edit.jsp";
+	 }
 
-	@PostMapping("/edit")
-	public String edit(@ModelAttribute BoardDto boardDto) {
-		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
-	       if (beforeDto == null) throw new TargetNotfoundException("존재하지 않는 글");
-	    
-	       Set<Integer> before = new HashSet<>();
-	       Document beforeDocument = Jsoup.parse(beforeDto.getBoardContent());
-	       Elements beforeElements = beforeDocument.select(".custom-image");
-	       for (Element element : beforeElements) {
-	           int attachmentNo = Integer.parseInt(element.attr("data-pk"));
-	           before.add(attachmentNo);
-	       }
-	       Set<Integer> after = new HashSet<>();
-	       Document afterDocument = Jsoup.parse(boardDto.getBoardContent());
-	       Elements afterElements = afterDocument.select(".custom-image");
-	       for (Element element : afterElements) {
-	           int attachmentNo = Integer.parseInt(element.attr("data-pk"));
-	           after.add(attachmentNo);
-	       }
-	       // 삭제된 이미지 처리
-	       Set<Integer> minus = new HashSet<>(before);
-	       minus.removeAll(after);
-	       for (int attachmentNo : minus) {
-	           mediaService.delete(attachmentNo);
-	       }
-	       HeaderDto header = headerDao.selectOne(boardDto.getBoardHeader());
-	       boardDao.update(boardDto);
-		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
-	}
+	 @PostMapping("/edit")
+	 public String edit(@ModelAttribute BoardDto boardDto) {
+		 BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
+		 if (beforeDto == null) throw new TargetNotfoundException("존재하지 않는 글");
+		 
+		 Set<Integer> before = new HashSet<>();
+		 Document beforeDocument = Jsoup.parse(beforeDto.getBoardContent());
+		 Elements beforeElements = beforeDocument.select(".custom-image");
+		 for (Element element : beforeElements) {
+			 int attachmentNo = Integer.parseInt(element.attr("data-pk"));
+			 before.add(attachmentNo);
+		 }
+		 Set<Integer> after = new HashSet<>();
+		 Document afterDocument = Jsoup.parse(boardDto.getBoardContent());
+		 Elements afterElements = afterDocument.select(".custom-image");
+		 for (Element element : afterElements) {
+			 int attachmentNo = Integer.parseInt(element.attr("data-pk"));
+			 after.add(attachmentNo);
+		 }
+		 // 삭제된 이미지 처리
+		 Set<Integer> minus = new HashSet<>(before);
+		 minus.removeAll(after);
+		 for (int attachmentNo : minus) {
+			 mediaService.delete(attachmentNo);
+		 }
+		 boardDao.update(boardDto);
+		 return "redirect:detail?boardNo=" + boardDto.getBoardNo();
+	 }
 
 }
