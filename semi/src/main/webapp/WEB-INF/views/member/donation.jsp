@@ -71,7 +71,7 @@
                     .catch(err => {
                         console.error("클립보드 복사 실패: ", err);
                         alert("복사에 실패했습니다");
-                    });
+                    }); 
             });
             
             var rewardType = "${rewardType}";
