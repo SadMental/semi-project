@@ -73,6 +73,7 @@ public class BoardDao {
 		String sql = "update board set deleted = 1 where board_no = ?";
 		Object[] params = { boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
+		
 	}
 
 	 //마이페이지에서 글 삭제
