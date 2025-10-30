@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.semi.dao.AnimalDao;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.BoardLikeDao;
+import com.spring.semi.dao.LevelUpdateDao;
 import com.spring.semi.dao.MailDao;
 import com.spring.semi.dao.MediaDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
+import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MailDto;
 import com.spring.semi.dto.MemberDto;
-import com.spring.semi.vo.MemberVO;
-import com.spring.semi.dao.LevelUpdateDao;
 import com.spring.semi.vo.LevelUpdateVO;
 
 @Service
@@ -67,7 +67,10 @@ public class MemberService {
     	
     	List<Integer> board_like_list = boardLikeDao.selectListByMemberId(memberId);
     	for(int like : board_like_list) {
-    		boardDao.updateBoardLike(like);
+    		BoardDto boardDto = boardDao.selectOne(like);
+    		
+    		
+    		boardDao.updateBoardLike(boardDto.getBoardNo(),  like);
     	}
     	
     	

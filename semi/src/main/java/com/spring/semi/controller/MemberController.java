@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.dao.AnimalDao;
@@ -268,16 +269,20 @@ public class MemberController {
 		if(loginId == null) {
 			return "redirect:/member/join";
 		}
-		
-		model.addAttribute("point", memberDto.getMemberPoint());
+		int point =  memberDto.getMemberPoint() - memberDto.getMemberUsedPoint();
+		model.addAttribute("point", point);
 		model.addAttribute("rewardType", rewardType);
 		 
 		return "/WEB-INF/views/member/donation.jsp";
 	}
 	
-	@RequestMapping("/pointUse")
-	public String pointUse() {
-		return "/WEB-INF/views/member/pointUse.jsp";
+	@GetMapping("/usePoint")
+	@ResponseBody
+	public String usePoint(HttpSession session) {
+		
+		memberDao.usePoint( (String)session.getAttribute("loginId"));
+		
+		return "success"; 
 	}
 	
 	

@@ -133,12 +133,12 @@ public class MemberDao {
 		
 
 	//포인트 차감
-		//public void minusPoint(String memberId, int point) {
-			//String sql = "update member set member_point = member_point - ? "
-			//		+ "where member_id	= ?";
-			//Object[] params = {point, memberId};
-			//int result = jdbcTemplate.update(sql, params);
-		//}
+		public void minusPoint(String memberId, int point) {
+			String sql = "update member set member_point = member_point - ? "
+					+ "where member_id	= ?";
+			Object[] params = {point, memberId};
+			int result = jdbcTemplate.update(sql, params);
+		}
 
 	//페이징용
 	public int count(PageVO pageVO) {
@@ -178,6 +178,12 @@ public class MemberDao {
 		}
 	}
 
+	public int usePoint(String loginId) {
+		String sql = "update member set member_used_point = NVL(member_used_point,0) +( NVL(member_point,0) - NVL(member_used_point,0)  )where member_id = ? ";
+		Object[] params = {loginId};
+		return jdbcTemplate.update(sql, params);
+		
+	}
 
 
 }
