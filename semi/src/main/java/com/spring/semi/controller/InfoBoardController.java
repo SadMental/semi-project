@@ -105,9 +105,6 @@ public class InfoBoardController {
 	     List<BoardVO> boardList = boardDao.selectList2(
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
 
-//	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
-
-
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
 
@@ -116,7 +113,6 @@ public class InfoBoardController {
 
 	     return "/WEB-INF/views/board/info/list.jsp";
 	 }
-
 
 	 @RequestMapping("/detail")
 	 public String detail(Model model, @RequestParam int boardNo) {

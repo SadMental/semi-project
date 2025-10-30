@@ -313,22 +313,6 @@ $(function () {
             </div>
 
             <div class="cell ms-10 me-10">
-                <label>쇼츠</label>
-            </div>
-            <div class="cell ms-10 me-10 center" style="background-color:green">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                쇼츠 가로형 스크롤
-                <p>4</p>
-                <p>5</p>
-                <p>6</p>
-            </div>
-            <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">쇼츠 더보기 ></a>
-            </div>
-
-            <div class="cell ms-10 me-10">
                 <label>사용후기</label>
             </div>
             <div class="cell ms-10 me-10 center" style="background-color:green">
@@ -405,28 +389,6 @@ $(function () {
             </div>
             <div class="cell ms-10 me-10 center">
                 <a href="/board/animal/list" class="link">동물위키 더보기 ></a>
-            </div>
-
-            <div class="cell ms-10 me-10">
-                <label>체험단</label>
-            </div>
-            <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>체험단 1</p>
-                    <p>체험단 3</p>
-                    <p>체험단 5</p>
-                    <p>체험단 7</p>
-                </div>
-
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>체험단 2</p>
-                    <p>체험단 4</p>
-                    <p>체험단 6</p>
-                    <p>체험단 8</p>
-                </div>
-            </div>
-            <div class="cell ms-10 me-10 center">
-                <a href="#" class="link">체험단 더보기 ></a>
             </div>
         </div>
 
