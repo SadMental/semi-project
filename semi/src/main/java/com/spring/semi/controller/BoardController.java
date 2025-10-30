@@ -38,6 +38,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board/community")
 public class BoardController {
+
 	@Autowired
 	private MediaService mediaService;
 	@Autowired
@@ -48,6 +49,7 @@ public class BoardController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+
 
 //	@RequestMapping("/list")
 //	public String list(Model model) 
@@ -204,6 +206,16 @@ public class BoardController {
 
 		}
 		boardDao.delete(boardNo);
+
+		//게시글 포인트 차감
+//		String loginId = (String) session.getAttribute("loginId");
+//		if(loginId != null) {
+//		memberDao.minusPoint(loginId, 50);
+//		MemberDto member = memberDao.selectOne(loginId);
+//		model.addAttribute("memberPoint", member.getMemberPoint());
+//				
+//		}
+ 
 		return "redirect:list";
 }
 	
