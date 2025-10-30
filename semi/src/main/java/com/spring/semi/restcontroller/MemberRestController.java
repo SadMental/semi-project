@@ -104,5 +104,17 @@ public class MemberRestController {
 		MemberDto findDto = memberDao.selectForNickname(memberNickname);
 		return findDto == null? false : true;
 	}
-
+	
+	// 수정시 닉네임 중복 체크
+	@PostMapping("/checkDuplication")
+	public boolean checkDuplication(
+			@RequestParam String memberId,
+			@RequestParam String memberNickname
+			) {
+		MemberDto findDto = memberDao.selectOne(memberId);
+		if(findDto.getMemberNickname().equals(memberNickname)) return false;
+		return findDto == null? false : true;
+	}
+	
+	
 }

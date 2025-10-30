@@ -1,9 +1,19 @@
 package com.spring.semi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.semi.dao.AnimalDao;
+import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.BoardLikeDao;
+import com.spring.semi.dao.MailDao;
+import com.spring.semi.dao.MediaDao;
 import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.AnimalDto;
+import com.spring.semi.dto.MailDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.vo.MemberVO;
 
@@ -12,6 +22,53 @@ public class MemberService {
 
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private MediaDao mediaDao;
+    @Autowired
+    private BoardLikeDao boardLikeDao;
+    @Autowired
+    private BoardDao boardDao;
+    @Autowired
+    private AnimalDao animalDao;
+    @Autowired
+    private MailDao mailDao;
+    
+    @Transactional
+    public boolean deleteMember(String memberId, String memberPw) {
+    	MemberDto memberDto = memberDao.selectOne(memberId);
+    	
+    	if(memberDto.getMemberPw().equals(memberPw) == false) return false;
+    	
+    	memberDao.delete(memberId);
+    	
+    	try {
+    		int mediaNo = memberDao.findMediaNo(memberId);
+    		mediaDao.delete(mediaNo);
+    	} catch (Exception e) {}
+    	
+    	List<AnimalDto> animalList = animalDao.selectList(memberId);
+    	for(AnimalDto dto : animalList) {
+    		animalDao.delete(dto.getAnimalNo());
+    		try {
+    			int mediaNo = animalDao.findMediaNo(dto.getAnimalNo());
+    			mediaDao.delete(mediaNo);
+    		} catch (Exception e) {}
+    	}
+    	
+    	List<MailDto> mailList = mailDao.selectList(memberId);
+    	for(MailDto dto : mailList) {
+    		mailDao.delete(dto.getMailNo());
+    	}
+    	
+    	
+    	List<Integer> board_like_list = boardLikeDao.selectListByMemberId(memberId);
+    	for(int like : board_like_list) {
+    		boardDao.updateBoardLike(like);
+    	}
+    	
+    	
+    	return true;
+    }
 
     // 작성자 정보 조회 + 포인트 기반 등급/뱃지 계산
     public MemberVO getMemberInfo(String memberId) {

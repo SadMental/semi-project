@@ -156,6 +156,14 @@ public class BoardDao {
 		Object[] params = { boardLike, boardNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	// 갱신용
+	public boolean updateBoardLike(int board_no) {
+		String sql = "update board "
+							+ "set board_like = (select count(*) from board_like where board_no = ?) "
+							+ "where board_no = ?";
+		Object[] params = {board_no, board_no};
+		return jdbcTemplate.update(sql, params) > 0;
+	} 
 
 	public boolean updateBoardView(int boardNo) {
 		String sql = "update board set board_view=board_view+1 where board_no=?";

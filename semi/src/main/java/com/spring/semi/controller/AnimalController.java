@@ -42,7 +42,7 @@ public class AnimalController {
 	
 	@GetMapping("/profile")
 	public String profile(
-			@RequestParam String animalNo
+			@RequestParam int animalNo
 			) {
 		try {
 			int mediaNo = animalDao.findMediaNo(animalNo);
