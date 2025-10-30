@@ -17,30 +17,27 @@ public class LevelUpdateDao {
     @Autowired
     private LevelUpdateMapper levelUpdateMapper;
 
-
     public List<LevelUpdateVO> selectMembersForLevelUpdate() {
-        String sql = "SELECT m.member_id, m.member_point, m.member_level, " +
+        String sql = "select m.member_id, m.member_point, m.member_level, " +
                      "       l.level_no, l.min_point, l.max_point " +
-                     "FROM member m " +
-                     "JOIN member_level l ON m.member_point BETWEEN l.min_point AND l.max_point";
+                     "from member m " +
+                     "join member_level l on m.member_point between l.min_point and l.max_point";
         return jdbcTemplate.query(sql, levelUpdateMapper);
     }
 
-
     public int updateMemberLevels() {
-        String sql = "UPDATE member m " +
-                     "SET member_level = (" +
-                     "    SELECT l.level_no " +
-                     "    FROM member_level_table l " + 
-                     "    WHERE m.member_point BETWEEN l.min_point AND l.max_point" +
+        String sql = "update member m " +
+                     "set member_level = (" +
+                     "    select l.level_no " +
+                     "    from member_level_table l " + 
+                     "    where m.member_point between l.min_point and l.max_point" +
                      ") " +
-                     "WHERE EXISTS (" +
-                     "    SELECT 1 " +
-                     "    FROM member_level_table l " + 
-                     "    WHERE m.member_point BETWEEN l.min_point AND l.max_point" +
+                     "where exists (" +
+                     "    select 1 " +
+                     "    from member_level_table l " + 
+                     "    where m.member_point between l.min_point and l.max_point" +
                      ")";
         return jdbcTemplate.update(sql);
     }
 
 }
-

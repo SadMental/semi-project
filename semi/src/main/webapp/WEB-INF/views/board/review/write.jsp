@@ -66,23 +66,51 @@
   margin-top: 20px;
 }
 </style>
+<script src="https://cdn.jsdelivr.net/gh/hiphop5782/score@latest/score.js"></script>
+<script type = "text/javascript">
+    $(function(){
+        $(".star-editor").score({
+            starColor:"#f1c40f",
+            //backgroundColor:"#dfe6e9",
+            editable:true,//false
+            integerOnly:true,//false
+            zeroAvailable:true,
+            send:{
+                sendable:true,
+                name:"reviewScore",//star
+            },
+        });
+    });
+</script>
 
 <form autocomplete="off" action="write" method="post" enctype="multipart/form-data">
-  <div class="container w-800">
-      <div class="cell center">
-          <h1>동물위키 작성</h1>
-      </div>
-      <div class="cell center">
-          이 글은 정보게시판에 업로드 됩니다.<br>
-          <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
-      </div>
-        <div class="cell">
-			<select name="boardHeader" class="field w-100 mt-2">
-		      <option value="">-- 분류 선택 --</option>
-	             <c:forEach var="headerDto" items="${headerList}">
-				  	 <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
-				 </c:forEach>
+	<div class="container w-800">
+		<div class="cell center">
+		    <h1>사용후기 작성</h1>
+		</div>
+		<div class="cell center">
+		    이 글은 정보게시판에 업로드 됩니다.<br>
+		    <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
+		</div>
+		<div class="cell">
+			<select name="boardAnimalHeader" class="field w-100 mt-2">
+				<option value="">-- 분류 선택 --</option>
+				<c:forEach var="animalHeaderDto" items="${animalHeaderList}">
+					<option value="${animalHeaderDto.headerNo}">${animalHeaderDto.headerName}</option>
+				</c:forEach>
 			</select>
+			<select name="boardTypeHeader" class="field w-100 mt-2">
+				<option value="">-- 분류 선택 --</option>
+				<c:forEach var="typeHeaderDto" items="${typeHeaderList}">
+					<option value="${typeHeaderDto.headerNo}">${typeHeaderDto.headerName}</option>
+				</c:forEach>
+			</select>
+		</div>
+		
+		<div class = "cell">
+            <div name="boardScore" class="star-editor" data-max="5"></div>
+        </div>
+        
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>

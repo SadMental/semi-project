@@ -9,8 +9,17 @@
 	<div class="cell right">
 		<a class="btn btn-neutral" href="/admin/home">목록으로</a>
 	</div>
+	<div class="cell right">
+		<form
+			action="${pageContext.request.contextPath}/admin/level/updateAll"
+			method="post" style="display: inline;">
+			<button type="submit" class="btn btn-neutral">전체 등급 갱신</button>
+		</form>
+
+	</div>
 
 	<table class="table table-border w-100p">
+
 		<tr>
 			<th>아이디</th>
 			<th>닉네임</th>

@@ -186,6 +186,15 @@
 
 
 		<div class="cell right">
+			<div class="cell">
+				<a href="list?orderBy=wtime"
+					class="${orderBy eq 'wtime' ? 'active' : ''}">최신순</a> | <a
+					href="list?orderBy=view"
+					class="${orderBy eq 'view' ? 'active' : ''}">조회순</a> | <a
+					href="list?orderBy=like"
+					class="${orderBy eq 'like' ? 'active' : ''}">추천순</a>
+			</div>
+		
 			<c:choose>
 				<c:when test="${sessionScope.loginId != null}">
 					<h3>
