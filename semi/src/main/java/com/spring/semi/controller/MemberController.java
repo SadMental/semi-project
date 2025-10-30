@@ -152,6 +152,11 @@ public class MemberController {
 			HttpSession session
 			) {
 		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			return "redirect:/memer/login";
+		}
+		
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		List<AnimalDto> animalList = animalDao.selectList(loginId);
 		
