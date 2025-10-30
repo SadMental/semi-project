@@ -75,6 +75,10 @@ public class AnimalRestController {
 		AnimalDto findDto = animalDao.selectOne(animalNo);
 		if(findDto != null) {			
 			animalDao.delete(animalNo);
+			try {
+				int mediaNo = animalDao.findMediaNo(animalNo);
+				mediaService.delete(mediaNo);
+			} catch (Exception e) {}
 		}
 	}
 }

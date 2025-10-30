@@ -26,7 +26,7 @@
 					<span>${animalDto.animalPermission }</span>
 				</td>
 				<td>
-					<span>${animalDto.animalName }</span>
+					<a class="link" href="detail?animalNo=${animalDto.animalNo }">${animalDto.animalName }</a>
 				</td>
 				<td>
 					<span>${animalDto.animalMaster }</span>

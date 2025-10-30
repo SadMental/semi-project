@@ -55,6 +55,21 @@ public class MemberDao {
 		jdbcTemplate.update(sql, params);
 	}
 	
+	public void updateForAdmin(MemberDto findDto) {
+		String sql = "update member set member_nickname = ?, member_description = ?, member_point = ? "
+																+ "where member_id = ?";
+		
+		Object[] params = {
+				findDto.getMemberNickname(),
+				findDto.getMemberDescription(),
+				findDto.getMemberPoint(),
+				findDto.getMemberId()
+				};
+		
+		jdbcTemplate.update(sql, params);
+		
+	}
+	
 	public MemberDto selectOne(String member_id) {
 		String sql = "select * from member where member_id = ?";
 		Object[] params = { member_id };
@@ -160,5 +175,7 @@ public class MemberDao {
 			return jdbcTemplate.query(sql, memberMapper, params);
 		}
 	}
+
+
 
 }

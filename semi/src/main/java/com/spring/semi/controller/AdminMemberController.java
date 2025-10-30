@@ -21,7 +21,7 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MemberService;
-import com.spring.semi.vo.BoardListVO;	
+import com.spring.semi.vo.BoardListVO;
 import com.spring.semi.vo.PageVO;
 
 import jakarta.mail.MessagingException;
@@ -40,7 +40,6 @@ public class AdminMemberController {
 	private EmailService emailService;
 	@Autowired
 	private MemberService memberService;
-
 	
 	@GetMapping("/list")
 	public String list(
@@ -56,7 +55,7 @@ public class AdminMemberController {
 		return "/WEB-INF/views/admin/member/list.jsp";
 	}
 	
-	@GetMapping("detail")
+	@GetMapping("/detail")
 	public String detail(
 			Model model,
 			@RequestParam String memberId
@@ -73,8 +72,40 @@ public class AdminMemberController {
 		return "/WEB-INF/views/admin/member/detail.jsp";
 	}
 	
+	@GetMapping("/edit")
+	public String edit(
+			Model model,
+			@RequestParam String memberId
+			) {
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		
+		model.addAttribute("memberDto", memberDto);
+		
+		return "/WEB-INF/views/admin/member/edit.jsp";
+	}
+	@PostMapping("/edit")
+	public String edit(
+			@ModelAttribute MemberDto memberDto
+			) {
+		
+		memberDao.updateForAdmin(
+				MemberDto.builder()
+										.memberNickname(memberDto.getMemberNickname())
+										.memberDescription(memberDto.getMemberDescription())
+										.memberPoint(memberDto.getMemberPoint())
+										.memberId(memberDto.getMemberId())
+										.build()
+				);
+		
+		return "redirect:list";
+	}
+	
 	@GetMapping("/drop")
-	public String drop() {
+	public String drop(
+			@RequestParam String memberId
+			) {
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		memberService.deleteMember(memberDto.getMemberId(), memberDto.getMemberPw());
 		return "redirect:list";
 	}
 	

@@ -21,6 +21,7 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.service.MemberService;
 import com.spring.semi.vo.BoardListVO;
 
 import jakarta.mail.MessagingException;
@@ -40,6 +41,8 @@ public class MemberController {
 	private EmailService emailService;
 	@Autowired
 	private BoardDao boardDao;
+	@Autowired
+	private MemberService memberService;
 
 	
 	@GetMapping("/join")
@@ -185,9 +188,7 @@ public class MemberController {
 			@RequestParam String member_pw
 			) {
 		String loginId = (String) session.getAttribute("loginId");
-		MemberDto findDto = memberDao.selectOne(loginId);
-		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:drop?error";
-		memberDao.delete(loginId);
+		memberService.deleteMember(loginId, member_pw);
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginLevel");
 		return "/WEB-INF/views/member/thankyou.jsp";
