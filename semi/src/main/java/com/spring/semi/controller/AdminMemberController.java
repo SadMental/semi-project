@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,7 +21,7 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MemberService;
-import com.spring.semi.vo.BoardListVO;
+import com.spring.semi.vo.BoardListVO;	
 import com.spring.semi.vo.PageVO;
 
 import jakarta.mail.MessagingException;
@@ -37,6 +38,8 @@ public class AdminMemberController {
 	private BoardDao boardDao;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private MemberService memberService;
 
 	
 	@GetMapping("/list")
@@ -87,5 +90,4 @@ public class AdminMemberController {
 		return "redirect:list";
 	}
 
-	
 }
