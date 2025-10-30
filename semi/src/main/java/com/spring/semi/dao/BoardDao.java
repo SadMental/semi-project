@@ -255,15 +255,14 @@ public class BoardDao {
 	}
 
 	// 메인페이지에서 바로 보이는 free_board는 검색이 없고 PageVO가 없다
-	public List<BoardDto> selectListWithPagingForMainPage(int pageType, int min, int max) {
+	public List<BoardVO> selectListWithPagingForMainPage(int pageType, int min, int max) {
 
-		String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select b.*, h.header_name "
-				+ "    from board b " + "    left join header h on b.board_header = h.header_no "
-				+ "    where b.board_category_no=? " + "    order by b.board_no desc" + "  ) TMP"
+		String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "   select * from board_header_view "
+				+ "    where board_category_no=? " + "    order by board_no desc" + "  ) TMP"
 				+ ") where rn between ? and ?";
 
 		Object[] params = { pageType, min, max };
-		return jdbcTemplate.query(sql, boardListMapper, params);
+		return jdbcTemplate.query(sql, boardVOMapper, params);
 	}
 
 	// 마이페이지 내글 보기 관련
