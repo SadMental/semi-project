@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="cp" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -9,12 +9,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>3d Semi-Project</title>
 
-<!-- css import -->
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
-<!-- jquery cdn -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- momentjs CDN-->
@@ -83,10 +81,10 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	padding: 16px 24px; /* 내부 공간 */
-	border: 1px solid var(--line); /* 기존 색상 사용 */
-	border-radius: 12px; /* 모서리 둥글게 */
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* 약한 그림자 */
+	padding: 16px 24px;
+	border: 1px solid var(--line);
+	border-radius: 12px; 
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
 }
 
 .kh-pill {
