@@ -162,7 +162,6 @@ public class EmailService {
 		reader.close();
 		
 		String newPassword = passwordService.passwordGenerator();
-		System.out.println(newPassword);
 		memberDao.updateForUserPassword(newPassword, memberDto.getMemberId());
 		
 		Document document = Jsoup.parse(buffer.toString());
