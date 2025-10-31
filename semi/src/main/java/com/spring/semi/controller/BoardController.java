@@ -49,6 +49,8 @@ public class BoardController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 
 
 //	@RequestMapping("/list")
@@ -111,6 +113,7 @@ public class BoardController {
 		int boardType = 1;
 
 		boardDao.insert(boardDto, boardType);
+        mainController.clearBoardCache("community_board_list");
 
 		// 게시글 포인트
 		memberDao.addPoint(loginId, 50);
@@ -205,13 +208,13 @@ public class BoardController {
 		boardDao.delete(boardNo);
 
 		//게시글 포인트 차감
-//		String loginId = (String) session.getAttribute("loginId");
-//		if(loginId != null) {
-//		memberDao.minusPoint(loginId, 50);
-//		MemberDto member = memberDao.selectOne(loginId);
-//		model.addAttribute("memberPoint", member.getMemberPoint());
-//				
-//		}
+		String loginId = (String) session.getAttribute("loginId");
+		if(boardDto.getBoardWriter() != null) {
+		memberDao.minusPoint(boardDto.getBoardWriter(), 50);
+		MemberDto member = memberDao.selectOne(loginId);
+		model.addAttribute("memberPoint", member.getMemberPoint());
+				
+		}
  
 		return "redirect:list";
 }

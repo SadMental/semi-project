@@ -149,6 +149,9 @@ public class InfoBoardController {
 	       }
 	       // 글 삭제
 	       boardDao.delete(boardNo);
+			if(boardDto.getBoardWriter() != null) {
+				memberDao.minusPoint(boardDto.getBoardWriter(), 70);
+				}
 	       return "redirect:list";
 	   }
 

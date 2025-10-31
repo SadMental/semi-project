@@ -1,49 +1,60 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
 
 <!-- jQuery + Moment.js -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/ko.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/ko.min.js"></script>
 
 <!-- Font Awesome + Twemoji -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"
+	defer></script>
 
 <style>
-	.board-meta {
-	  background-color: #fffdf9;
-	  border: 2px solid #d8c3a5;
-	  border-radius: 12px;
-	  padding: 15px 20px;
-	  margin: 20px 0;
-	  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-	}
-	.board-meta table {
-	  width: 100%;
-	  border-collapse: collapse;
-	}
-	.board-meta th {
-	  width: 100px;
-	  text-align: left;
-	  padding: 6px 10px;
-	  color: #6b4f34;
-	  font-weight: 600;
-	}
-	.board-meta td {
-	  padding: 6px 10px;
-	  color: #3e3e3e;
-	}
-	.board-title {
-	  font-size: 1.8rem;
-	  font-weight: bold;
-	  color: #5b3a29;
-	  border-bottom: 3px double #d6c2a6;
-	  padding-bottom: 10px;
-	  margin-bottom: 15px;
-	}
+.board-meta {
+	background-color: #fffdf9;
+	border: 2px solid #d8c3a5;
+	border-radius: 12px;
+	padding: 15px 20px;
+	margin: 20px 0;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.board-meta table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.board-meta th {
+	width: 100px;
+	text-align: left;
+	padding: 6px 10px;
+	color: #6b4f34;
+	font-weight: 600;
+}
+
+.board-meta td {
+	padding: 6px 10px;
+	color: #3e3e3e;
+}
+
+.board-title {
+	font-size: 1.8rem;
+	font-weight: bold;
+	color: #5b3a29;
+	border-bottom: 3px double #d6c2a6;
+	padding-bottom: 10px;
+	margin-bottom: 15px;
+}
+
 body {
 	background-color: #f4ede6;
 	color: #5b3a29;
@@ -57,15 +68,28 @@ body {
 	padding: 30px 35px;
 	border-radius: 15px;
 	background-color: #ffffffdd;
-	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* 제목, 메타, 본문 */
-h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
-.meta { font-size: 0.95rem; color: #7a5a44; margin-bottom: 20px; }
+h1 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.meta {
+	font-size: 0.95rem;
+	color: #7a5a44;
+	margin-bottom: 20px;
+}
+
 .content {
-	font-size: 1.1rem; line-height: 1.6; min-height: 200px;
-	border-top: 1px solid #d6c2a6; padding-top: 20px;
+	font-size: 1.1rem;
+	line-height: 1.6;
+	min-height: 200px;
+	border-top: 1px solid #d6c2a6;
+	padding-top: 20px;
 }
 
 /* 💬 댓글 목록 전체 */
@@ -81,12 +105,13 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	background: #fffdfb;
 	border-radius: 15px;
 	padding: 15px 18px 12px;
-	box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 	position: relative;
 	border: 1px solid #e6d4c3;
 	max-width: 95%;
 	transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
+
 .reply-wrapper:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 5px 12px rgba(166, 124, 82, 0.12);
@@ -103,7 +128,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	border-left: 8px solid transparent;
 	border-right: 8px solid transparent;
 	border-top: 8px solid #fffdfb;
-	filter: drop-shadow(0 2px 1px rgba(0,0,0,0.05));
+	filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.05));
 }
 
 /* ✨ 작성자, 시간 */
@@ -111,6 +136,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	color: #5b3a29;
 	font-weight: 600;
 }
+
 .reply-wrapper small {
 	color: #a67c52;
 	font-size: 0.9rem;
@@ -125,6 +151,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	white-space: pre-wrap;
 	word-break: break-word;
 }
+
 .reply-content img.emoji {
 	width: 1.4em;
 	height: 1.4em;
@@ -141,12 +168,15 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	gap: 4px;
 	transition: color 0.2s ease;
 }
+
 .reply-like i {
 	transition: transform 0.2s;
 }
+
 .reply-like:hover i {
 	transform: scale(1.2);
 }
+
 .reply-like.active {
 	color: #e74c3c;
 }
@@ -160,12 +190,33 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	font-weight: 600;
 	transition: all 0.2s ease;
 }
-.btn-edit { background-color: #a67c52; color: #fff5e9; }
-.btn-edit:hover { background-color: #c18f65; }
-.btn-delete { background-color: #a94442; color: #fff2f0; }
-.btn-delete:hover { background-color: #922d2b; }
-.btn-positive { background-color: #5b3a29; color: white; }
-.btn-positive:hover { background-color: #7b4e36; }
+
+.btn-edit {
+	background-color: #a67c52;
+	color: #fff5e9;
+}
+
+.btn-edit:hover {
+	background-color: #c18f65;
+}
+
+.btn-delete {
+	background-color: #a94442;
+	color: #fff2f0;
+}
+
+.btn-delete:hover {
+	background-color: #922d2b;
+}
+
+.btn-positive {
+	background-color: #5b3a29;
+	color: white;
+}
+
+.btn-positive:hover {
+	background-color: #7b4e36;
+}
 
 /* 😊 댓글 입력창 */
 .reply-write-wrapper {
@@ -178,6 +229,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	position: relative;
 	transition: all 0.2s ease;
 }
+
 .reply-write-wrapper:focus-within {
 	box-shadow: 0 6px 16px rgba(166, 124, 82, 0.15);
 	transform: translateY(-2px);
@@ -195,13 +247,14 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	font-size: 1rem;
 	line-height: 1.5;
 	color: #5b3a29;
-	box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
 .reply-input:focus {
 	outline: none;
 	border-color: #a67c52;
-	box-shadow: 0 0 0 3px rgba(166,124,82,0.15);
+	box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.15);
 }
 
 /* 😄 버튼 영역 */
@@ -225,6 +278,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	margin-right: 10px;
 	transition: transform 0.15s ease, color 0.2s;
 }
+
 .btn-emoji:hover {
 	color: #5b3a29;
 	transform: rotate(8deg) scale(1.1);
@@ -242,10 +296,12 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	cursor: pointer;
 	transition: background-color 0.25s ease, transform 0.1s ease;
 }
+
 .reply-btn-write:hover {
 	background-color: #a67c52;
 	transform: translateY(-2px);
 }
+
 .reply-btn-write:active {
 	transform: translateY(0);
 }
@@ -260,13 +316,14 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	background: #fffefb;
 	border: 1px solid #d3bfa6;
 	border-radius: 15px;
-	box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 	padding: 10px;
 	max-width: 260px;
 	max-height: 200px;
 	overflow-y: auto;
 	z-index: 9999;
 }
+
 .emoji-picker-container img.emoji {
 	width: 28px;
 	height: 28px;
@@ -274,6 +331,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	margin: 5px;
 	transition: transform 0.15s;
 }
+
 .emoji-picker-container img.emoji:hover {
 	transform: scale(1.3);
 }
@@ -306,12 +364,14 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	border-radius: 14px;
 	padding: 15px 20px;
 	margin-bottom: 25px;
-	box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
+
 .detail-wrapper .board-meta table {
 	width: 100%;
 	border-collapse: collapse;
 }
+
 .detail-wrapper .board-meta th {
 	width: 100px;
 	text-align: left;
@@ -319,6 +379,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	color: #6b4f34;
 	font-weight: 600;
 }
+
 .detail-wrapper .board-meta td {
 	padding: 6px 10px;
 	color: #3e3e3e;
@@ -333,11 +394,12 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	line-height: 1.8;
 	font-size: 1.1rem;
 	color: #4e3523;
-	box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
+	box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
 	margin-bottom: 25px;
 	word-break: break-word;
 	white-space: pre-line;
 }
+
 .detail-wrapper .board-content img {
 	max-width: 100%;
 	display: block;
@@ -353,8 +415,9 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	background: transparent;
 	margin-top: 15px;
 }
-.detail-wrapper .action-buttons a,
-.detail-wrapper .action-buttons button {
+
+.detail-wrapper .action-buttons a, .detail-wrapper .action-buttons button
+	{
 	border: none;
 	border-radius: 10px;
 	padding: 8px 16px;
@@ -369,6 +432,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	background-color: rgba(130, 130, 130, 0.1);
 	color: #4e3523;
 }
+
 .detail-wrapper .btn-list:hover {
 	background-color: rgba(130, 130, 130, 0.25);
 }
@@ -378,6 +442,7 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	background-color: rgba(166, 124, 82, 0.2);
 	color: #7b4e36;
 }
+
 .detail-wrapper .btn-edit:hover {
 	background-color: rgba(166, 124, 82, 0.35);
 }
@@ -387,67 +452,78 @@ h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; }
 	background-color: rgba(205, 77, 77, 0.15);
 	color: #a03030;
 }
+
 .detail-wrapper .btn-delete:hover {
 	background-color: rgba(205, 77, 77, 0.3);
 }
-
 </style>
 
 
 <div class="detail-wrapper">
-<c:if test="${not empty typeHeaderDto}">
-    <tr>
-        <div class="board-title">[${typeHeaderDto.headerName}] ${boardDto.boardTitle}</div>
-    </tr>
-</c:if>
-
-<div class="board-meta">
-    <table>
-      <tr>
-        <th>작성자</th>
-        <td>${boardDto.boardWriter}</td>
-        <th>작성일</th>
-        <td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm" /></td>
-      </tr>
-      <tr>
-        <th>수정일</th>
-        <td colspan="3"><fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm" /></td>
-      </tr>
-      <tr>
-        <th>동물분류</th>
-        <td colspan="3">${animalHeaderDto.headerName}</td>
-      </tr>
-    </table>
-  </div>
-
-  <div class="board-content">
-    ${boardDto.boardContent}
-  </div>
-
-  <div class="action-buttons">
-    <a href="list" class="btn-list">📜 목록</a>
-    <c:if test="${sessionScope.loginId == boardDto.boardWriter}">
-      <a href="edit?boardNo=${boardDto.boardNo}" class="btn-edit">✏ 수정</a>
-      <a href="delete?boardNo=${boardDto.boardNo}" class="btn-delete"
-         onclick="return confirm('정말 삭제하시겠습니까?');">🗑 삭제</a>
-    </c:if>
-  </div>
-</div>
-
-	<hr>
-	<h3>댓글</h3>
-	<div class="reply-list-wrapper"></div>
-
-	<c:if test="${sessionScope.loginId != null}">
-		<div class="reply-write-wrapper" style="margin-top:10px; position:relative;">
-			<textarea class="reply-input" rows="4" name="replyContent" placeholder="댓글 내용 입력" style="width:100%; resize:none;"></textarea>
-			<div class="cell right" style="margin-top:10px;">
-				<button id="emoji-btn" type="button" class="btn btn-emoji"><i class="fa-regular fa-face-smile"></i></button>
-				<button type="button" class="btn btn-positive reply-btn-write">댓글 작성</button>
-				<div id="emoji-picker-container" class="emoji-picker-container"></div>
-			</div>
-		</div>
+	<c:if test="${not empty typeHeaderDto}">
+		<tr>
+			<div class="board-title">[${typeHeaderDto.headerName}]
+				${boardDto.boardTitle}</div>
+		</tr>
 	</c:if>
+
+	<div class="board-meta">
+		<table>
+			<tr>
+				<th>작성자</th>
+				<td>${boardDto.boardWriter}</td>
+				<th>작성일</th>
+				<td><fmt:formatDate value="${boardDto.boardWtime}"
+						pattern="yyyy-MM-dd HH:mm" /></td>
+			</tr>
+			<tr>
+				<th>수정일</th>
+				<td colspan="3"><fmt:formatDate value="${boardDto.boardEtime}"
+						pattern="yyyy-MM-dd HH:mm" /></td>
+			</tr>
+			<tr>
+				<th>동물분류</th>
+				<td colspan="3">${animalHeaderDto.headerName}</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="board-content">${boardDto.boardContent}</div>
+
+	<div class="action-buttons">
+		<a href="list" class="btn-list">📜 목록</a>
+		<c:if test="${boardDto.boardWriter == sessionScope.loginId || loginLevel == 0 }">
+			<a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">✏ 수정</a>
+	
+			<form method="post" action="delete"
+	      onsubmit="return confirm('정말 삭제하시겠습니까?');"
+	      style="display:inline;">
+	
+				<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
+				<button type="submit" class="btn btn-delete">🗑 삭제</button>
+			</form>
+		</c:if>
+	</div>
+
+<hr>
+<h3>댓글</h3>
+<div class="reply-list-wrapper"></div>
+
+<c:if test="${sessionScope.loginId != null}">
+	<div class="reply-write-wrapper"
+		style="margin-top: 10px; position: relative;">
+		<textarea class="reply-input" rows="4" name="replyContent"
+			placeholder="댓글 내용 입력" style="width: 100%; resize: none;"></textarea>
+		<div class="cell right" style="margin-top: 10px;">
+			<button id="emoji-btn" type="button" class="btn btn-emoji">
+				<i class="fa-regular fa-face-smile"></i>
+			</button>
+			<button type="button" class="btn btn-positive reply-btn-write">댓글
+				작성</button>
+			<div id="emoji-picker-container" class="emoji-picker-container"></div>
+		</div>
+	</div>
+</c:if>
 </div>
 
 <script>

@@ -55,6 +55,21 @@ public class MemberDao {
 		jdbcTemplate.update(sql, params);
 	}
 	
+	public void updateForAdmin(MemberDto findDto) {
+		String sql = "update member set member_nickname = ?, member_description = ?, member_point = ? "
+																+ "where member_id = ?";
+		
+		Object[] params = {
+				findDto.getMemberNickname(),
+				findDto.getMemberDescription(),
+				findDto.getMemberPoint(),
+				findDto.getMemberId()
+				};
+		
+		jdbcTemplate.update(sql, params);
+		
+	}
+	
 	public MemberDto selectOne(String member_id) {
 		String sql = "select * from member where member_id = ?";
 		Object[] params = { member_id };
@@ -118,12 +133,12 @@ public class MemberDao {
 		
 
 	//포인트 차감
-		//public void minusPoint(String memberId, int point) {
-			//String sql = "update member set member_point = member_point - ? "
-			//		+ "where member_id	= ?";
-			//Object[] params = {point, memberId};
-			//int result = jdbcTemplate.update(sql, params);
-		//}
+		public void minusPoint(String memberId, int point) {
+			String sql = "update member set member_point = member_point - ? "
+					+ "where member_id	= ?";
+			Object[] params = {point, memberId};
+			int result = jdbcTemplate.update(sql, params);
+		}
 
 	//페이징용
 	public int count(PageVO pageVO) {
@@ -162,5 +177,13 @@ public class MemberDao {
 			return jdbcTemplate.query(sql, memberMapper, params);
 		}
 	}
+
+	public int usePoint(String loginId) {
+		String sql = "update member set member_used_point = NVL(member_used_point,0) +( NVL(member_point,0) - NVL(member_used_point,0)  )where member_id = ? ";
+		Object[] params = {loginId};
+		return jdbcTemplate.update(sql, params);
+		
+	}
+
 
 }

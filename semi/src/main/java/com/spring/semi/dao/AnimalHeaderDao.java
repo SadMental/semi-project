@@ -26,48 +26,48 @@ public class AnimalHeaderDao {
 
     /** 등록 (INSERT) */
     public boolean insert(AnimalHeaderDto dto) {
-        String sql = "INSERT INTO animal_header (animal_header_no, animal_header_name) VALUES (?, ?)";
-        Object[] params = { dto.getAnimalHeaderNo(), dto.getAnimalHeaderName() };
+        String sql = "INSERT INTO animal_header (header_no, header_name) VALUES (?, ?)";
+        Object[] params = { dto.getHeaderNo(), dto.getHeaderName() };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 수정 (UPDATE) */
     public boolean update(AnimalHeaderDto dto) {
-        String sql = "UPDATE animal_header SET animal_header_name = ? WHERE animal_header_no = ?";
-        Object[] params = { dto.getAnimalHeaderName(), dto.getAnimalHeaderNo() };
+        String sql = "UPDATE animal_header SET header_name = ? WHERE header_no = ?";
+        Object[] params = { dto.getHeaderName(), dto.getHeaderNo() };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 번호로 수정 */
     public boolean updateByNo(int no, String newName) {
-        String sql = "UPDATE animal_header SET animal_header_name = ? WHERE animal_header_no = ?";
+        String sql = "UPDATE animal_header SET header_name = ? WHERE header_no = ?";
         Object[] params = { newName, no };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 삭제 */
     public boolean delete(int no) {
-        String sql = "DELETE FROM animal_header WHERE animal_header_no = ?";
+        String sql = "DELETE FROM animal_header WHERE header_no = ?";
         Object[] params = { no };
         return jdbcTemplate.update(sql, params) > 0;
     }
 
     /** 이름으로 조회 */
     public List<AnimalHeaderDto> selectByName(String name) {
-        String sql = "SELECT * FROM animal_header WHERE animal_header_name = ?";
+        String sql = "SELECT * FROM animal_header WHERE header_name = ?";
         Object[] params = { name };
         return jdbcTemplate.query(sql, animalHeaderMapper, params);
     }
 
     /** 전체 조회 */
     public List<AnimalHeaderDto> selectAll() {
-        String sql = "SELECT * FROM animal_header ORDER BY animal_header_no ASC";
+        String sql = "SELECT * FROM animal_header ORDER BY header_no ASC";
         return jdbcTemplate.query(sql, animalHeaderMapper);
     }
 
     /** 단일 조회 */
     public AnimalHeaderDto selectOne(int no) {
-        String sql = "SELECT * FROM animal_header WHERE animal_header_no = ?";
+        String sql = "SELECT * FROM animal_header WHERE header_no = ?";
         Object[] params = { no };
         List<AnimalHeaderDto> list = jdbcTemplate.query(sql, animalHeaderMapper, params);
         return list.isEmpty() ? null : list.get(0);

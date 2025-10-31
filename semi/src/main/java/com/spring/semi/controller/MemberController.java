@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.dao.AnimalDao;
@@ -21,6 +22,7 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.EmailService;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.service.MemberService;
 import com.spring.semi.vo.BoardListVO;
 
 import jakarta.mail.MessagingException;
@@ -40,6 +42,8 @@ public class MemberController {
 	private EmailService emailService;
 	@Autowired
 	private BoardDao boardDao;
+	@Autowired
+	private MemberService memberService;
 
 	
 	@GetMapping("/join")
@@ -66,26 +70,26 @@ public class MemberController {
 		return "/WEB-INF/views/member/joinFinish.jsp";
 	}
 	
-	@GetMapping("/login")
-	public String login() {
-		return "/WEB-INF/views/member/login.jsp";
-	}
-	
-	@PostMapping("/login")
-	public String login(
-			@ModelAttribute MemberDto memberDto,
-			HttpSession session
-			) {
-		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
-		if(findDto == null) return "redirect:/?error";
-		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:login?error";
-		
-		session.setAttribute("loginId", findDto.getMemberId());
-		session.setAttribute("loginLevel", findDto.getMemberLevel());
-		memberDao.updateForLogin(findDto.getMemberId());
-		
-		return "redirect:/";
-	}
+//	@GetMapping("/login")
+//	public String login() {
+//		return "/WEB-INF/views/member/login.jsp";
+//	}
+//	
+//	@PostMapping("/login")
+//	public String login(
+//			@ModelAttribute MemberDto memberDto,
+//			HttpSession session
+//			) {
+//		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
+//		if(findDto == null) return "redirect:";
+//		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:";
+//		
+//		session.setAttribute("loginId", findDto.getMemberId());
+//		session.setAttribute("loginLevel", findDto.getMemberLevel());
+//		memberDao.updateForLogin(findDto.getMemberId());
+//		
+//		return "redirect:/";
+//	}
 	
 	@GetMapping("/logout")
 	public String logout(
@@ -185,9 +189,7 @@ public class MemberController {
 			@RequestParam String member_pw
 			) {
 		String loginId = (String) session.getAttribute("loginId");
-		MemberDto findDto = memberDao.selectOne(loginId);
-		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:drop?error";
-		memberDao.delete(loginId);
+		memberService.deleteMember(loginId, member_pw);
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginLevel");
 		return "/WEB-INF/views/member/thankyou.jsp";
@@ -267,16 +269,20 @@ public class MemberController {
 		if(loginId == null) {
 			return "redirect:/member/join";
 		}
-		
-		model.addAttribute("point", memberDto.getMemberPoint());
+		int point =  memberDto.getMemberPoint() - memberDto.getMemberUsedPoint();
+		model.addAttribute("point", point);
 		model.addAttribute("rewardType", rewardType);
 		 
 		return "/WEB-INF/views/member/donation.jsp";
 	}
 	
-	@RequestMapping("/pointUse")
-	public String pointUse() {
-		return "/WEB-INF/views/member/pointUse.jsp";
+	@GetMapping("/usePoint")
+	@ResponseBody
+	public String usePoint(HttpSession session) {
+		
+		memberDao.usePoint( (String)session.getAttribute("loginId"));
+		
+		return "success"; 
 	}
 	
 	

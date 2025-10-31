@@ -40,6 +40,8 @@ public class PetfluencerController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 	
 	PetfluencerController(MediaService mediaService) {
         this.mediaService = mediaService;
@@ -96,6 +98,7 @@ public class PetfluencerController {
         //  board와 header 연결
       
         boardDao.insert(boardDto, 3);
+        mainController.clearBoardCache("petfluencer_board_list");
         
 		if(!media.isEmpty()) 
 		{
@@ -211,7 +214,7 @@ public class PetfluencerController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo)
+	public String delete(@RequestParam int boardNo , HttpSession session)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
@@ -230,6 +233,11 @@ public class PetfluencerController {
 //			mediaService.delete(mediaNo);		
 //		}
 		boardDao.delete(boardNo);
+		
+		if(boardDto.getBoardWriter() != null) {
+		memberDao.minusPoint(boardDto.getBoardWriter(), 50);
+		}
+		
 		return "redirect:list";
 	}
 	

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.spring.semi.controller.MainController;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.mapper.BoardDetailVOMapper;
 import com.spring.semi.mapper.BoardListVOMapper;
@@ -164,118 +165,195 @@ public class BoardDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
-	public boolean updateBoardView(int boardNo) {
-		String sql = "update board set board_view=board_view+1 where board_no=?";
-		Object[] params = { boardNo };
+    // 전체 글 수 조회
+    public int count(PageVO pageVO, int pageType) {
+        if (pageVO.isList()) {
+            String sql = "select count(*) from board where board_category_no=? and deleted = 0";
+            Object[] params = { pageType };
+            return jdbcTemplate.queryForObject(sql, int.class, params);
+        } else {
+            if ("header_name".equalsIgnoreCase(pageVO.getColumn())) {
+                String sql = "select count(*) from board b " +
+                             "left join header h on b.board_header = h.header_no " +
+                             "where instr(h.header_name, ?) > 0 and b.board_category_no=? and b.deleted = 0";
+                Object[] params = { pageVO.getKeyword(), pageType };
+                return jdbcTemplate.queryForObject(sql, int.class, params);
+            } else {
+                String sql = "select count(*) from board where instr(#1, ?) > 0 and board_category_no=? and deleted = 0";
+                sql = sql.replace("#1", pageVO.getColumn());
+                Object[] params = { pageVO.getKeyword(), pageType };
+                return jdbcTemplate.queryForObject(sql, int.class, params);
+            }
+        }
+    }
+
+    // 페이징 처리된 글 목록 조회
+    public List<BoardVO> selectListWithPaging(PageVO pageVO, int pageType) {
+        if (pageVO.isList()) {
+            String sql = "select * from (" +
+                         "  select rownum rn, TMP.* from (" +
+                         "    select * from board_header_view " +
+                         "    where board_category_no=? and deleted = 0 order by board_no desc" +
+                         "  ) TMP" +
+                         ") where rn between ? and ?";
+            Object[] params = { pageType, pageVO.getBegin(), pageVO.getEnd() };
+            return jdbcTemplate.query(sql, boardVOMapper, params);
+        } else {
+            String sql = "select * from (" +
+                         "  select rownum rn, TMP.* from (" +
+                         "    select * from board_header_view " +
+                         "    where instr(#1, ?) > 0 and board_category_no=? and deleted = 0 " +
+                         "    order by #1 asc, board_no desc" +
+                         "  ) TMP" +
+                         ") where rn between ? and ?";
+            sql = sql.replace("#1", pageVO.getColumn());
+            Object[] params = { pageVO.getKeyword(), pageType, pageVO.getBegin(), pageVO.getEnd() };
+            return jdbcTemplate.query(sql, boardVOMapper, params);
+        }
+    }
+
+    // 좋아요 관련
+    public boolean updateBoardLike(int boardNo, int boardLike) {
+        String sql = "update board set board_like = ? where board_no=?";
+        Object[] params = { boardLike, boardNo };
+        return jdbcTemplate.update(sql, params) > 0;
+    }
+    
+    public boolean updateBoardLike(int board_no) {
+		String sql = "update board "
+							+ "set board_like = (select count(*) from board_like where board_no = ?) "
+							+ "where board_no = ?";
+		Object[] params = {board_no, board_no};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+    
 
-	// 최신순 목록
-	public List<BoardListVO> selectListByWriteTime(int min, int max) {
-		String sql = "select * from (" + "select rownum rn, TMP.* from ("
-				+ "select board_no, board_title, board_wtime, board_view, category_name "
-				+ "from board join category on category_no = board_category_no " + "where deleted = 0 "
-				+ "order by board_wtime desc" + ") TMP) where rn between ? and ?";
-		Object[] params = { min, max };
-		return jdbcTemplate.query(sql, boardListVOMapper, params);
-	}
+    public boolean updateBoardView(int boardNo) {
+        String sql = "update board set board_view=board_view+1 where board_no=?";
+        Object[] params = { boardNo };
+        return jdbcTemplate.update(sql, params) > 0;
+    }
 
-	// 조회순, 추천순, 시간순 목록 조회 (카테고리별)
-	public List<BoardDto> selectList(int min, int max, String orderBy, int categoryNo) {
-		String orderColumn;
-		switch (orderBy) {
-		case "view":
-			orderColumn = "board_view";
-			break;
-		case "like":
-			orderColumn = "board_like";
-			break;
-		case "wtime":
-		default:
-			orderColumn = "board_wtime";
-			break;
-		}
+    // 최신순 목록
+    public List<BoardListVO> selectListByWriteTime(int min, int max) {
+        String sql = "select * from (" +
+                     "select rownum rn, TMP.* from (" +
+                     "select board_no, board_title, board_wtime, board_view, category_name " +
+                     "from board join category on category_no = board_category_no " +
+                     "where deleted = 0 " +
+                     "order by board_wtime desc" +
+                     ") TMP) where rn between ? and ?";
+        Object[] params = { min, max };
+        return jdbcTemplate.query(sql, boardListVOMapper, params);
+    }
 
-		String sql = "SELECT * FROM ( " + "  SELECT rownum rn, TMP.* FROM ( " + "    SELECT * FROM board "
-				+ "    WHERE board_category_no = ? AND deleted = 0 " + "    ORDER BY " + orderColumn + " DESC "
-				+ "  ) TMP " + ") WHERE rn BETWEEN ? AND ?";
+    // 조회순, 추천순, 시간순 목록 조회 (카테고리별)
+    public List<BoardDto> selectList(int min, int max, String orderBy, int categoryNo) {
+        String orderColumn;
+        switch (orderBy) {
+        case "view":
+            orderColumn = "board_view";
+            break;
+        case "like":
+            orderColumn = "board_like";
+            break;
+        case "wtime":
+        default:
+            orderColumn = "board_wtime";
+            break;
+        }
 
-		Object[] params = { categoryNo, min, max };
-		return jdbcTemplate.query(sql, boardMapper, params);
-	}
+        String sql = "SELECT * FROM ( " +
+                     "  SELECT rownum rn, TMP.* FROM ( " +
+                     "    SELECT * FROM board " +
+                     "    WHERE board_category_no = ? AND deleted = 0 " +
+                     "    ORDER BY " + orderColumn + " DESC " +
+                     "  ) TMP " +
+                     ") WHERE rn BETWEEN ? AND ?";
 
-	public List<BoardVO> selectList2(int min, int max, String orderBy, int categoryNo) {
-		List<String> allows = List.of("view", "like", "wtime");
-		if (!allows.contains(orderBy))
-			return List.of();
+        Object[] params = { categoryNo, min, max };
+        return jdbcTemplate.query(sql, boardMapper, params);
+    }
 
-		String orderColumn;
-		switch (orderBy) {
-		case "view":
-			orderColumn = "board_view";
-			break;
-		case "like":
-			orderColumn = "board_like";
-			break;
-		case "wtime":
-		default:
-			orderColumn = "board_wtime";
-			break;
-		}
+    public List<BoardVO> selectList2(int min, int max, String orderBy, int categoryNo) {
+        List<String> allows = List.of("view", "like", "wtime");
+        if (!allows.contains(orderBy)) return List.of();
 
-		String sql = "SELECT * FROM ( " + "    SELECT rownum rn, TMP.* FROM ( "
-				+ "        select * from board_header_view " + "        WHERE board_category_no = ? AND deleted = 0 "
-				+ "        ORDER BY " + orderColumn + " DESC " + "    ) TMP " + ") WHERE rn BETWEEN ? AND ?";
+        String orderColumn;
+        switch (orderBy) {
+        case "view":
+            orderColumn = "board_view";
+            break;
+        case "like":
+            orderColumn = "board_like";
+            break;
+        case "wtime":
+        default:
+            orderColumn = "board_wtime";
+            break;
+        }
 
-		Object[] params = { categoryNo, min, max };
-		return jdbcTemplate.query(sql, boardVOMapper, params);
-	}
+        String sql = "SELECT * FROM ( " +
+                     "    SELECT rownum rn, TMP.* FROM ( " +
+                     "        select * from board_header_view " +
+                     "        WHERE board_category_no = ? AND deleted = 0 " +
+                     "        ORDER BY " + orderColumn + " DESC " +
+                     "    ) TMP " +
+                     ") WHERE rn BETWEEN ? AND ?";
 
-	// 이미지/비디오 연결
-	public void connect(int boardNo, int mediaNo) {
-		String sql = "insert into board_image (board_no, media_no) values (?, ?)";
-		Object[] params = { boardNo, mediaNo };
-		jdbcTemplate.update(sql, params);
-	}
+        Object[] params = { categoryNo, min, max };
+        return jdbcTemplate.query(sql, boardVOMapper, params);
+    }
 
-	public void connect_video(int boardNo, int videoNo) {
-		String sql = "insert into board_video (board_no, video_no) values (?, ?)";
-		Object[] params = { boardNo, videoNo };
-		jdbcTemplate.update(sql, params);
-	}
+    // 이미지/비디오 연결
+    public void connect(int boardNo, int mediaNo) {
+        String sql = "insert into board_image (board_no, media_no) values (?, ?)";
+        Object[] params = { boardNo, mediaNo };
+        jdbcTemplate.update(sql, params);
+    }
 
-	public int findMedia(int boardNo) {
-		String sql = "select media_no from board_image where board_no = ?";
-		Object[] params = { boardNo };
-		return jdbcTemplate.queryForObject(sql, int.class, params);
-	}
+    public void connect_video(int boardNo, int videoNo) {
+        String sql = "insert into board_video (board_no, video_no) values (?, ?)";
+        Object[] params = { boardNo, videoNo };
+        jdbcTemplate.update(sql, params);
+    }
 
-	public int findVideo(int boardNo) {
-		String sql = "select video_no from board_video where board_no = ?";
-		Object[] params = { boardNo };
-		return jdbcTemplate.queryForObject(sql, int.class, params);
-	}
+    public int findMedia(int boardNo) {
+        String sql = "select media_no from board_image where board_no = ?";
+        Object[] params = { boardNo };
+        return jdbcTemplate.queryForObject(sql, int.class, params);
+    }
 
-	// 메인페이지 목록
-	public List<BoardVO> selectListWithPagingForMainPage(int pageType, int min, int max) {
-		String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "   select * from board_header_view "
-				+ "    where board_category_no=? AND deleted = 0 " + "    order by board_no desc" + "  ) TMP"
-				+ ") where rn between ? and ?";
-		Object[] params = { pageType, min, max };
-		return jdbcTemplate.query(sql, boardVOMapper, params);
-	}
+    public int findVideo(int boardNo) {
+        String sql = "select video_no from board_video where board_no = ?";
+        Object[] params = { boardNo };
+        return jdbcTemplate.queryForObject(sql, int.class, params);
+    }
 
-	// 마이페이지 내 글 조회
-	public List<BoardListVO> selectByMemberId(String login_id) {
-		String sql = "select board_no, board_title, board_wtime, board_view, category_name from board "
-				+ "join category on category_no = board_category_no " + "where board_writer = ? and deleted = 0 "
-				+ "order by board_wtime desc";
-		Object[] params = { login_id };
-		return jdbcTemplate.query(sql, boardListVOMapper, params);
-	}
+    // 메인페이지 목록
+    public List<BoardVO> selectListWithPagingForMainPage(int pageType, int min, int max) {
+        String sql = "select * from (" +
+                     "  select rownum rn, TMP.* from (" +
+                     "   select * from board_header_view " +
+                     "    where board_category_no=? AND deleted = 0 " +
+                     "    order by board_no desc" +
+                     "  ) TMP" +
+                     ") where rn between ? and ?";
+        Object[] params = { pageType, min, max };
+        return jdbcTemplate.query(sql, boardVOMapper, params);
+    }
 
-	// 상세글 조회 (정보게시판 전용)
-	public BoardDetailVO selectOneDetail(int boardNo) {
+    // 마이페이지 내 글 조회
+    public List<BoardListVO> selectByMemberId(String login_id) {
+        String sql = "select board_no, board_title, board_wtime, board_view, category_name from board " +
+                     "join category on category_no = board_category_no " +
+                     "where board_writer = ? and deleted = 0 " +
+                     "order by board_wtime desc";
+        Object[] params = { login_id };
+        return jdbcTemplate.query(sql, boardListVOMapper, params);
+    }
+  
+  public BoardDetailVO selectOneDetail(int boardNo) {
 	    String sql = "SELECT b.board_category_no, b.board_no, b.board_title, b.board_content, b.board_writer, "
 	            + "b.board_wtime, b.board_etime, b.board_like, b.board_view, b.board_reply, "
 	            + "ah.header_name AS animal_header_name, "
@@ -335,5 +413,4 @@ public class BoardDao {
 		Object[] params = { categoryNo, min, max };
 		return jdbcTemplate.query(sql, boardDetailVOMapper, params);
 	}
-
 }

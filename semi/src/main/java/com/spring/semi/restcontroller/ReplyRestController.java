@@ -98,6 +98,11 @@ public class ReplyRestController {
 		if(owner == false) throw new NeedPermissionException("권한 부족");
 		
 		replyDao.delete(replyNo);
+
+		if(loginId != null) {
+		memberDao.minusPoint(loginId, 20);
+		}
+		
 	}
 	@PostMapping("/edit")
 	public void edit(HttpSession session, @ModelAttribute ReplyDto replyDto) {

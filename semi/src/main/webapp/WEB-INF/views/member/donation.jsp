@@ -74,6 +74,32 @@
                     });
             });
             
+            $(".point-use").on("click", function () {
+            	if("${point}" <= 0) {
+            		alert("아직 펫콩이 부족해요. 다음에 따뜻한 마음을 전해볼까요? 🐶");
+            		return;
+            	} 
+            	
+            	
+            	if(!confirm("한국유기동물복지협회(https://animalwa.org/)로 기부하시겠습니까?")){
+            		return;
+            	}
+            	
+            $.ajax({
+            	url:"/member/usePoint",
+            	method:"get",
+            	data:{'a':'a'},
+            	success: function(response) {
+            		if(response == "success") {
+            			alert("기부가 완료되었습니다.");
+            			location.reload();
+            		}
+            	}
+            });
+            
+            
+            });
+            
             var rewardType = "${rewardType}";
             if(rewardType) {
                 switch(rewardType) {
@@ -108,7 +134,7 @@
                 <span style="font-size: 25px;">
                 <fmt:formatNumber value="${point }" pattern="###,###"/>
                 </span>
-                <a href="#" class="point-use">펫콩 사용하기</a>
+                <a href="" class="point-use">펫콩 기부하기</a>
             </div>
         </div>
         <div style="font-size: 10px; color: transparent;">빈공간1</div>

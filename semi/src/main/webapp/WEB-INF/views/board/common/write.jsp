@@ -87,12 +87,16 @@ button.btn.btn-positive:hover {
 				<input type="text" name="boardTitle" class="field w-100"
 					placeholder="제목을 입력하세요.">
 			</div>
-			<select name="boardTypeHeader" class="field w-100 mt-2">
-			       <option value="">-- 분류 선택 --</option>
-			       <c:forEach var="headerDto" items="${headerList}">
-			           <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
-			       </c:forEach>
-			</select>
+			<div class="cell flex-box">
+		      <div class="flex-box flex-vertical w-25p ms-10">
+				  <label>type</label>
+					  <select name="boardTypeHeader" class="field w-100p mt-2">
+					  	         <c:forEach var="headerDto" items="${headerList}">
+					  	             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
+					  	         </c:forEach>
+					  </select>
+			      </div>
+		      </div>
 			<div class="cell mt-20">
 				<textarea name="boardContent" id="content" class="summernote-editor"></textarea>
 			</div>

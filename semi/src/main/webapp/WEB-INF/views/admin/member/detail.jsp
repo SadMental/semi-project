@@ -197,8 +197,19 @@ $(function () {
                 </tr>
             </table>
             <div class="cell">
-                <a class="btn btn-neutral" href="edit">정보 수정하기</a>
-                <a class="btn btn-neutral"  ${memberDto.memberEmail != null? 'href="password?memberEmail=${memberDto.memberEmail }" ':'' }>비밀번호 재설정</a>
+                <a class="btn btn-neutral" href="edit?memberId=${memberDto.memberId }">정보 수정하기</a>
+               <c:choose>
+				    <c:when test="${memberDto.memberEmail != null}">
+				        <a class="btn btn-neutral" href="password?memberEmail=${memberDto.memberEmail}">
+				            비밀번호 재설정
+				        </a>
+				    </c:when>
+				    <c:otherwise>
+				        <a class="btn btn-neutral" >
+				            비밀번호 재설정
+				        </a>
+				    </c:otherwise>
+				</c:choose>
                 <a class="btn btn-negative" href="drop?memberId=${memberDto.memberId }">강제 탈퇴</a>
             </div>
             <div class="cell right">

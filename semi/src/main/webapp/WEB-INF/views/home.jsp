@@ -157,19 +157,40 @@
         }
 </style>
 <script type="text/javascript">
-$(function () {
-    var swiper = new Swiper(".swipers", {
-        slidesPerView: 4.8,
-        spaceBetween: 20,
-        loop: true,
-        speed: 800,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        slidesPerGroup: 1,
-    });
-});
+	$(function () {
+	    var swiper = new Swiper(".swipers-petfluencer", {
+	        slidesPerView: 4.8,
+	        spaceBetween: 20,
+	        loop: true,
+	        speed: 800,
+	        autoplay: {
+	            delay: 5000,
+	            disableOnInteraction: false,
+	        },
+	        slidesPerGroup: 1,
+	    });
+	});
+</script>
+<script type="text/javascript">
+	$(function () {
+	    var swiper = new Swiper(".swipers-review", {
+	        slidesPerView: 3,
+	        spaceBetween: 20,
+	        loop: true,
+	    });
+	});
+</script>
+<script src="https://cdn.jsdelivr.net/gh/hiphop5782/score@latest/score.js"></script>
+<script type = "text/javascript">
+	$(function(){
+		$(".star-viewer").score({
+			starColor:"#00cec9",
+			//backgroundColor:"#dfe6e9",
+			editable:false,//false
+			integerOnly:false,//false
+			zeroAvailable:false,
+		});
+	});
 </script>
 
 
@@ -245,7 +266,7 @@ $(function () {
                 <label>펫플루언서</label>
             </div>
             <div class="cell ms-10 me-10 center">
-                <div class="swiper swipers">
+                <div class="swiper swipers-petfluencer">
                     <div class="swiper-wrapper">
                         <c:forEach var="boardDto" items="${petfluencer_board_list}">
                             <div class="swiper-slide">
@@ -315,32 +336,69 @@ $(function () {
             <div class="cell ms-10 me-10">
                 <label>사용후기</label>
             </div>
-            <div class="cell ms-10 me-10 center" style="background-color:green">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                사용후기 가로형 스크롤 1-3번 게시글 loop
-                <p>4</p>
-                <p>5</p>
-                <p>6</p>
+            <div class="cell ms-10 me-10 center">
+                <div class="swiper swipers-review">
+                    <div class="swiper-wrapper">
+                        <c:forEach var="boardDto" items="${review_board_scroll}">
+                            <div class="swiper-slide">
+                                <div class="card">
+                                	<a href="/board/review/detail?boardNo=${boardDto.boardNo}" class="link">
+	                                    <img src="/board/review/image?boardNo=${boardDto.boardNo}">
+	                                    <button class="overlay-btn"><i class="fa fa-camera"></i></button>
+	                                    <div class="like-badge"><i class="fa fa-heart"></i> ${boardDto.boardLike}</div>
+	                                    <div class="card-container">
+	                                        <div class="card-title">${boardDto.boardTitle}</div>
+	                                        <div class="card-writer">${boardDto.boardWriter}</div>
+	                                        <div class="card-info">
+	                                            <i class="fa fa-eye"></i> ${boardDto.boardView}
+	                                            <i class="fa fa-comment"></i> ${boardDto.boardReply}
+	                                        </div>
+	                                    </div>
+                                	</a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
             <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>사용후기 4</p>
-                </div>
+           		<table>
+                    <c:forEach var="boardDto" items="${review_board_list}" varStatus="st">
+                        <c:if test="${st.index % 2 == 0}">
+                            <tr>
+                        </c:if>
 
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>사용후기 5</p>
-                </div>
-            </div>
-            <div class="cell flex-box">
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>사용후기 6</p>
-                </div>
-
-                <div class="cell ms-10 me-10 center w-50p">
-                    <p>사용후기 7</p>
-                </div>
+                		<td>
+                            <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
+                                <label class="review-board-title">${boardDto.boardTitle}</label>
+                                <div class="cell">
+                                    <img src="/member/profile?member_id="+${boardDto.boardWriter} style="width:20px;">
+                                    <label class="review-board-nickname"
+                                        style="font-size:0.8em;">${boardDto.boardWriter}</label>
+                                    <i class="fa-solid fa-eye"></i>
+                                    <label class="review-board-view"
+                                        style="font-size:0.8em;">${boardDto.boardView}</label>
+                                    <i class="fa-solid fa-comment-dots"></i>
+                                    <label class="review-board-reply"
+                                        style="font-size:0.8em;">${boardDto.boardReply}</label>
+                                    <i class="fa-solid fa-heart red"></i>
+                                    <label class="review-board-like"
+                                        style="font-size:0.8em;">${boardDto.boardLike}</label>
+                                    <label class="review-board-time"
+                                        style="font-size:0.8em;">${boardDto.boardWtime}</label>
+                                    <div class="star-viewer" data-max="5" data-rate="${boardDto.boardScore}"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <c:if test="${st.index % 2 == 1}">
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                    <!-- 				홀수 개일 때 마지막 행 닫기 -->
+                    <c:if test="${numbers.size() % 2 != 0}">
+                        </tr>
+                    </c:if>
+                </table>
             </div>
             <div class="cell ms-10 me-10 center">
                 <a href="/board/review/list" class="link">사용후기 더보기 ></a>
