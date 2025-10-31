@@ -19,8 +19,9 @@ public class MemberLevelMapper implements RowMapper<MemberLevelDto> {
 				.levelName(rs.getString("level_name"))
 				.minPoint(rs.getInt("min_point"))
 				.maxPoint(rs.getInt("max_point"))
-				.description(rs.getString("description"))
+				.description(rs.getString(	"description"))
 				.badgeImage(rs.getString("badge_image"))
+				.memberCount(rs.getInt("member_count"))
 				.build();
 	}
 }

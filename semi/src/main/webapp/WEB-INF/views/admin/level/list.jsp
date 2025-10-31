@@ -41,12 +41,12 @@
 					<tr>
 						<th>번호</th>
 						<th>뱃지</th>
-						<!-- 새 컬럼 -->
 						<th>등급명</th>
 						<th>최소 포인트</th>
 						<th>최대 포인트</th>
 						<th>설명</th>
 						<th>관리</th>
+						<th>해당 등급 회원수</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -54,24 +54,32 @@
 						<tr>
 							<td>${level.levelNo}</td>
 							<td class="center" style="font-size: 24px;">${level.badgeImage}</td>
-							<!-- 이모지 출력 -->
 							<td><a class="link"
 								href="${pageContext.request.contextPath}/admin/level/detail?levelNo=${level.levelNo}">
 									${level.levelName} </a></td>
 							<td>${level.minPoint}</td>
 							<td>${level.maxPoint}</td>
 							<td>${level.description}</td>
-							<td class="actions"><a class="btn-link"
-								href="${pageContext.request.contextPath}/admin/level/edit?levelNo=${level.levelNo}">수정</a>
-								<form method="post"
-									action="${pageContext.request.contextPath}/admin/level/delete"
-									style="display: inline;"
-									onsubmit="return confirm('정말 삭제하시겠습니까?');">
-									<input type="hidden" name="levelNo" value="${level.levelNo}">
-									<button type="submit" class="btn-delete">삭제</button>
-								</form></td>
+							<td class="actions">
+                      <a class="btn-link" href="${pageContext.request.contextPath}/admin/level/edit?levelNo=${level.levelNo}">수정</a>
+
+								<!-- 회원이 없을 때만 삭제 버튼 표시 --> 
+								<c:if test="${level.memberCount == 0}">
+									<form method="post"
+										action="${pageContext.request.contextPath}/admin/level/delete"
+										style="display: inline;"
+										onsubmit="return confirm('정말 삭제하시겠습니까?');">
+										<input type="hidden" name="levelNo" value="${level.levelNo}">
+										<button type="submit" class="btn-delete">삭제</button>
+									</form>
+								</c:if>
+							</td>
+							<td>${level.memberCount}</td>
+
+
 						</tr>
 					</c:forEach>
+
 				</tbody>
 
 			</table>
