@@ -30,6 +30,7 @@ import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.BoardDetailVO;
 import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 import com.spring.semi.service.MemberService;
@@ -96,50 +97,43 @@ public class InfoBoardController {
 	         @ModelAttribute("pageVO") PageVO pageVO,
 	         @RequestParam(required = false, defaultValue = "wtime") String orderBy
 	 ) {
-	     int boardType = 2;
+	     int boardType = 2; // 정보게시판 번호
 	     CategoryDto categoryDto = categoryDao.selectOne(boardType);
 
 	     pageVO.setSize(10);
 	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
 
-	     List<BoardVO> boardList = boardDao.selectList2(
-	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
-     
-//	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
+	     // BoardDetailVO 사용
+	     List<BoardDetailVO> boardList = boardDao.selectListDetail(
+	             pageVO.getBegin(), pageVO.getEnd(), boardType, orderBy
+	     );
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
-
 	     model.addAttribute("pageVO", pageVO);
 	     model.addAttribute("orderBy", orderBy);
 
 	     return "/WEB-INF/views/board/info/list.jsp";
 	 }
 
+
 	 @RequestMapping("/detail")
-	 public String detail(Model model, @RequestParam int boardNo) {
-		 // 게시글 조회
-		 BoardDto boardDto = boardDao.selectOne(boardNo);
-		 if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
-		 model.addAttribute("boardDto", boardDto);
-		 
-		 HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");
-		 HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
-		 // Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.
-		 if(animalHeaderDto != null) {
-			 model.addAttribute("animalHeaderDto", animalHeaderDto); // Model에 animalHeaderDto 자체를 추가
-		 }
-		 if(typeHeaderDto != null) {
-			 model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가
-		 }
-		 
-			// 작성자 정보
-			if (boardDto.getBoardWriter() != null) {
-				MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
-				model.addAttribute("memberDto", memberDto);
-			}
-			return "/WEB-INF/views/board/info/detail.jsp";
+	 public String detail(HttpSession session, Model model, @RequestParam int boardNo) {
+	     // 게시글 조회
+	     BoardDetailVO boardDto = boardDao.selectOneDetail(boardNo); // VO에서 header_name 포함 조회
+	     if (boardDto == null) {
+	         throw new TargetNotfoundException("존재하지 않는 글 번호");
+	     }
+	     model.addAttribute("boardDto", boardDto);
+
+	     // 더 이상 HeaderDao 호출 불필요
+	     // 화면에서 boardDto.animalHeaderName, boardDto.typeHeaderName으로 바로 사용 가능
+
+	     return "/WEB-INF/views/board/info/detail.jsp";
 	 }
+
+
+
 
 
 	   @RequestMapping("/delete")

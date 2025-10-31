@@ -714,20 +714,22 @@ textarea.field {
 .field.fail ~ .fail-feedback, .field.fail2 ~ .fail2-feedback {
 	display: block;
 }
-/* 뱃지관리용  */
-.badge-preview {
-	font-size: 40px;
-	display: inline-block;
-	width: 60px;
-	height: 60px;
-	line-height: 60px;
-	text-align: center;
-	border: 2px solid transparent;
-	border-radius: 10px;
-	cursor: pointer;
+.level-badge {
+    display: inline-block;
+    background: linear-gradient(
+        90deg,
+        #e6e0d4 0%,       /* 아이보리 느낌 */
+        #d9cbbf 35%,      /* 연한 모카톤 */
+        #f7f2e6 100%      /* 밝은 베이지 */
+    );
+    color: #5b3a29;       /* 진한 브라운 글자색, 아이보리 배경과 잘 어울림 */
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 12px;  /* 둥근 모서리 */
+    margin-left: 5px;     /* 닉네임/이모지와 간격 */
+    vertical-align: middle;
 }
 
-.badge-preview.selected {
-	border-color: #007bff;
-	background-color: #e0f0ff;
-}
+
+

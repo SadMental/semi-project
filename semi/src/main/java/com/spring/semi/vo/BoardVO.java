@@ -9,7 +9,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BoardVO {
 	private int boardCategoryNo;
 	private int boardNo;
@@ -23,20 +26,21 @@ public class BoardVO {
 	private int deleted;
 	private String typeHeaderName;
 	private String animalHeaderName;
-	private int boardScore;	
+	private int boardScore;
 
 	public String getFormattedWtime() {
-	    if (boardWtime == null) return "";	
-	    LocalDateTime wtime = boardWtime.toLocalDateTime();
-	    LocalDateTime now = LocalDateTime.now();
+		if (boardWtime == null)
+			return "";
+		LocalDateTime wtime = boardWtime.toLocalDateTime();
+		LocalDateTime now = LocalDateTime.now();
 
-	    DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
-	    DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+		DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-	    if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
-	        return wtime.format(timeFmt);
-	    } else {
-	        return wtime.format(dateFmt);
-	    }
+		if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
+			return wtime.format(timeFmt);
+		} else {
+			return wtime.format(dateFmt);
+		}
 	}
 }

@@ -34,7 +34,7 @@
         </div>
 
         <div class="cell">
-            <label>포인트 범위</label>
+            <label>설정할 포인트 범위</label>
             <div class="flex-box gap-10">
                 <input type="number" name="minPoint" class="field w-50p" placeholder="최소 포인트" required>
                 <input type="number" name="maxPoint" class="field w-50p" placeholder="최대 포인트" required>
@@ -48,32 +48,39 @@
 
         <!-- 이모지 선택 -->
         <div class="cell">
-            <label>뱃지 선택 (이모지)</label>
+            <label>뱃지 선택</label>
             <div class="flex-box gap-10">
-                <label>
-                    <input type="radio" name="badgeImage" value="🌱" required onchange="selectBadge(this)">
-                    <span class="badge-preview">🌱</span>
-                </label>
-                <label>
-                    <input type="radio" name="badgeImage" value="🌿" required onchange="selectBadge(this)">
-                    <span class="badge-preview">🌿</span>
-                </label>
-                <label>
-                    <input type="radio" name="badgeImage" value="☘️💎" required onchange="selectBadge(this)">
-                    <span class="badge-preview">☘️</span>
-                </label>
-                <label>
-                    <input type="radio" name="badgeImage" value="🍀" required onchange="selectBadge(this)">
-                    <span class="badge-preview">🍀</span>
-                </label>
-                <label>
-                    <input type="radio" name="badgeImage" value="🌳" required onchange="selectBadge(this)">
-                    <span class="badge-preview">🌳</span>
-                </label>
-                <label>
-                    <input type="radio" name="badgeImage" value="🍁" required onchange="selectBadge(this)">
-                    <span class="badge-preview">🍁</span>
-                </label>
+               <label> <input type="radio" name="badgeImage" value="🐹"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐹</span>
+				</label><label> <input type="radio" name="badgeImage" value="🐰"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐰</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🐻"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐻</span>
+				</label><label> <input type="radio" name="badgeImage" value="🐱"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐱</span>
+				</label><label> <input type="radio" name="badgeImage" value="🦊"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🦊</span>
+				</label><label> <input type="radio" name="badgeImage" value="🐶"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐶</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🐼"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐼</span>
+				</label><label> <input type="radio" name="badgeImage" value="🦄"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🦄</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🦁"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🦁</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🐯"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐯</span>
+				</label>
             </div>
         </div>
 
