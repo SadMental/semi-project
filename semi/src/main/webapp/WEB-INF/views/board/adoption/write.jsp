@@ -78,13 +78,16 @@
       <div class="cell">
 		
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
-		  <select name="boardHeader" class="field w-100 mt-2">
-		         <option value="">-- 분류 선택 --</option>
-		         <c:forEach var="headerDto" items="${headerList}">
+	  <div class="cell flex-box">
+	      <div class="flex-box flex-vertical w-25p">
+	      <label>동물</label>
+			  <select name="boardAnimalHeader" class="field w-100p mt-2">
+			  	         <c:forEach var="headerDto" items="${headerList}">
 		             <option value="${headerDto.headerNo}">${headerDto.headerName}</option>
 		         </c:forEach>
-		  </select>
-	  
+			  </select>
+	      </div>
+      </div>
 
       <div class="cell">
           <textarea name="boardContent" class="summernote-editor"></textarea>
@@ -93,6 +96,7 @@
       <div class="cell right">
           <button class="btn btn-positive">등록</button>
       </div>
+  </div>
   </div>
 </form>
 
