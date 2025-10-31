@@ -10,7 +10,7 @@
 			<input class="field w-100p" type="text" name="memberEmail" >
 		</div>
 		<div class="cell center">
-			<button type="submit" class="btn btn-positive w-50p">
+			<button type="submit" class="btn btn-positive w-50p btn-find-send">
 				<i class="fa-solid fa-paper-plane"></i>
 				<span>이메일 전송</span>
 			</button>

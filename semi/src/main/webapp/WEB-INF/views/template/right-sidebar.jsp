@@ -136,10 +136,10 @@
 		 <div class="cell flex-box flex-vertical w-25p">
             <div class="cell ms-10 me-10 center">
             	<c:choose>
-	            	<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel == '1' }">
+	            	<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel == '0' }">
 		                <a href="/member/logout" class="btn btn-neutral">로그아웃</a>
 					</c:when>
-					<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel >= '2' }">
+					<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel >= '1' }">
 						<a href="/member/logout" class="btn btn-neutral">로그아웃</a>
 					</c:when>
 					<c:otherwise>

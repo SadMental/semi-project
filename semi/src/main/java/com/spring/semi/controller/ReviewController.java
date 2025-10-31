@@ -36,9 +36,7 @@ public class ReviewController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
-	private AnimalHeaderDao animalHeaderDao;
-	@Autowired
-	private TypeHeaderDao typeHeaderDao;
+	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
 	
@@ -72,9 +70,9 @@ public class ReviewController {
 	
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-		 List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
+		 List<HeaderDto> animalHeaderList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
 	     model.addAttribute("animalHeaderList", animalHeaderList);
-	     List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	     List<HeaderDto> typeHeaderList = headerDao.selectAll("type"); // DB에서 모든 header 조회
 	     model.addAttribute("typeHeaderList", typeHeaderList);
 		     
 		return "/WEB-INF/views/board/review/write.jsp";
@@ -126,9 +124,9 @@ public class ReviewController {
 			model.addAttribute("memberDto", memberDto);
 		}
 
-		AnimalHeaderDto animalHeaderDto = animalHeaderDao.selectOne(boardDto.getBoardAnimalHeader());
+		HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");
 		model.addAttribute("animalHeaderDto", animalHeaderDto);
-		TypeHeaderDto typeHeaderDto = typeHeaderDao.selectOne(boardDto.getBoardTypeHeader());
+		HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
 		model.addAttribute("typeHeaderDto", typeHeaderDto);
 
 		return "/WEB-INF/views/board/review/detail.jsp";
@@ -137,8 +135,8 @@ public class ReviewController {
 	  @GetMapping("/edit")
 	   public String edit(Model model, @RequestParam int boardNo) {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
-	       List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
-	       List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	       List<HeaderDto> animalHeaderList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
+	       List<HeaderDto> typeHeaderList = headerDao.selectAll("type"); // DB에서 모든 header 조회
 	       if (boardDto == null) 
 	    	   throw new TargetNotfoundException("존재하지 않는 글");
 	       model.addAttribute("boardDto", boardDto);

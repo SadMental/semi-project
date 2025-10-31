@@ -3,6 +3,10 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
+<script type="text/javascript" src="/js/find.js">
+
+</script>
+
 <div class="container w-600">
 	<form action="findPw" method="post">
 		<div class="cell">
@@ -10,7 +14,7 @@
 			<input class="field w-100p" type="text" name="memberEmail" >
 		</div>
 		<div class="cell center">
-			<button type="submit" class="btn btn-positive w-50p">
+			<button type="submit" class="btn btn-positive w-50p btn-find-send">
 				<i class="fa-solid fa-paper-plane"></i>
 				<span>이메일 전송</span>
 			</button>

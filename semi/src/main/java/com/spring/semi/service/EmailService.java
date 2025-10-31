@@ -133,7 +133,7 @@ public class EmailService {
 		
 		String url = ServletUriComponentsBuilder
 				.fromCurrentContextPath()
-				.path("/member/login")
+				.path("/")
 				.build().toUriString();
 		targetLink.attr("href", url);
 		
@@ -162,7 +162,7 @@ public class EmailService {
 		reader.close();
 		
 		String newPassword = passwordService.passwordGenerator();
-		
+		System.out.println(newPassword);
 		memberDao.updateForUserPassword(newPassword, memberDto.getMemberId());
 		
 		Document document = Jsoup.parse(buffer.toString());
@@ -172,7 +172,7 @@ public class EmailService {
 		
 		String url = ServletUriComponentsBuilder
 				.fromCurrentContextPath()
-				.path("/member/login")
+				.path("/")
 				.build().toUriString();
 		targetLink.attr("href", url);
 		
