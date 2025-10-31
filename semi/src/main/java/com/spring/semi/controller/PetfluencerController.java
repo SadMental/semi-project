@@ -211,7 +211,7 @@ public class PetfluencerController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo)
+	public String delete(@RequestParam int boardNo , HttpSession session)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
@@ -230,6 +230,11 @@ public class PetfluencerController {
 //			mediaService.delete(mediaNo);		
 //		}
 		boardDao.delete(boardNo);
+		
+		if(boardDto.getBoardWriter() != null) {
+		memberDao.minusPoint(boardDto.getBoardWriter(), 50);
+		}
+		
 		return "redirect:list";
 	}
 	

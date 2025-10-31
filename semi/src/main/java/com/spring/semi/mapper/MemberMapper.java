@@ -20,6 +20,7 @@ public class MemberMapper implements RowMapper<MemberDto> {
 				.memberEmail(rs.getString("member_email"))
 				.memberDescription(rs.getString("member_description"))
 				.memberPoint(rs.getInt("member_point"))
+				.memberUsedPoint(rs.getInt("member_used_point"))
 				.memberLevel(rs.getInt("member_level"))
 				.memberAuth(rs.getString("member_auth"))
 				.memberJoin(rs.getTimestamp("member_join"))

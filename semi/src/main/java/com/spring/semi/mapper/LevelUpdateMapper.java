@@ -14,7 +14,7 @@ public class LevelUpdateMapper implements RowMapper<LevelUpdateVO> {
     public LevelUpdateVO mapRow(ResultSet rs, int rowNum) throws SQLException {
         return LevelUpdateVO.builder()
                 .memberId(rs.getString("member_id"))
-                .memberPoint(rs.getInt("member_point"))
+                .memberUsedPoint(rs.getInt("member_used_point"))
                 .memberLevel(rs.getInt("member_level"))
                 .levelNo(rs.getInt("level_no"))
                 .minPoint(rs.getInt("min_point"))

@@ -51,7 +51,7 @@ public class AnimalDao {
 	}
 	
 	public boolean delete(int animal_no) {
-		String sql = "update animal set deleted = 1 where animal_no = ?";
+		String sql = "delete from animal where animal_no = ?";
 		Object[] params = {animal_no};
 		
 		return jdbcTemplate.update(sql, params) > 0;

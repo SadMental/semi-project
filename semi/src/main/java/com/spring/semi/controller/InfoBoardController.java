@@ -104,6 +104,8 @@ public class InfoBoardController {
 
 	     List<BoardVO> boardList = boardDao.selectList2(
 	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
+     
+//	     Map<Integer, HeaderDto> headerMap = new HashMap<>();
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
@@ -153,8 +155,12 @@ public class InfoBoardController {
 	       }
 	       // 글 삭제
 	       boardDao.delete(boardNo);
+			if(boardDto.getBoardWriter() != null) {
+				memberDao.minusPoint(boardDto.getBoardWriter(), 70);
+				}
 	       return "redirect:list";
 	   }
+
 	// 수정
 	 @GetMapping("/edit")
 	 public String edit(Model model, @RequestParam int boardNo) {

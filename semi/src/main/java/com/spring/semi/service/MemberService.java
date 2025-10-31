@@ -22,8 +22,6 @@ import com.spring.semi.vo.LevelUpdateVO;
 public class MemberService {
 
     @Autowired
-    private LevelUpdateDao levelUpdateDao;
-    @Autowired
     private MemberDao memberDao;
     @Autowired
     private MediaDao mediaDao;
@@ -35,6 +33,9 @@ public class MemberService {
     private AnimalDao animalDao;
     @Autowired
     private MailDao mailDao;
+    @Autowired
+    private LevelUpdateDao levelUpdateDao;
+
     
     @Transactional
     public boolean deleteMember(String memberId, String memberPw) {
@@ -68,7 +69,6 @@ public class MemberService {
     	for(int like : board_like_list) {
     		boardDao.updateBoardLike(like);
     	}
-    	
     	
     	return true;
     }

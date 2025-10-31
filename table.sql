@@ -22,6 +22,8 @@ create table member(
 	member_login timestamp default systimestamp,
     -- 회원의 마지막 비밀번호 변경 시간(최초 회원가입시 비밀변호 변경했던것으로 취급)
 	member_change timestamp default systimestamp
+	-- 회원 사용 포인트 
+	member_used_point number default 0 not null;
 );
 
 -- 회원 아이디/비번 체크조건
