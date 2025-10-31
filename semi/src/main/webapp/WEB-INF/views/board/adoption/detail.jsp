@@ -492,10 +492,16 @@ h1 {
 
 	<div class="action-buttons">
 		<a href="list" class="btn-list">📜 목록</a>
-		<c:if test="${sessionScope.loginId == boardDto.boardWriter}">
-			<a href="edit?boardNo=${boardDto.boardNo}" class="btn-edit">✏ 수정</a>
-			<a href="delete?boardNo=${boardDto.boardNo}" class="btn-delete"
-				onclick="return confirm('정말 삭제하시겠습니까?');">🗑 삭제</a>
+		<c:if test="${boardDto.boardWriter == sessionScope.loginId || loginLevel == 0 }">
+			<a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">✏ 수정</a>
+	
+			<form method="post" action="delete"
+	      onsubmit="return confirm('정말 삭제하시겠습니까?');"
+	      style="display:inline;">
+	
+				<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
+				<button type="submit" class="btn btn-delete">🗑 삭제</button>
+			</form>
 		</c:if>
 	</div>
 
