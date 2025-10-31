@@ -155,6 +155,17 @@
             text-decoration: none;
             color: white;
         }
+     .banner-my {
+     		border: none;
+            background: linear-gradient(90deg, rgb(228, 0, 160) 0%, rgba(121, 0, 202, 0.849) 35%, rgb(167, 227, 255) 100%);
+            padding: 1em;
+            padding: 1em;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 0 10px rgba(122, 122, 122, 0.5);
+     }
 </style>
 <script type="text/javascript">
 	$(function () {
@@ -200,8 +211,9 @@
                     <p>1</p>
                     <p>2</p>
                     메인
-                    <p>3</p>
-                    <p>4</p>
+                    <div class="cell banner-my">
+                		<a class="do" href="/member/mypa">마이페이지</a>
+        			</div>
                 </div>
 
                 <div class="cell ms-10 me-10 center w-50p">
