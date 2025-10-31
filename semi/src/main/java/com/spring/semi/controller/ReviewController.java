@@ -13,16 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.semi.dao.AnimalHeaderDao;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.CategoryDao;
+import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
-import com.spring.semi.dao.TypeHeaderDao;
-import com.spring.semi.dto.AnimalHeaderDto;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.CategoryDto;
+import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
-import com.spring.semi.dto.TypeHeaderDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.BoardVO;
@@ -39,11 +37,11 @@ public class ReviewController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
-	private AnimalHeaderDao animalHeaderDao;
-	@Autowired
-	private TypeHeaderDao typeHeaderDao;
+	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 	
 	ReviewController(MediaService mediaService) {
         this.mediaService = mediaService;
@@ -75,9 +73,9 @@ public class ReviewController {
 	
 	@GetMapping("/write")
 	public String writeForm(Model model) {
-		 List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
+		 List<HeaderDto> animalHeaderList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
 	     model.addAttribute("animalHeaderList", animalHeaderList);
-	     List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	     List<HeaderDto> typeHeaderList = headerDao.selectAll("type"); // DB에서 모든 header 조회
 	     model.addAttribute("typeHeaderList", typeHeaderList);
 		     
 		return "/WEB-INF/views/board/review/write.jsp";
@@ -97,11 +95,18 @@ public class ReviewController {
 
         String scoreText=reviewScore.trim().replace(".0", "");
         int score = Integer.parseInt(scoreText);
+        // 251031 /board/review에서 평점이 6인 경우가 있어서 min, max로 제한
+        if (score <= 1)
+        	score = 1;
+        if (5 <= score)
+        	score = 5;
         boardDto.setBoardScore(score);
 
         //  board와 header 연결
       
         boardDao.insertForReview(boardDto, 5);
+        mainController.clearBoardCache("review_board_scroll");
+        mainController.clearBoardCache("review_board_list");
         
 		if(!media.isEmpty()) 
 		{
@@ -129,9 +134,9 @@ public class ReviewController {
 			model.addAttribute("memberDto", memberDto);
 		}
 
-		AnimalHeaderDto animalHeaderDto = animalHeaderDao.selectOne(boardDto.getBoardAnimalHeader());
+		HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");
 		model.addAttribute("animalHeaderDto", animalHeaderDto);
-		TypeHeaderDto typeHeaderDto = typeHeaderDao.selectOne(boardDto.getBoardTypeHeader());
+		HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
 		model.addAttribute("typeHeaderDto", typeHeaderDto);
 
 		return "/WEB-INF/views/board/review/detail.jsp";
@@ -140,8 +145,8 @@ public class ReviewController {
 	  @GetMapping("/edit")
 	   public String edit(Model model, @RequestParam int boardNo) {
 	       BoardDto boardDto = boardDao.selectOne(boardNo);
-	       List<AnimalHeaderDto> animalHeaderList = animalHeaderDao.selectAll(); // DB에서 모든 header 조회
-	       List<TypeHeaderDto> typeHeaderList = typeHeaderDao.selectAll(); // DB에서 모든 header 조회
+	       List<HeaderDto> animalHeaderList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
+	       List<HeaderDto> typeHeaderList = headerDao.selectAll("type"); // DB에서 모든 header 조회
 	       if (boardDto == null) 
 	    	   throw new TargetNotfoundException("존재하지 않는 글");
 	       model.addAttribute("boardDto", boardDto);
@@ -183,6 +188,11 @@ public class ReviewController {
 
         String scoreText=reviewScore.trim().replace(".0", "");
         int score = Integer.parseInt(scoreText);
+        // 251031 /board/review에서 평점이 6인 경우가 있어서 min, max로 제한
+        if (score <= 1)
+        	score = 1;
+        if (5 <= score)
+        	score = 5;
 	    boardDto.setBoardScore(score);
 		
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());

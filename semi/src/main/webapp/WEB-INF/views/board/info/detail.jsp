@@ -197,7 +197,7 @@ $(function() {
 </script>
 
 <div class="container w-800">
-			<h1>[${animalHeaderDto.headerName}] ${boardDto.boardTitle}</h1>
+	<h1>[${boardDto.animalHeaderName}] ${boardDto.boardTitle}</h1>
 
 
 	<div class="meta">
@@ -208,8 +208,11 @@ $(function() {
 			</tr>
 			<tr>
 				<th>[작성자] :</th>
-				<td>${boardDto.boardWriter}
-				
+				<td>${boardDto.memberNickname}<c:if
+						test="${not empty boardDto.badgeImage}">${boardDto.badgeImage}</c:if>
+					<c:if test="${not empty boardDto.levelName}">
+						<span class="level-badge">${boardDto.levelName}</span>
+					</c:if>
 				</td>
 			</tr>
 
@@ -249,10 +252,13 @@ $(function() {
 
 	<div class="cell right">
 		<a href="list" class="btn btn-neutral">목록으로</a>
-		<c:if test="${sessionScope.loginId == boardDto.boardWriter}">
+		<c:if test="${boardDto.boardWriter == sessionScope.loginId || loginLevel == 0 }">
 			<a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
+	
 			<form method="post" action="delete"
-				onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display: inline;">
+	      onsubmit="return confirm('정말 삭제하시겠습니까?');"
+	      style="display:inline;">
+	
 				<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
 				<button type="submit" class="btn btn-delete">삭제하기</button>
 			</form>

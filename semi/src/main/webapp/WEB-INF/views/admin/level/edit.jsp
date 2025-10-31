@@ -1,40 +1,88 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<html>
-<head>
-    <title>회원 등급 수정</title>
-    <style>
-        form { width: 400px; margin: 30px auto; display: flex; flex-direction: column; gap: 10px; }
-        label { font-weight: bold; }
-        input, textarea { padding: 8px; }
-        button { padding: 8px 12px; }
-    </style>
-</head>
-<body>
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
 
-<h2 style="text-align:center;">회원 등급 수정</h2>
+<div class="container w-600 mt-50 mb-50">
+	<h2 class="center mb-20">회원 등급 수정</h2>
 
-<form action="${pageContext.request.contextPath}/admin/level/edit" method="post">
-    <input type="hidden" name="levelNo" value="${level.levelNo}">
+	<form action="${pageContext.request.contextPath}/admin/level/edit"
+		method="post">
+		<input type="hidden" name="levelNo" value="${level.levelNo}">
 
-    <label>등급 이름</label>
-    <input type="text" name="levelName" value="${level.levelName}" required>
+		<div class="cell">
+			<label>등급 이름</label> <input type="text" name="levelName"
+				value="${level.levelName}" class="field w-100p" required>
+		</div>
 
-    <label>최소 포인트</label>
-    <input type="number" name="minPoint" value="${level.minPoint}" required>
+		<div class="cell">
+			<label>포인트 범위</label>
+			<div class="flex-box gap-10">
+				<input type="number" name="minPoint" value="${level.minPoint}"
+					class="field w-50p" required> <input type="number"
+					name="maxPoint" value="${level.maxPoint}" class="field w-50p"
+					required>
+			</div>
+		</div>
 
-    <label>최대 포인트</label>
-    <input type="number" name="maxPoint" value="${level.maxPoint}" required>
+		<div class="cell">
+			<label>설명</label>
+			<textarea name="description" rows="3" class="field w-100p">${level.description}</textarea>
+		</div>
 
-    <label>설명</label>
-    <textarea name="description" rows="3">${level.description}</textarea>
+		<div class="cell">
+			<label>뱃지 선택 (이모지)</label>
+			<div class="flex-box gap-10 flex-wrap">
+				<label> <input type="radio" name="badgeImage" value="🐹"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐹</span>
+				</label><label> <input type="radio" name="badgeImage" value="🐰"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐰</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🐻"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐻</span>
+				</label><label> <input type="radio" name="badgeImage" value="🐱"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐱</span>
+				</label><label> <input type="radio" name="badgeImage" value="🦊"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🦊</span>
+				</label><label> <input type="radio" name="badgeImage" value="🐶"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐶</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🐼"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐼</span>
+				</label><label> <input type="radio" name="badgeImage" value="🦄"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🦄</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🦁"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🦁</span>
+				</label> <label> <input type="radio" name="badgeImage" value="🐯"
+					required onchange="selectBadge(this)"> <span
+					class="badge-preview">🐯</span>
+				</label>
+			</div>
+		</div>
 
-    <div style="text-align:center;">
-        <button type="submit">수정 완료</button>
-        <a href="${pageContext.request.contextPath}/admin/level/detail?levelNo=${level.levelNo}">취소</a>
-    </div>
-</form>
+		<div class="cell center mt-20">
+			<button type="submit" class="btn btn-positive me-10">수정 완료</button>
+			<a
+				href="${pageContext.request.contextPath}/admin/level/detail?levelNo=${level.levelNo}"
+				class="btn btn-neutral">취소</a>
+		</div>
+	</form>
+</div>
 
-</body>
-</html>
+<script>
+    function selectBadge(radio) {
+        document.querySelectorAll('.badge-preview').forEach(span => span.classList.remove('selected'));
+        radio.nextElementSibling.classList.add('selected');
+    }
+
+    window.onload = function() {
+        const selectedBadge = "${level.badgeImage}";
+        document.querySelectorAll('input[name="badgeImage"]').forEach(radio => {
+            if (radio.

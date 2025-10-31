@@ -40,6 +40,8 @@ public class PetfluencerController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 	
 	PetfluencerController(MediaService mediaService) {
         this.mediaService = mediaService;
@@ -96,6 +98,7 @@ public class PetfluencerController {
         //  board와 header 연결
       
         boardDao.insert(boardDto, 3);
+        mainController.clearBoardCache("petfluencer_board_list");
         
 		if(!media.isEmpty()) 
 		{

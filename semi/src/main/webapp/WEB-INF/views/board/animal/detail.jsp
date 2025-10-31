@@ -137,15 +137,17 @@ h1 {
 
 	<div class="cell right">
 		<a href="list" class="btn btn-neutral">목록으로</a>
-		<a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
-
-		<form method="post" action="delete"
-      onsubmit="return confirm('정말 삭제하시겠습니까?');"
-      style="display:inline;">
-
-			<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
-			<button type="submit" class="btn btn-delete">삭제하기</button>
-		</form>
+		<c:if test="${boardDto.boardWriter == sessionScope.loginId || loginLevel == 0 }">
+			<a href="edit?boardNo=${boardDto.boardNo}" class="btn btn-edit">수정하기</a>
+	
+			<form method="post" action="delete"
+	      onsubmit="return confirm('정말 삭제하시겠습니까?');"
+	      style="display:inline;">
+	
+				<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
+				<button type="submit" class="btn btn-delete">삭제하기</button>
+			</form>
+		</c:if>
 	</div>
 </div>
 

@@ -70,26 +70,26 @@ public class MemberController {
 		return "/WEB-INF/views/member/joinFinish.jsp";
 	}
 	
-	@GetMapping("/login")
-	public String login() {
-		return "/WEB-INF/views/member/login.jsp";
-	}
-	
-	@PostMapping("/login")
-	public String login(
-			@ModelAttribute MemberDto memberDto,
-			HttpSession session
-			) {
-		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
-		if(findDto == null) return "redirect:/?error";
-		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:login?error";
-		
-		session.setAttribute("loginId", findDto.getMemberId());
-		session.setAttribute("loginLevel", findDto.getMemberLevel());
-		memberDao.updateForLogin(findDto.getMemberId());
-		
-		return "redirect:/";
-	}
+//	@GetMapping("/login")
+//	public String login() {
+//		return "/WEB-INF/views/member/login.jsp";
+//	}
+//	
+//	@PostMapping("/login")
+//	public String login(
+//			@ModelAttribute MemberDto memberDto,
+//			HttpSession session
+//			) {
+//		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
+//		if(findDto == null) return "redirect:";
+//		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:";
+//		
+//		session.setAttribute("loginId", findDto.getMemberId());
+//		session.setAttribute("loginLevel", findDto.getMemberLevel());
+//		memberDao.updateForLogin(findDto.getMemberId());
+//		
+//		return "redirect:/";
+//	}
 	
 	@GetMapping("/logout")
 	public String logout(
@@ -139,13 +139,13 @@ public class MemberController {
 	@PostMapping("/password")
 	public String passwrod(
 			HttpSession session,
-			@RequestParam(name = "change_pw") String change_pw,
-			@RequestParam(name = "current_pw") String member_pw
+			@RequestParam(name = "change_pw") String changePw,
+			@RequestParam(name = "current_pw") String memberPw
 			) {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto findDto = memberDao.selectOne(loginId);
-		if(member_pw.equals(findDto.getMemberPw()) == false) return "redirect:password?error";
-		memberDao.updateForUserPassword(change_pw, findDto.getMemberId());
+		if(memberPw.equals(findDto.getMemberPw()) == false) return "redirect:password?error";
+		memberDao.updateForUserPassword(changePw, findDto.getMemberId());
 		
 		return "redirect:mypage";
 	}
@@ -186,10 +186,10 @@ public class MemberController {
 	@PostMapping("/drop")
 	public String drop(
 			HttpSession session,
-			@RequestParam String member_pw
+			@RequestParam String memberPw
 			) {
 		String loginId = (String) session.getAttribute("loginId");
-		memberService.deleteMember(loginId, member_pw);
+		memberService.deleteMember(loginId, memberPw);
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginLevel");
 		return "/WEB-INF/views/member/thankyou.jsp";

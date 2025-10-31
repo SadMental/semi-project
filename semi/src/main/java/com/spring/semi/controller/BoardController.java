@@ -49,6 +49,8 @@ public class BoardController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 
 
 //	@RequestMapping("/list")
@@ -111,6 +113,7 @@ public class BoardController {
 		int boardType = 1;
 
 		boardDao.insert(boardDto, boardType);
+        mainController.clearBoardCache("community_board_list");
 
 		// 게시글 포인트
 		memberDao.addPoint(loginId, 50);
