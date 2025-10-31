@@ -45,7 +45,7 @@ public class MemberRestController {
 		}
 		return false;
 	}
-	// 이메일 인증 매핑
+	// 이메일 보내기
 	@PostMapping("/findSend")
 	public boolean findSend(@RequestParam String memberEmail) {
 		MemberDto findEmail = memberDao.selectForEmail(memberEmail);

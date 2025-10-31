@@ -3,12 +3,10 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<script type="text/javascript" src="/js/find.js">
-
-</script>
+<script type="text/javascript" src="/js/find.js"></script>
 
 <div class="container w-600">
-	<form action="findPw" method="post">
+	<form action="findPw" method="post" id="send-email">
 		<div class="cell">
 			<label>이메일 입력</label>
 			<input class="field w-100p" type="text" name="memberEmail" >
