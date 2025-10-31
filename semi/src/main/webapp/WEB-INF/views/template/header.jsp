@@ -47,22 +47,28 @@
 }
 
 .kh-brand {
-	width: 140px;
+		width:140px;
+		height:140px;
+		position: relative;
+		border-radius: 50%;
+		overflow: hidden;
 }
 
-.kh-brand__logoCard {
-	width: 88px;
-	height: 88px;
+/* .kh-brand__logoCard {
+	width: inherit;
+	height: inherit;
 	border: 1px solid var(--line);
+	border-radius: 10%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	background: #fff;
-}
+} */
 
 .kh-brand__logoImg {
-	max-width: 70px;
-	max-height: 70px;
+	width: 140px;
+	height: 140px;
+	overflow:hidden;
 	object-fit: contain;
 }
 
@@ -127,28 +133,73 @@
 	display: flex;
 	justify-content: center;
 }
+/* 헤더 버튼 스타일 */
+.kh-nav .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease; /* hover 변화를 부드럽게 */
+}
+
+/* 긍정 버튼 */
+.kh-nav .btn-positive {
+  background-color: #6ca3ae;
+  color: #fff;
+  border: 1px solid #6ca3ae;
+}
+
+/* 메뉴 버튼 */
+.kh-nav .btn-menu {
+  background-color: #fffbf5;
+  color: #6ca3ae;
+  border: 1px solid #6ca3ae;
+}
+
+/* 삭제 버튼 예시 */
+.kh-nav .btn-negative {
+  background-color: #800020;
+  color: #fff;
+  border: 1px solid #800020;
+}
+
+/* hover 효과 */
+.kh-nav .btn:hover {
+  filter: brightness(0.9); /* 밝기 조절 */
+  transform: translateY(-2px); /* 살짝 들어올리기 */
+  cursor: pointer;
+}
+
+/* 반응형 조정 */
+@media (max-width: 960px) {
+  .kh-nav .btn {
+    padding: 7px 14px;
+  }
+}
+
+
 </style>
 <div class="container w-1200">
-	<header class="kh-header">
-		<div class="kh-header__wrap">
-			<div class="kh-top">
-				<aside class="kh-brand">
-					<div class="kh-brand__logoCard">
-						<img src="${cp}/image/petCafe.png" alt="KH PETIQUE"
-							class="kh-brand__logoImg">
-					</div>
-					<div class="kh-brand__title">KH PETIQUE</div>
-				</aside>
-				<nav class="kh-nav">
-					<a class="kh-pill kh-pill--active" href="/">HOME</a> <a
-						class="kh-pill" href="/board/community/list">COMMUNITY</a> <a
-						class="kh-pill" href="/board/info/list">INFO</a> <a
-						class="kh-pill" href="/board/adoption/list">SERVICE</a>
-					<a class="kh-pill" href="/admin/category/list">MENU</a>
-				</nav>
-			</div>
+  <header class="kh-header">
+    <div class="kh-header__wrap">
+      <div class="kh-top">
+        <aside class="kh-brand me-20">
+          <!-- <div class="kh-brand__logoCard w-100"> -->
+            <img src="${cp}/image/logo.png" alt="KH PETIQUE"
+                 class="kh-brand__logoImg">
+          <!-- </div> -->
+        </aside>
+        <nav class="kh-nav flex-box flex-center" style="gap:10px;">
+          <!-- 메뉴 버튼 스타일 적용 -->
+          <a class="btn btn-positive" href="/">HOME</a>
+          <a class="btn btn-menu" href="/board/community/list">COMMUNITY</a>
+          <a class="btn btn-menu" href="/board/info/list">INFO</a>
+          <a class="btn btn-menu" href="/board/adoption/list">SERVICE</a>
+          <a class="btn btn-menu" href="/admin/category/list">MENU</a>
+        </nav>
+      </div>
+    </div>
+  </header>
 
-		</div>
-
-	</header>
-	<div class="cell flex-box">
+  <div class="cell flex-box">

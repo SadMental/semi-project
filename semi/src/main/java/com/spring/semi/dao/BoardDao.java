@@ -302,6 +302,7 @@ public class BoardDao {
         return jdbcTemplate.query(sql, boardListVOMapper, params);
     }
   
+    
   public BoardDetailVO selectOneDetail(int boardNo) {
 	    String sql = "SELECT b.board_category_no, b.board_no, b.board_title, b.board_content, b.board_writer, "
 	            + "b.board_wtime, b.board_etime, b.board_like, b.board_view, b.board_reply, "
