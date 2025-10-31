@@ -74,9 +74,9 @@ public class ReviewController {
 	@GetMapping("/write")
 	public String writeForm(Model model) {
 		 List<HeaderDto> animalHeaderList = headerDao.selectAll("animal"); // DB에서 모든 header 조회
-	     model.addAttribute("animalHeaderList", animalHeaderList);
+	     model.addAttribute("animalList", animalHeaderList);
 	     List<HeaderDto> typeHeaderList = headerDao.selectAll("type"); // DB에서 모든 header 조회
-	     model.addAttribute("typeHeaderList", typeHeaderList);
+	     model.addAttribute("typeList", typeHeaderList);
 		     
 		return "/WEB-INF/views/board/review/write.jsp";
 	}
