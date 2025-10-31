@@ -79,7 +79,7 @@ public class AnimalDao {
 		return list.isEmpty()? null : list.get(0);
 	}
 	
-	public int findMediaNo(String animal_no) {
+	public int findMediaNo(int animal_no) {
 		String sql = "select media_no from animal_profile where animal_no = ?";
 		Object[] params = { animal_no };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
