@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.semi.dao.MemberLevelDao;
 import com.spring.semi.dto.MemberLevelDto;
@@ -52,16 +53,26 @@ public class AdminMemberLevelController {
 		return "redirect:list";
 	}
 
-	// 삭제
 	@PostMapping("/delete")
-	public String delete(@RequestParam int levelNo) {
-		MemberLevelDto level = memberLevelDao.selectOne(levelNo);
-		if (level == null) {
-			throw new TargetNotfoundException("삭제할 회원 등급이 존재하지 않습니다. levelNo=" + levelNo);
-		}
-		memberLevelDao.delete(levelNo);
-		return "redirect:list";
+	public String delete(@RequestParam int levelNo, RedirectAttributes redirectAttributes) {
+	    MemberLevelDto level = memberLevelDao.selectOne(levelNo);
+	    if (level == null) {
+	        redirectAttributes.addFlashAttribute("message", "삭제할 회원 등급이 존재하지 않습니다. levelNo=" + levelNo);
+	        return "redirect:list";
+	    }
+
+	    int memberCount = memberLevelDao.countMembersByLevel(levelNo);
+	    if (memberCount > 0) {
+	        redirectAttributes.addFlashAttribute("message", 
+	            "이 등급을 가진 회원이 존재하므로 삭제할 수 없습니다. 회원 수: " + memberCount);
+	        return "redirect:list";
+	    }
+
+	    memberLevelDao.delete(levelNo);
+	    redirectAttributes.addFlashAttribute("message", "회원 등급이 삭제되었습니다.");
+	    return "redirect:list";
 	}
+
 
 	// 수정 폼
 	@GetMapping("/edit")

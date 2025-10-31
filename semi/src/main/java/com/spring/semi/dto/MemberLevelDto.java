@@ -14,5 +14,6 @@ private int minPoint;
 private int maxPoint;
 private String description;
 private String badgeImage;
+private int memberCount;
 	
 }

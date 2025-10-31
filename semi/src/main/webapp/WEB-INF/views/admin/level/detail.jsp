@@ -19,8 +19,8 @@
     <div class="cell">
         <label>포인트 범위</label>
         <div class="flex-box gap-10">
-            <div class="field w-50p">최소: ${level.minPoint}</div>
-            <div class="field w-50p">최대: ${level.maxPoint}</div>
+            <div class="field w-50">최소: ${level.minPoint}</div>
+            <div class="field w-50">최대: ${level.maxPoint}</div>
         </div>
     </div>
 
@@ -31,8 +31,13 @@
 
     <div class="cell">
         <label>뱃지</label>
-        <div class="field" style="font-size: 24px;">${level.badgeImage}</div>
+        <div class="field">${level.badgeImage}</div>
     </div>
+     <div class="cell">
+        <label>회원 수</label>
+        <div class="field">${level.memberCount}</div>
+    </div>
+   
 
     <div class="cell center mt-20">
         <a href="${pageContext.request.contextPath}/admin/level/edit?levelNo=${level.levelNo}" class="btn btn-positive me-10">수정</a>

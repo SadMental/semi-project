@@ -32,15 +32,23 @@ public class MemberLevelDao {
                 level.getBadgeImage());
     }
 
-    // 전체 조회
+    // 전체 조회 (회원 수 포함)
     public List<MemberLevelDto> selectAll() {
-        String sql = "SELECT * FROM member_level_table ORDER BY level_no";
+        String sql = "SELECT l.level_no, l.level_name, l.min_point, l.max_point, "
+                   + "l.description, l.badge_image, "
+                   + "(SELECT COUNT(*) FROM member m WHERE m.member_level = l.level_no) AS member_count "
+                   + "FROM member_level_table l "
+                   + "ORDER BY l.level_no";
         return jdbcTemplate.query(sql, memberLevelMapper);
     }
 
-    // 상세 조회
+    // 상세 조회 (회원 수 포함)
     public MemberLevelDto selectOne(int levelNo) {
-        String sql = "SELECT * FROM member_level_table WHERE level_no = ?";
+        String sql = "SELECT l.level_no, l.level_name, l.min_point, l.max_point, "
+                   + "l.description, l.badge_image, "
+                   + "(SELECT COUNT(*) FROM member m WHERE m.member_level = l.level_no) AS member_count "
+                   + "FROM member_level_table l "
+                   + "WHERE l.level_no = ?";
         return jdbcTemplate.queryForObject(sql, memberLevelMapper, levelNo);
     }
 
@@ -62,5 +70,11 @@ public class MemberLevelDao {
     public void delete(int levelNo) {
         String sql = "DELETE FROM member_level_table WHERE level_no = ?";
         jdbcTemplate.update(sql, levelNo);
+    }
+
+    // 해당 등급을 가진 회원 수 조회
+    public int countMembersByLevel(int levelNo) {
+        String sql = "SELECT COUNT(*) FROM member WHERE member_level = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, levelNo);
     }
 }
