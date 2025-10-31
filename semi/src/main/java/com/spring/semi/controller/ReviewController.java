@@ -44,6 +44,8 @@ public class ReviewController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 	
 	ReviewController(MediaService mediaService) {
         this.mediaService = mediaService;
@@ -102,6 +104,8 @@ public class ReviewController {
         //  board와 header 연결
       
         boardDao.insertForReview(boardDto, 5);
+        mainController.clearBoardCache("review_board_scroll");
+        mainController.clearBoardCache("review_board_list");
         
 		if(!media.isEmpty()) 
 		{

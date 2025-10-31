@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.spring.semi.controller.MainController;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.mapper.BoardListMapper;
 import com.spring.semi.mapper.BoardListVOMapper;

@@ -41,6 +41,8 @@ public class FunBoardController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 
 
 	@RequestMapping("/list")
@@ -95,6 +97,7 @@ public class FunBoardController {
         //  board와 header 연결
 
         boardDao.insert(boardDto, 24);
+        mainController.clearBoardCache("fun_board_list");
 
 		if(!media.isEmpty()) 
 		{

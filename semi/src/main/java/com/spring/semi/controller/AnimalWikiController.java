@@ -40,6 +40,8 @@ public class AnimalWikiController {
 	private HeaderDao headerDao;
 	@Autowired
 	private CategoryDao categoryDao;
+    @Autowired
+    private MainController mainController;
 
 	
 	AnimalWikiController(MediaService mediaService) {
@@ -97,6 +99,7 @@ public class AnimalWikiController {
         //  board와 header 연결
       
         boardDao.insert(boardDto, 7);
+        mainController.clearBoardCache("animal_wiki_board_list");
         
 		if(!media.isEmpty()) 
 		{
