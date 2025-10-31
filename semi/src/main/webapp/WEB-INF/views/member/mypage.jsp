@@ -226,7 +226,7 @@ $(function () {
                 <div class="w-15p center head write-board">작성글</div>
 <!--                 <div class="w-15p center head write-reply">작성댓글</div> -->
 <!--                 <div class="w-15p center head reply-board">댓글단 글</div> -->
-                <div class="w-15p center head like-board">좋아요한 글</div>
+<!--                 <div class="w-15p center head like-board">좋아요한 글</div> -->
                 <div class="w-15p center head delete-board" style="margin-left: auto;">삭제한 게시글</div>
             </div>
             <hr>

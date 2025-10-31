@@ -216,15 +216,33 @@ public class BoardController {
 		return "redirect:list";
 }
 	
-
+	//마이페이지에서 삭제시 포인트 차감
 	@PostMapping("/mypageDelete")
 	@ResponseBody
-	public String mypageDelete(@RequestParam("boardNo") List<Integer> boardNoList) {
-		for (int boardNo : boardNoList) {
-			boardDao.mypageDelete(boardNo);
-		}
+	public String mypageDelete(@RequestParam("boardNo") List<Integer> boardNos,
+	                           HttpSession session) {
 
-		return "success";
+	    String loginId = (String) session.getAttribute("loginId");
+
+	    for (int boardNo : boardNos) {
+	        BoardDto boardDto = boardDao.selectOne(boardNo);
+	        if (boardDto == null) continue;
+
+	        Document document = Jsoup.parse(boardDto.getBoardContent());
+	        Elements elements = document.select(".custom-image");
+	        for (Element element : elements) {
+	            int mediaNo = Integer.parseInt(element.attr("data-pk"));
+	            mediaService.delete(mediaNo);
+	        }
+
+	        boardDao.delete(boardNo);
+
+	        if (boardDto.getBoardWriter() != null) {
+	            memberDao.minusPoint(boardDto.getBoardWriter(), 50);
+	        }
+	    }
+
+	    return "success";
 	}
 
 }

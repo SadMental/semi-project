@@ -260,20 +260,23 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/donation")
-	public String donation( @RequestParam(name = "rewardType", required = false) String rewardType, // <-- 콤마 필요
-	        Model model,
-	        HttpSession session) {
-		String loginId = (String) session.getAttribute("loginId");
-		MemberDto memberDto = memberDao.selectOne(loginId);
-		
-		if(loginId == null) {
-			return "redirect:/member/join";
-		}
-		int point =  memberDto.getMemberPoint() - memberDto.getMemberUsedPoint();
-		model.addAttribute("point", point);
-		model.addAttribute("rewardType", rewardType);
-		 
-		return "/WEB-INF/views/member/donation.jsp";
+	public String donation(@RequestParam(name = "rewardType", required = false) String rewardType,
+	                       Model model,
+	                       HttpSession session) {
+	    String loginId = (String) session.getAttribute("loginId");
+	    
+	    if (loginId == null) {
+	        return "redirect:/member/join";
+	    }
+
+	    MemberDto memberDto = memberDao.selectOne(loginId);
+
+	    int point = memberDto.getMemberPoint() - memberDto.getMemberUsedPoint();
+
+	    model.addAttribute("memberPoint", memberDto.getMemberPoint());
+	    model.addAttribute("rewardType", rewardType);
+
+	    return "/WEB-INF/views/member/donation.jsp";
 	}
 	
 	@GetMapping("/usePoint")
