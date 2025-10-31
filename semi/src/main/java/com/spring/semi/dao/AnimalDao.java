@@ -38,7 +38,7 @@ public class AnimalDao {
 	}
 	
 	public List<AnimalDto> selectList(String animal_master) {
-		String sql = "select * from animal where animal_master = ?";
+		String sql = "select * from animal where animal_master = ? order by animal_no asc";
 		Object[] params = {animal_master};
 		
 		return jdbcTemplate.query(sql, animalMapper, params);
@@ -51,7 +51,7 @@ public class AnimalDao {
 	}
 	
 	public boolean delete(int animal_no) {
-		String sql = "delete from animal where animal_no = ?";
+		String sql = "delete from animal where animal_no = ? order by animal_no asc";
 		Object[] params = {animal_no};
 		
 		return jdbcTemplate.update(sql, params) > 0;
