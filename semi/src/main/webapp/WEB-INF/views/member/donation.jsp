@@ -75,7 +75,7 @@
             });
             
             $(".point-use").on("click", function () {
-            	if("${point}" <= 0) {
+            	if("${memberDto.memberPoint }" <= 0) {
             		alert("아직 펫콩이 부족해요. 다음에 따뜻한 마음을 전해볼까요? 🐶");
             		return;
             	} 
@@ -132,7 +132,7 @@
             <div class="ms-10 point" style="font-weight: bold; font-size: 20px; position: relative; z-index: 2;">
                 <i class="fa-solid fa-bone me-5" style="font-size: 20px;"></i>
                 <span style="font-size: 25px;">
-                <fmt:formatNumber value="${point }" pattern="###,###"/>
+                <fmt:formatNumber value="${memberDto.memberPoint - memberDto.memberUsedPoint}" pattern="###,###"/>
                 </span>
                 <a href="" class="point-use">펫콩 기부하기</a>
             </div>
