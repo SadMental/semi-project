@@ -211,9 +211,8 @@
                     <p>1</p>
                     <p>2</p>
                     메인
-                    <div class="cell banner-my">
-                		<a class="do" href="/member/mypa">마이페이지</a>
-        			</div>
+                    <p>3</p>
+                    <p>4</p>
                 </div>
 
                 <div class="cell ms-10 me-10 center w-50p">
