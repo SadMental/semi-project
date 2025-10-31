@@ -70,26 +70,26 @@ public class MemberController {
 		return "/WEB-INF/views/member/joinFinish.jsp";
 	}
 	
-	@GetMapping("/login")
-	public String login() {
-		return "/WEB-INF/views/member/login.jsp";
-	}
-	
-	@PostMapping("/login")
-	public String login(
-			@ModelAttribute MemberDto memberDto,
-			HttpSession session
-			) {
-		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
-		if(findDto == null) return "redirect:/?error";
-		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:login?error";
-		
-		session.setAttribute("loginId", findDto.getMemberId());
-		session.setAttribute("loginLevel", findDto.getMemberLevel());
-		memberDao.updateForLogin(findDto.getMemberId());
-		
-		return "redirect:/";
-	}
+//	@GetMapping("/login")
+//	public String login() {
+//		return "/WEB-INF/views/member/login.jsp";
+//	}
+//	
+//	@PostMapping("/login")
+//	public String login(
+//			@ModelAttribute MemberDto memberDto,
+//			HttpSession session
+//			) {
+//		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
+//		if(findDto == null) return "redirect:";
+//		if(findDto.getMemberPw().equals(memberDto.getMemberPw()) == false) return "redirect:";
+//		
+//		session.setAttribute("loginId", findDto.getMemberId());
+//		session.setAttribute("loginLevel", findDto.getMemberLevel());
+//		memberDao.updateForLogin(findDto.getMemberId());
+//		
+//		return "redirect:/";
+//	}
 	
 	@GetMapping("/logout")
 	public String logout(
