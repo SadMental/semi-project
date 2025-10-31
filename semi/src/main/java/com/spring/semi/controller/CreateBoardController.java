@@ -142,12 +142,6 @@ public class CreateBoardController {
         if (boardDetail == null)
             throw new TargetNotfoundException("존재하지 않는 게시글입니다.");
 
-        // 작성자 정보
-        if (boardDetail.getBoardWriter() != null) {
-            MemberDto memberDto = memberDao.selectOne(boardDetail.getBoardWriter());
-            model.addAttribute("memberDto", memberDto);
-        }
-
         model.addAttribute("category", category);
         model.addAttribute("boardDto", boardDetail);
         return "/WEB-INF/views/board/common/detail.jsp";

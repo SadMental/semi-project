@@ -118,7 +118,7 @@ public class InfoBoardController {
 
 
 	 @RequestMapping("/detail")
-	 public String detail(HttpSession session, Model model, @RequestParam int boardNo) {
+	 public String detail(Model model, @RequestParam int boardNo) {
 	     // 게시글 조회
 	     BoardDetailVO boardDto = boardDao.selectOneDetail(boardNo); // VO에서 header_name 포함 조회
 	     if (boardDto == null) {

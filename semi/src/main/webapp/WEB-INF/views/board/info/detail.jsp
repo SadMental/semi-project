@@ -207,7 +207,7 @@ $(function() {
 				<td>${boardDto.boardNo}</td>
 			</tr>
 			<tr>
-				<th>[작성자] :</th>
+				<th>[작성자]</th>
 				<td>${boardDto.memberNickname}<c:if
 						test="${not empty boardDto.badgeImage}">${boardDto.badgeImage}</c:if>
 					<c:if test="${not empty boardDto.levelName}">
@@ -215,10 +215,10 @@ $(function() {
 					</c:if>
 				</td>
 			</tr>
-
 			<tr>
-				<th>[작성일] :</th>
-				<td>${boardDto.boardWtime}</td>
+				<th>[작성일]</th>
+				<td><fmt:formatDate value="${boardDto.boardWtime}"
+						pattern="yyyy-MM-dd HH:mm" /></td>
 			</tr>
 			<tr>
 				<th>[수정일] :</th>
@@ -234,7 +234,7 @@ $(function() {
 			</tr>
 			<tr>
 				<th>[동물 분류] :</th>
-				<td>${typeHeaderDto.headerName}</td>
+				<td>${boardDto.animalHeaderName}</td>
 			</tr>
 		</table>
 	</div>

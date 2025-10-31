@@ -197,7 +197,7 @@ $(function() {
 </script>
 
 <div class="container w-800">
-    <h1> [${typeHeaderDto.headerName}]   ${boardDto.boardTitle}</h1>      
+    <h1> [${boardDto.typeHeaderName}]   ${boardDto.boardTitle}</h1>      
 
 
 	<div class="meta">
@@ -207,12 +207,18 @@ $(function() {
 				<td>${boardDto.boardNo}</td>
 			</tr>
 			<tr>
-				<th>[작성자] :</th>
-				<td>${boardDto.boardWriter}</td>
+				<th>[작성자]</th>
+				<td>${boardDto.memberNickname}<c:if
+						test="${not empty boardDto.badgeImage}">${boardDto.badgeImage}</c:if>
+					<c:if test="${not empty boardDto.levelName}">
+						<span class="level-badge">${boardDto.levelName}</span>
+					</c:if>
+				</td>
 			</tr>
 			<tr>
-				<th>[작성일] :</th>
-				<td>${boardDto.boardWtime}</td>
+				<th>[작성일]</th>
+				<td><fmt:formatDate value="${boardDto.boardWtime}"
+						pattern="yyyy-MM-dd HH:mm" /></td>
 			</tr>
 			<tr>
 			    <th>[수정일] :</th>
@@ -229,7 +235,7 @@ $(function() {
 			</tr>
 			<tr>
 				<th>[동물 분류] :</th>
-				<td>${animalHeaderDto.headerName}</td>
+				<td>${boardDto.animalHeaderName}</td>
 			</tr>
 		</table>
 	</div>
