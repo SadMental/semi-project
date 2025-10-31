@@ -5,7 +5,6 @@
 
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css" href="/css/board_list.css">
 
 <div class="container w-800">

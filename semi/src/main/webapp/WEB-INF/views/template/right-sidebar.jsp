@@ -41,14 +41,14 @@
 		            		<div class="flex-box">
 			                	<img src="/member/profile?member_id=${sessionScope.loginId }" width="50" height="50">
 			                	<div class="flex-box flex-center">
-									<span>${memberDto.memberNickname }</span>
+									<span>${sidebarInfo.memberNickname }</span>
 			                	</div>
 		            		</div>
 		            		<div class="cell">
 		            			<div class="flex-box">
-		            				<span>보유 포인트 : ${memberDto.memberPoint }</span>
+		            				<span>보유 포인트 : ${sidebarInfo.memberPoint }</span>
 		            				<hr>
-		            				<span>사용 포인트 : ${memberDto.memberUsedPoint }</span>
+		            				<span>사용 포인트 : ${sidebarInfo.memberUsedPoint }</span>
 		            			</div>
 		            		</div>
 		            		<div class="cell">
@@ -69,14 +69,14 @@
 		            		<div class="flex-box">
 			                	<img src="/member/profile?member_id=${sessionScope.loginId }" width="50" height="50">
 			                	<div class="flex-box flex-center">
-									<span>${memberDto.memberNickname }</span>
+									<span>${sidebarInfo.memberNickname }</span>
 			                	</div>
 		            		</div>
 		            		<div class="cell">
 		            			<div class="flex-box">
-		            				<span>보유 포인트 : ${memberDto.memberPoint }</span>
+		            				<span>보유 포인트 : ${sidebarInfo.memberPoint }</span>
 		            				<hr>
-		            				<span>사용 포인트 : ${memberDto.memberUsedPoint }</span>
+		            				<span>사용 포인트 : ${sidebarInfo.memberUsedPoint }</span>
 		            			</div>
 		            		</div>
 		            		<div class="cell">
