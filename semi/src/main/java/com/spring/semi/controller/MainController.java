@@ -11,7 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.semi.dao.BoardDao;
+import com.spring.semi.dao.MemberDao;
+import com.spring.semi.dto.MemberDto;
 import com.spring.semi.vo.BoardVO;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MainController // controller는 @Autowired를 위해 등록하지 않아도 된다
@@ -23,14 +27,24 @@ public class MainController // controller는 @Autowired를 위해 등록하지 �
 	
 	@Autowired
 	private BoardDao boardDao;
+	@Autowired
+	private MemberDao memberDao;
 	
 	
 	@RequestMapping("/")
-	public String home(Model model)
+	public String home(
+			Model model,
+			HttpSession session
+			)
 	{
+		String loginId = (String) session.getAttribute("loginId");
+		
 		// 게시판별 ID
         String[] boards = {"community_board_list", "petfluencer_board_list", "fun_board_list", "animal_wiki_board_list", "review_board_scroll", "review_board_list"};
-
+        if(loginId != null) {
+        	MemberDto memberDto = memberDao.selectOne(loginId);
+        	if(memberDto != null) model.addAttribute("memberDto", memberDto);
+        }
         for (String boardCategoryName : boards) {
             List<BoardVO> list = getBoardList(boardCategoryName);
             model.addAttribute(boardCategoryName, list);

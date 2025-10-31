@@ -8,14 +8,14 @@
 			<span>현재 비밀번호</span>
 			<i class="fa-solid fa-asterisk red"></i>
 		</label>
-		<input class="field w-100p" name="current_pw">
+		<input class="field w-100p" name="currentPw">
 	</div>
 	<div class="cell">
 	<label>
 			<span>수정할 비밀번호</span>
 			<i class="fa-solid fa-asterisk red"></i>
 		</label>
-		<input class="field w-100p" name="change_pw">
+		<input class="field w-100p" name="changePw">
 	</div>
 	<button type="submit" class="btn btn-positive">
 		<i class="fa-solid fa-floppy-disk"></i>
