@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css"
 	href="/summernote/custom-summernote.css">
 <script src="/summernote/custom-summernote.js"></script>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
 
 <style>
 body {
