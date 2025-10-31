@@ -14,6 +14,7 @@ import com.spring.semi.mapper.BoardMapper;
 import com.spring.semi.mapper.BoardVOMapper;
 import com.spring.semi.vo.BoardListVO;
 import com.spring.semi.vo.BoardVO;
+import com.spring.semi.vo.PageFilterVO;
 import com.spring.semi.vo.PageVO;
 
 @Repository
@@ -149,7 +150,90 @@ public class BoardDao {
 			return jdbcTemplate.query(sql, boardVOMapper, params);
 		}
 	}
+	// BoardDao.java 내부
+	public int countFilter(PageFilterVO pageFilterVO, int pageType) {
+	    String column = pageFilterVO.getColumn();
 
+	    if (pageFilterVO.isList()) {
+	        // 목록 조회 (검색 X)
+	        String sql = "select count(*) from board where board_category_no=? and deleted = 0";
+	        Object[] params = { pageType };
+	        return jdbcTemplate.queryForObject(sql, int.class, params);
+	    } else {
+	        // 검색 시:
+	        
+	        // ⭐ 통합 헤더 검색 (header_name, animal_header_name, type_header_name 요청 시)
+	        if ("header_name".equalsIgnoreCase(column) || "animal_header_name".equalsIgnoreCase(column) || "type_header_name".equalsIgnoreCase(column)) {
+	            
+	            String sql = "select count(*) from board_header_view "
+	                       + "where (instr(type_header_name, ?) > 0 or instr(animal_header_name, ?) > 0) " 
+	                       + "and board_category_no=? and deleted = 0";
+	            
+	            Object[] params = { pageFilterVO.getKeyword(), pageFilterVO.getKeyword(), pageType }; 
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	            
+	        } else {
+	            // 기존검색 (작성자, 제목, 내용 등) - #1 치환 사용
+	            String sql = "select count(*) from board " 
+	                       + "where instr(#1, ?) > 0 " 
+	                       + "and board_category_no=? and deleted = 0";
+	            
+	            sql = sql.replace("#1", column); // column 변수 사용
+	            Object[] params = { pageFilterVO.getKeyword(), pageType };
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	        }
+	    }
+	}
+	public List<BoardVO> selectFilterListWithPaging(PageFilterVO pageFilterVO, int pageType) {
+	    String column = pageFilterVO.getColumn();
+
+	    if (pageFilterVO.isList()) {
+	        // 목록 (검색 X)
+	        String sql = "select * from (" + 
+	                     "  select rownum rn, TMP.* from (" +
+	                     "    select * from board_header_view " +
+	                     "    where board_category_no=? and deleted = 0 order by board_no desc" +
+	                     "  ) TMP" +
+	                     ") where rn between ? and ?";
+	        Object[] params = { pageType, pageFilterVO.getBegin(), pageFilterVO.getEnd() };
+	        return jdbcTemplate.query(sql, boardVOMapper, params);
+	    } else {
+	        // 검색 (Search O)
+	        
+	        // ⭐ 통합 헤더 검색 (header_name, animal_header_name, type_header_name 요청 시)
+	        if ("header_name".equalsIgnoreCase(column) || "animal_header_name".equalsIgnoreCase(column) || "type_header_name".equalsIgnoreCase(column)) {
+	            
+	            String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select * "
+	                    + "    from board_header_view "
+	                    // 두 헤더 컬럼 모두에서 검색
+	                    + "    where (instr(type_header_name, ?) > 0 or instr(animal_header_name, ?) > 0) "
+	                    + "    and board_category_no=? and deleted = 0 "
+	                    + "    order by board_no desc" 
+	                    + "  ) TMP" + ") where rn between ? and ?";
+
+	            // 검색어 2개, pageType 1개, 페이징 2개
+	            Object[] params = { 
+	                pageFilterVO.getKeyword(), 
+	                pageFilterVO.getKeyword(), 
+	                pageType, 
+	                pageFilterVO.getBegin(), 
+	                pageFilterVO.getEnd() 
+	            };
+	            return jdbcTemplate.query(sql, boardVOMapper, params);
+
+	        } else {
+	            // 기타 컬럼 검색 (#1 치환 사용)
+	            String sql = "select * from (" + "  select rownum rn, TMP.* from (" + "    select * "
+	                    + "    from board_header_view "
+	                    + "    where instr(#1, ?) > 0 and board_category_no=? and deleted = 0 "
+	                    + "    order by #1 asc, board_no desc" + "  ) TMP" + ") where rn between ? and ?";
+
+	            sql = sql.replace("#1", column);
+	            Object[] params = { pageFilterVO.getKeyword(), pageType, pageFilterVO.getBegin(), pageFilterVO.getEnd() };
+	            return jdbcTemplate.query(sql, boardVOMapper, params);
+	        }
+	    }
+	}
 	// 좋아요 관련
 	public boolean updateBoardLike(int boardNo, int boardLike) {
 		String sql = "update board set board_like = ? where board_no=?";
@@ -273,5 +357,11 @@ public class BoardDao {
 				+ "order by board_wtime desc";
 		Object[] params = { login_id };
 		return jdbcTemplate.query(sql, boardListVOMapper, params);
+	}
+	
+	// 특정 게시글(board_no)의 댓글 개수를 조회 
+	public int countByBoardNo(int boardNo) {
+	    String sql = "SELECT COUNT(*) FROM reply WHERE reply_category_no = ?";
+	    return jdbcTemplate.queryForObject(sql, Integer.class, boardNo);
 	}
 }

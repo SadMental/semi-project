@@ -19,4 +19,5 @@ public class ReplyListVO {
 	private boolean writer;
 	private boolean owner;
 	private int replyLike;
+	private boolean isLiked;
 }

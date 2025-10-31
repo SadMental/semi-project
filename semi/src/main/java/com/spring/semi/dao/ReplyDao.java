@@ -34,35 +34,47 @@ public class ReplyDao {
         return jdbcTemplate.query(sql, replyMapper, params);
     }
 
-    // 3. 댓글 삭제
-    public boolean delete(int replyNo) {
+ // 3. 댓글 삭제
+    public boolean delete(int replyNo, int boardNo) {
         String sql = "DELETE FROM reply WHERE reply_no = ?";
         Object[] params = { replyNo };
+        int result = jdbcTemplate.update(sql, params);
 
-        return jdbcTemplate.update(sql, params) > 0;
+        if (result > 0) {
+            // 댓글 수 -1
+            String updateSql = "UPDATE board SET board_reply = board_reply - 1 WHERE board_no = ?";
+            jdbcTemplate.update(updateSql, boardNo);
+        }
+
+        return result > 0;
     }
 
     // 4. 시퀀스에서 새로운 번호 가져오기
     public int sequence() {
         String sql = "SELECT reply_seq.NEXTVAL FROM dual";
-        return jdbcTemplate.queryForObject(sql, int.class);
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     // 5. 댓글 삽입
     public void insert(ReplyDto replyDto) {
-  
         String sql = "INSERT INTO reply (reply_no, reply_writer, reply_target, reply_content, reply_category_no) "
                    + "VALUES (?, ?, ?, ?, ?)";
 
         Object[] params = {
             replyDto.getReplyNo(),
             replyDto.getReplyWriter(),
-            replyDto.getReplyTarget(),
+            replyDto.getReplyTarget(),  // 게시글 번호
             replyDto.getReplyContent(),
             replyDto.getReplyCategoryNo()
         };
 
-        jdbcTemplate.update(sql, params);
+        int result = jdbcTemplate.update(sql, params);
+
+        // 댓글이 정상 등록되면 게시글 댓글 수 +1
+        if (result > 0) {
+            String updateSql = "UPDATE board SET board_reply = board_reply + 1 WHERE board_no = ?";
+            jdbcTemplate.update(updateSql, replyDto.getReplyTarget());
+        }
     }
 
     // 6. 댓글 수정
@@ -77,7 +89,7 @@ public class ReplyDao {
         };
 
         return jdbcTemplate.update(sql, params) > 0;
-    }
+    }	
 
     // 7. 댓글 단건 조회
     public ReplyDto selectOne(int replyNo) {
@@ -87,4 +99,41 @@ public class ReplyDao {
         List<ReplyDto> list = jdbcTemplate.query(sql, replyMapper, params);
         return list.isEmpty() ? null : list.get(0);
     }  
+    
+ // ✅ 댓글의 좋아요 개수 갱신
+    public void updateReplyLikeCount(int replyNo) {
+        String sql = "UPDATE reply "
+                   + "SET reply_like = (SELECT COUNT(*) FROM reply_like WHERE reply_no = ?) "
+                   + "WHERE reply_no = ?";
+        jdbcTemplate.update(sql, replyNo, replyNo);
+    }
+ // ✅ 좋아요 시 reply.reply_like + 1
+    public void increaseReplyLike(int replyNo) {
+        String sql = "UPDATE reply SET reply_like = reply_like + 1 WHERE reply_no = ?";
+        jdbcTemplate.update(sql, replyNo);
+    }
+
+    // ✅ 좋아요 취소 시 reply.reply_like - 1 (단, 0 밑으로는 내려가지 않게)
+    public void decreaseReplyLike(int replyNo) {
+        String sql = "UPDATE reply SET reply_like = CASE WHEN reply_like > 0 THEN reply_like - 1 ELSE 0 END WHERE reply_no = ?";
+        jdbcTemplate.update(sql, replyNo);
+    }
+ // ✅ 최신순 정렬 (기본) - [이것을 대신 사용]
+    public List<ReplyDto> selectListByTime(int replyTarget) {
+        String sql = "SELECT * FROM reply WHERE reply_target = ? ORDER BY reply_no DESC";
+        return jdbcTemplate.query(sql, replyMapper, replyTarget);
+    }
+
+    // ✅ 좋아요순 정렬
+    public List<ReplyDto> selectListByLike(int replyTarget) {
+        String sql = "SELECT * FROM reply WHERE reply_target = ? ORDER BY reply_like DESC, reply_no DESC";
+        return jdbcTemplate.query(sql, replyMapper, replyTarget);
+    }
+
+    // ✅ 댓글 총 개수 조회
+    public int countByBoardNo(int boardNo) {
+        String sql = "SELECT COUNT(*) FROM reply WHERE reply_target = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, boardNo);
+        return count != null ? count.intValue() : 0;
+    }
 }
