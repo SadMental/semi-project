@@ -38,14 +38,14 @@ public class AnimalDao {
 	}
 	
 	public List<AnimalDto> selectList(String animal_master) {
-		String sql = "select * from animal where animal_master = ?";
+		String sql = "select * from animal where animal_master = ? order by animal_no asc";
 		Object[] params = {animal_master};
 		
 		return jdbcTemplate.query(sql, animalMapper, params);
 	}
 	
 	public List<AnimalDto> selectList() {
-		String sql = "select * from animal";
+		String sql = "select * from animal order by animal_no asc";
 
 		return jdbcTemplate.query(sql, animalMapper);
 	}
