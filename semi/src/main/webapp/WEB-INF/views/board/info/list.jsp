@@ -168,8 +168,13 @@ a:hover {
 								<td style="text-align: center;"><a
 									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
 								</td>
+								<td>${boardDto.memberNickname}
+								<c:if test="${not empty boardDto.badgeImage}">${boardDto.badgeImage}</c:if> 
+								<c:if test="${not empty boardDto.levelName}">
+						        <span class="level-badge">${boardDto.levelName}</span>
+							    </c:if>
+								</td>
 
-								<td>${boardDto.boardWriter}</td>
 								<td>${boardDto.boardView}</td>
 								<td>${boardDto.boardLike}</td>
 								<td>${boardDto.formattedWtime}</td>

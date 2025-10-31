@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data 
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class BoardListVO {
 	private int boardNo;
 	private String categoryName;

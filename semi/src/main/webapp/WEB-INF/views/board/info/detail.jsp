@@ -197,7 +197,7 @@ $(function() {
 </script>
 
 <div class="container w-800">
-			<h1>[${animalHeaderDto.headerName}] ${boardDto.boardTitle}</h1>
+	<h1>[${boardDto.animalHeaderName}] ${boardDto.boardTitle}</h1>
 
 
 	<div class="meta">
@@ -208,8 +208,11 @@ $(function() {
 			</tr>
 			<tr>
 				<th>[작성자] :</th>
-				<td>${boardDto.boardWriter}
-				
+				<td>${boardDto.memberNickname}<c:if
+						test="${not empty boardDto.badgeImage}">${boardDto.badgeImage}</c:if>
+					<c:if test="${not empty boardDto.levelName}">
+						<span class="level-badge">${boardDto.levelName}</span>
+					</c:if>
 				</td>
 			</tr>
 

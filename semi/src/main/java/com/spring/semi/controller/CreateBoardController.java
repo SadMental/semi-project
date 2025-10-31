@@ -1,12 +1,11 @@
 package com.spring.semi.controller;
 
-import java.lang.System.Logger;
+
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,8 +27,7 @@ import com.spring.semi.dto.CategoryDto;
 import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
-import com.spring.semi.service.MediaService;
-import com.spring.semi.vo.BoardVO;
+import com.spring.semi.vo.BoardDetailVO;
 import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -37,14 +35,12 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board")
 public class CreateBoardController {
-	@Autowired
-	private MediaService mediaService;
+
     @Autowired private BoardDao boardDao;
     @Autowired private CategoryDao categoryDao;
     @Autowired private MemberDao memberDao;
     @Autowired private HeaderDao headerDao;
 	
- // 목록 + 정렬 기능 (카테고리별)
     @GetMapping("/{categoryName}/list")
     public String list(
             @PathVariable String categoryName,
@@ -67,18 +63,20 @@ public class CreateBoardController {
         int dataCount = boardDao.count(pageVO, categoryNo);
         pageVO.setDataCount(dataCount);
 
-        List<BoardVO> boardList = boardDao.selectList2(
-                pageVO.getBegin(), pageVO.getEnd(), orderBy, categoryNo);
-        System.out.println("boardVo : " + boardList.toString());
+        // BoardDetailVO 사용 + animal/type header JOIN
+        List<BoardDetailVO> boardList = boardDao.selectListDetail(
+                pageVO.getBegin(), pageVO.getEnd(), categoryNo, orderBy);
+
+        System.out.println("boardDetailVo : " + boardList);
 
         model.addAttribute("category", category);
         model.addAttribute("boardList", boardList);
-//        model.addAttribute("headerMap", headerMap);
         model.addAttribute("pageVO", pageVO);
         model.addAttribute("orderBy", orderBy);
 
         return "/WEB-INF/views/board/common/list.jsp";
     }
+
 
 
 
@@ -118,12 +116,6 @@ public class CreateBoardController {
         boardDto.setBoardWriter(loginId);
         boardDto.setBoardCategoryNo(categoryNo);
 
-     
-//        Integer headerNo = boardDto.getBoardHeader();
-//        if (headerNo != null) {
-//            HeaderDto headerCheck = headerDao.selectOne(headerNo, "type");
-//            if (headerCheck == null) throw new IllegalArgumentException("존재하지 않는 헤더입니다.");
-//        }
 
         int boardNo = boardDao.sequence();
         boardDto.setBoardNo(boardNo);
@@ -133,8 +125,6 @@ public class CreateBoardController {
         String encodedCategory = URLEncoder.encode(categoryName, StandardCharsets.UTF_8);
         return "redirect:/board/" + encodedCategory + "/detail?boardNo=" + boardNo;
     }
-
-    //상세
 
     @GetMapping("/{categoryName}/detail")
     public String detail(
@@ -148,25 +138,21 @@ public class CreateBoardController {
         if (category == null)
             throw new TargetNotfoundException("존재하지 않는 게시판입니다.");
 
-        BoardDto boardDto = boardDao.selectOne(boardNo);
-        if (boardDto == null)
+        BoardDetailVO boardDetail = boardDao.selectOneDetail(boardNo);
+        if (boardDetail == null)
             throw new TargetNotfoundException("존재하지 않는 게시글입니다.");
 
- 
-        HeaderDto header = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");
-        if (header != null) {
-            model.addAttribute("headerDto", header);
-        }
-
-        if (boardDto.getBoardWriter() != null) {
-            MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
+        // 작성자 정보
+        if (boardDetail.getBoardWriter() != null) {
+            MemberDto memberDto = memberDao.selectOne(boardDetail.getBoardWriter());
             model.addAttribute("memberDto", memberDto);
         }
 
         model.addAttribute("category", category);
-        model.addAttribute("boardDto", boardDto);
+        model.addAttribute("boardDto", boardDetail);
         return "/WEB-INF/views/board/common/detail.jsp";
     }
+
 
     //삭제
     @PostMapping("/{categoryName}/delete")
@@ -245,12 +231,6 @@ public class CreateBoardController {
             throw new TargetNotfoundException("수정 권한이 없습니다.");
         }
 
-
-//        Integer headerNo = boardDto.getBoardTypeHeader();
-//        if (headerNo != null) {
-//            HeaderDto headerCheck = headerDao.selectOne(headerNo, "type");
-//            if (headerCheck == null) throw new IllegalArgumentException("존재하지 않는 헤더입니다.");
-//        }
 
         boardDao.update(boardDto);
 
