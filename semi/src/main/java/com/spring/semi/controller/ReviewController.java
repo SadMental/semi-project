@@ -13,18 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.semi.dao.AnimalHeaderDao;
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.CategoryDao;
 import com.spring.semi.dao.HeaderDao;
 import com.spring.semi.dao.MemberDao;
-import com.spring.semi.dao.TypeHeaderDao;
-import com.spring.semi.dto.AnimalHeaderDto;
 import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.CategoryDto;
 import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
-import com.spring.semi.dto.TypeHeaderDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.BoardVO;
@@ -99,6 +95,11 @@ public class ReviewController {
 
         String scoreText=reviewScore.trim().replace(".0", "");
         int score = Integer.parseInt(scoreText);
+        // 251031 /board/review에서 평점이 6인 경우가 있어서 min, max로 제한
+        if (score <= 1)
+        	score = 1;
+        if (5 <= score)
+        	score = 5;
         boardDto.setBoardScore(score);
 
         //  board와 header 연결
@@ -187,6 +188,11 @@ public class ReviewController {
 
         String scoreText=reviewScore.trim().replace(".0", "");
         int score = Integer.parseInt(scoreText);
+        // 251031 /board/review에서 평점이 6인 경우가 있어서 min, max로 제한
+        if (score <= 1)
+        	score = 1;
+        if (5 <= score)
+        	score = 5;
 	    boardDto.setBoardScore(score);
 		
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());

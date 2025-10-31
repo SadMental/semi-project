@@ -74,7 +74,7 @@
             //backgroundColor:"#dfe6e9",
             editable:true,//false
             integerOnly:true,//false
-            zeroAvailable:true,
+            zeroAvailable:false,
             send:{
                 sendable:true,
                 name:"reviewScore",//star
@@ -112,7 +112,7 @@
       </div>
 		
 		<div class = "cell">
-            <div name="boardScore" class="star-editor" data-max="5"></div>
+            <div name="boardScore" class="star-editor" data-max="5" data-rate="1"></div>
         </div>
         
       <div class="cell mt-20">

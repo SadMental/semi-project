@@ -82,14 +82,14 @@ public class MainController // controller는 @Autowired를 위해 등록하지 �
 	}
 	
 	// 게시판별 캐시 만료 확인
-	private boolean isCacheExpired(String boardCategoryNo) {
-	    if (!cache.containsKey(boardCategoryNo) || !cacheTime.containsKey(boardCategoryNo)) {
+	private boolean isCacheExpired(String boardCategoryName) {
+	    if (!cache.containsKey(boardCategoryName) || !cacheTime.containsKey(boardCategoryName)) {
 	        // 캐시가 아예 없으면 만료로 간주
 	        return true;
 	    }
 
 	    long now = System.currentTimeMillis();
-	    long lastUpdate = cacheTime.get(boardCategoryNo);
+	    long lastUpdate = cacheTime.get(boardCategoryName);
 
 	    // 캐시 수명 초과 여부 확인
 	    return now - lastUpdate > CACHE_LIFETIME;
