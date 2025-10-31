@@ -76,19 +76,24 @@
           이 글은 정보게시판에 업로드 됩니다.<br>
           <em>다른 사람에게 도움이 되는 유익한 글을 작성해주세요!</em>
       </div>
-        <div class="cell">
-			<select name="boardAnimalHeader" class="field w-100 mt-2">
-		      <option value="">-- 분류 선택 --</option>
-	             <c:forEach var="animalHeader" items="${animalList}">
-				  	 <option value="${animalHeader.headerNo}">${animalHeader.headerName}</option>
-				 </c:forEach>
-			</select>
-			<select name="boardTypeHeader" class="field w-100 mt-2">
-		      <option value="">-- 분류 선택 --</option>
-	             <c:forEach var="typeHeader" items="${typeList}">
-				  	 <option value="${typeHeader.headerNo}">${typeHeader.headerName}</option>
-				 </c:forEach>
-			</select>
+        <div class="cell flex-box">
+	      <div class="flex-box flex-vertical w-25p">
+	      <label>동물</label>
+			  <select name="boardAnimalHeader" class="field w-100p mt-2">
+			  	         <c:forEach var="animalHeader" items="${animalList}">
+			  	             <option value="${animalHeader.headerNo}">${animalHeader.headerName}</option>
+			  	         </c:forEach>
+			  </select>
+	      </div>
+	      <div class="flex-box flex-vertical w-25p ms-10">
+		  <label>type</label>
+			  <select name="boardTypeHeader" class="field w-100p mt-2">
+			  	         <c:forEach var="typeHeader" items="${typeList}">
+			  	             <option value="${typeHeader.headerNo}">${typeHeader.headerName}</option>
+			  	         </c:forEach>
+			  </select>
+	      </div>
+      </div>
       <div class="cell mt-20">
           <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
       </div>
