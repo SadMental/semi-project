@@ -1,10 +1,8 @@
 package com.spring.semi.controller;
 
-import java.time.LocalDate;
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -31,7 +29,6 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.BoardDetailVO;
-import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 import com.spring.semi.service.MemberService;
 

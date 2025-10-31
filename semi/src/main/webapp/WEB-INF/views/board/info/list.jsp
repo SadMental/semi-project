@@ -8,12 +8,6 @@
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <style>
-body {
-	background-color: #f4ede6;
-	color: #5b3a29;
-	margin: 0;
-	padding: 0;
-}
 
 .container.w-800 {
 	max-width: 800px;
@@ -60,27 +54,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-.btn.btn-positive {
-	background-color: #7e5a3c;
-	color: #f9f6f1;
-	border: none;
-	padding: 10px 20px;
-	font-size: 1rem;
-	font-weight: 700;
-	border-radius: 10px;
-	cursor: pointer;
-	text-decoration: none;
-	display: inline-block;
-	margin-top: 20px;
-}
-
-.btn.btn-positive:hover {
-	background-color: #a67849;
-}
-
-.cell.right {
-	text-align: right;
-}
 
 .no-posts {
 	text-align: center;
@@ -88,9 +61,6 @@ a:hover {
 	color: #8c6d5b;
 }
 
-.mb-20 {
-	margin-bottom: 20px;
-}
 </style>
 
 <div class="container w-800">
