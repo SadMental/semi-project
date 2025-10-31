@@ -243,21 +243,31 @@ $(function() {
 	<div class="board-meta">
 		<table>
 			<tr>
-				<th>작성자</th>
+				<th>[작성자]</th>
 				<td>${boardDto.memberNickname}<c:if
 						test="${not empty boardDto.badgeImage}">${boardDto.badgeImage}</c:if>
 					<c:if test="${not empty boardDto.levelName}">
 						<span class="level-badge">${boardDto.levelName}</span>
 					</c:if>
 				</td>
-				<th>작성일</th>
+			</tr>
+			<tr>
+				<th>[작성일]</th>
 				<td><fmt:formatDate value="${boardDto.boardWtime}"
 						pattern="yyyy-MM-dd HH:mm" /></td>
 			</tr>
 			<tr>
-				<th>수정일</th>
-				<td colspan="3"><fmt:formatDate value="${boardDto.boardEtime}"
-						pattern="yyyy-MM-dd HH:mm" /></td>
+			    <th>[수정일] :</th>
+			    <td>
+			        <c:choose>
+			            <c:when test="${not empty boardDto.boardEtime}">
+			                <fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm"/>
+			            </c:when>
+			            <c:otherwise>
+			                
+			            </c:otherwise>
+			        </c:choose>
+			    </td>
 			</tr>
 		</table>
 	</div>
