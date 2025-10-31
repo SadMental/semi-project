@@ -45,13 +45,13 @@ public class AnimalDao {
 	}
 	
 	public List<AnimalDto> selectList() {
-		String sql = "select * from animal";
+		String sql = "select * from animal order by animal_no asc";
 
 		return jdbcTemplate.query(sql, animalMapper);
 	}
 	
 	public boolean delete(int animal_no) {
-		String sql = "delete from animal where animal_no = ? order by animal_no asc";
+		String sql = "delete from animal where animal_no = ?";
 		Object[] params = {animal_no};
 		
 		return jdbcTemplate.update(sql, params) > 0;
