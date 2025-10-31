@@ -14,7 +14,6 @@ import com.spring.semi.dao.MailDao;
 import com.spring.semi.dao.MediaDao;
 import com.spring.semi.dao.MemberDao;
 import com.spring.semi.dto.AnimalDto;
-import com.spring.semi.dto.BoardDto;
 import com.spring.semi.dto.MailDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.vo.LevelUpdateVO;
@@ -36,7 +35,8 @@ public class MemberService {
     private MailDao mailDao;
     @Autowired
     private LevelUpdateDao levelUpdateDao;
-  
+
+    
     @Transactional
     public boolean deleteMember(String memberId, String memberPw) {
     	MemberDto memberDto = memberDao.selectOne(memberId);
@@ -67,17 +67,11 @@ public class MemberService {
     	
     	List<Integer> board_like_list = boardLikeDao.selectListByMemberId(memberId);
     	for(int like : board_like_list) {
-    		BoardDto boardDto = boardDao.selectOne(like);
-    		
-    		
-    		boardDao.updateBoardLike(boardDto.getBoardNo(),  like);
+    		boardDao.updateBoardLike(like);
     	}
-    	
     	
     	return true;
     }
-
-    
 
     public List<LevelUpdateVO> getMembersForLevelUpdate() {
         return levelUpdateDao.selectMembersForLevelUpdate();

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<script src="/js/login.js"></script>
 <script type="text/template" id="ranking-template">
 	<div class="cell w-100p flex-box ranking-wrapper">
         <span class="number me-10">1</span>
@@ -136,24 +136,26 @@
 		 <div class="cell flex-box flex-vertical w-25p">
             <div class="cell ms-10 me-10 center">
             	<c:choose>
-	            	<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel == '1' }">
+	            	<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel == '0' }">
 		                <a href="/member/logout" class="btn btn-neutral">로그아웃</a>
 					</c:when>
-					<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel >= '2' }">
+					<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel >= '1' }">
 						<a href="/member/logout" class="btn btn-neutral">로그아웃</a>
 					</c:when>
 					<c:otherwise>
-						<form action="/member/login" method="post">
+						<form id="login-form">
 							<div class="cell">
 								<label>아이디</label>
 								<input class="field w-100p" type="text" name="memberId">
+								<div class="fail-feedback"></div>
 							</div>
 							<div class="cell">
 								<label>비밀번호</label>
 								<input class="field w-100p" type="password" name="memberPw">
+								<div class="fail-feedback"></div>
 							</div>
 							<div class="cell center">
-								<button class="btn btn-positive w-100p" type="submit">로그인</button>
+								<button class="btn btn-positive btn-login w-100p" type="button">로그인</button>
 							</div>
 							<hr>
 							<div class="cell center">

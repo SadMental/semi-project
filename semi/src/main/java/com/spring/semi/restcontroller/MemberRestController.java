@@ -43,8 +43,16 @@ public class MemberRestController {
 			emailService.sendCertNumber(certEmail);
 			return true;
 		}
-		System.out.println("certSend: " + findEmail.toString());
 		return false;
+	}
+	// 이메일 보내기
+	@PostMapping("/findSend")
+	public boolean findSend(@RequestParam String memberEmail) {
+		MemberDto findEmail = memberDao.selectForEmail(memberEmail);
+		if(findEmail == null) {			
+			return false;
+		}
+		return true;
 	}
 
 	// 인증 체크
@@ -118,5 +126,24 @@ public class MemberRestController {
 		return findDto == null? false : true;
 	}
 	
+	// 동적 로그인
+	@PostMapping("/login")
+	public boolean login(
+			@RequestParam String memberId,
+			@RequestParam String memberPw,
+			HttpSession session
+			) {
+		MemberDto findDto = memberDao.selectOne(memberId);
+		
+		if(findDto == null) return false;
+		
+		if(findDto.getMemberPw().equals(memberPw) == false) return false;
+		
+		session.setAttribute("loginId", findDto.getMemberId());
+		session.setAttribute("loginLevel", findDto.getMemberLevel());
+		
+		return true;
+			
+	}
 	
 }
