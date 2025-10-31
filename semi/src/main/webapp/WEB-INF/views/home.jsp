@@ -238,23 +238,25 @@
 
                         <td>
                             <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
-                                <label class="community-board-title">${boardDto.boardTitle}</label>
-                                <div class="cell">
-                                    <img src="/member/profile?member_id="+${boardDto.boardWriter} style="width:20px;">
-                                    <label class="community-board-nickname"
-                                        style="font-size:0.8em;">${boardDto.boardWriter}</label>
-                                    <i class="fa-solid fa-eye"></i>
-                                    <label class="community-board-view"
-                                        style="font-size:0.8em;">${boardDto.boardView}</label>
-                                    <i class="fa-solid fa-comment-dots"></i>
-                                    <label class="community-board-reply"
-                                        style="font-size:0.8em;">${boardDto.boardReply}</label>
-                                    <i class="fa-solid fa-heart red"></i>
-                                    <label class="community-board-like"
-                                        style="font-size:0.8em;">${boardDto.boardLike}</label>
-                                    <label class="community-board-time"
-                                        style="font-size:0.8em;">${boardDto.boardWtime}</label>
-                                </div>
+                            	<a href="/board/community/detail?boardNo=${boardDto.boardNo}" class="link">
+                            	    <label class="community-board-title">${boardDto.boardTitle}</label>
+	                                <div class="cell">
+	                                    <img src="/member/profile?member_id="+${boardDto.boardWriter} style="width:20px;">
+	                                    <label class="community-board-nickname"
+	                                        style="font-size:0.8em;">${boardDto.boardWriter}</label>
+	                                    <i class="fa-solid fa-eye"></i>
+	                                    <label class="community-board-view"
+	                                        style="font-size:0.8em;">${boardDto.boardView}</label>
+	                                    <i class="fa-solid fa-comment-dots"></i>
+	                                    <label class="community-board-reply"
+	                                        style="font-size:0.8em;">${boardDto.boardReply}</label>
+	                                    <i class="fa-solid fa-heart red"></i>
+	                                    <label class="community-board-like"
+	                                        style="font-size:0.8em;">${boardDto.boardLike}</label>
+	                                    <label class="community-board-time"
+	                                        style="font-size:0.8em;">${boardDto.boardWtime}</label>
+	                                </div>
+	                            </a>
                             </div>
                         </td>
 
@@ -381,24 +383,26 @@
 
                 		<td>
                             <div class="cell w-50 mt-5 mb-5 ms-5 me-5 left">
-                                <label class="review-board-title">${boardDto.boardTitle}</label>
-                                <div class="cell">
-                                    <img src="/member/profile?member_id="+${boardDto.boardWriter} style="width:20px;">
-                                    <label class="review-board-nickname"
-                                        style="font-size:0.8em;">${boardDto.boardWriter}</label>
-                                    <i class="fa-solid fa-eye"></i>
-                                    <label class="review-board-view"
-                                        style="font-size:0.8em;">${boardDto.boardView}</label>
-                                    <i class="fa-solid fa-comment-dots"></i>
-                                    <label class="review-board-reply"
-                                        style="font-size:0.8em;">${boardDto.boardReply}</label>
-                                    <i class="fa-solid fa-heart red"></i>
-                                    <label class="review-board-like"
-                                        style="font-size:0.8em;">${boardDto.boardLike}</label>
-                                    <label class="review-board-time"
-                                        style="font-size:0.8em;">${boardDto.boardWtime}</label>
-                                    <div class="star-viewer" data-max="5" data-rate="${boardDto.boardScore}"></div>
-                                </div>
+                            	<a href="/board/review/detail?boardNo=${boardDto.boardNo}" class="link">
+                            		<label class="review-board-title">${boardDto.boardTitle}</label>
+                                	<div class="cell">
+	                                    <img src="/member/profile?member_id="+${boardDto.boardWriter} style="width:20px;">
+	                                    <label class="review-board-nickname"
+	                                        style="font-size:0.8em;">${boardDto.boardWriter}</label>
+	                                    <i class="fa-solid fa-eye"></i>
+	                                    <label class="review-board-view"
+	                                        style="font-size:0.8em;">${boardDto.boardView}</label>
+	                                    <i class="fa-solid fa-comment-dots"></i>
+	                                    <label class="review-board-reply"
+	                                        style="font-size:0.8em;">${boardDto.boardReply}</label>
+	                                    <i class="fa-solid fa-heart red"></i>
+	                                    <label class="review-board-like"
+	                                        style="font-size:0.8em;">${boardDto.boardLike}</label>
+	                                    <label class="review-board-time"
+	                                        style="font-size:0.8em;">${boardDto.boardWtime}</label>
+	                                    <div class="star-viewer" data-max="5" data-rate="${boardDto.boardScore}"></div>
+	                                </div>
+                            	</a>
                             </div>
                         </td>
                         <c:if test="${st.index % 2 == 1}">
