@@ -98,7 +98,7 @@
       <h1>[${boardDto.boardNo}번] 게시글 수정</h1>
       <input type="hidden" name="boardNo" value="${boardDto.boardNo}">
     </div>
-	  <select name="boardHeader" required>
+	  <select name="boardAnimalHeader" required>
 	          <option value="">-- 선택 --</option>
 	          <c:forEach var="animalHeader" items="${animalList}">
 	              <option value="${animalHeader.headerNo}">
@@ -106,7 +106,7 @@
 	              </option>
 	          </c:forEach>
 	  </select>
-	  <select name="boardHeader" required>
+	  <select name="boardTypeHeader" required>
 	          <option value="">-- 선택 --</option>
 	          <c:forEach var="typeHeader" items="${typeList}">
 	              <option value="${typeHeader.headerNo}">

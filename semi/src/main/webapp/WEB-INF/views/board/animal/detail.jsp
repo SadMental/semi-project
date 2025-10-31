@@ -7,7 +7,7 @@
 
 
 <div class="container w-800">
-       <h1> [${boardDto.animalHeaderName}]   ${boardDto.boardTitle}</h1>      
+       <h1> [${boardDto.typeHeaderName}]   ${boardDto.boardTitle}</h1>      
 
 
 	<div class="meta">
@@ -37,7 +37,7 @@
 			</tr>
 			<tr>
 				<th>[동물 분류] :</th>
-				<td>${boardDto.typeHeaderName}</td>
+				<td>${boardDto.animalHeaderName}</td>
 			</tr>
 	    </table>
     </div>

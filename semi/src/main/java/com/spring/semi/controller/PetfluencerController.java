@@ -23,6 +23,7 @@ import com.spring.semi.dto.HeaderDto;
 import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
+import com.spring.semi.vo.BoardDetailVO;
 import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 
@@ -122,23 +123,10 @@ public class PetfluencerController {
     		@RequestParam int boardNo
     		) {
 	    	// 게시글 조회
-	    	BoardDto boardDto = boardDao.selectOne(boardNo);
+	    	BoardDetailVO boardDto = boardDao.selectOneDetail(boardNo);
 	    	if (boardDto == null) throw new TargetNotfoundException("존재하지 않는 글 번호");
 	    	model.addAttribute("boardDto", boardDto);
-	    	HeaderDto animalHeaderDto = headerDao.selectOne(boardDto.getBoardAnimalHeader(), "animal");      
-	    	HeaderDto typeHeaderDto = headerDao.selectOne(boardDto.getBoardTypeHeader(), "type");            
-	    	// Map 대신 DTO 객체 자체를 "headerDto"라는 이름으로 Model에 담습니다.                                             
-	    	if(animalHeaderDto != null) {                                                                    
-	    		model.addAttribute("animalHeaderDto", animalHeaderDto); // Model에 animalHeaderDto 자체를 추가     
-	    	}                                                                                                
-	    	if(typeHeaderDto != null) {                                                                      
-	    		model.addAttribute("typeHeaderDto", typeHeaderDto); // Model에 typeHeaderDto 자체를 추가           
-	    	}                                                                                                
-	    	// 작성자 정보
-	    	if (boardDto.getBoardWriter() != null) {
-	    		MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
-	    		model.addAttribute("memberDto", memberDto);
-	    	}
+	    	
 	    	return "/WEB-INF/views/board/petfluencer/detail.jsp";
     }
 	
