@@ -1,9 +1,8 @@
 package com.spring.semi.controller;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.semi.dao.BoardDao;
 import com.spring.semi.dao.CategoryDao;
@@ -31,7 +31,6 @@ import com.spring.semi.dto.MemberDto;
 import com.spring.semi.error.TargetNotfoundException;
 import com.spring.semi.service.MediaService;
 import com.spring.semi.vo.BoardDetailVO;
-import com.spring.semi.vo.BoardVO;
 import com.spring.semi.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -39,9 +38,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board/community")
 public class BoardController {
-
-	@Autowired
-	private MediaService mediaService;
+	private final MediaService mediaService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
@@ -53,6 +50,9 @@ public class BoardController {
     @Autowired
     private MainController mainController;
 
+    BoardController(MediaService mediaService) {
+        this.mediaService = mediaService;
+    }
 
 //	@RequestMapping("/list")
 //	public String list(Model model) 
@@ -75,8 +75,8 @@ public class BoardController {
 	     pageVO.setSize(10);
 	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
 
-	     List<BoardVO> boardList = boardDao.selectList2(
-	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
+	     List<BoardDetailVO> boardList = boardDao.selectListDetail(
+	             pageVO.getBegin(), pageVO.getEnd(), boardType, orderBy);
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
@@ -99,8 +99,11 @@ public class BoardController {
 	}
 
 	@PostMapping("/write")
-	public String write(@ModelAttribute BoardDto boardDto, HttpSession session, Model model) {
-
+	   public String write(@ModelAttribute BoardDto boardDto,
+               HttpSession session, Model model,
+   			@RequestParam MultipartFile media,
+   			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
+	{
 		String loginId = (String) session.getAttribute("loginId");
 		if (loginId == null)
 			throw new IllegalStateException("로그인 정보가 없습니다.");
@@ -109,12 +112,18 @@ public class BoardController {
 		if (boardDto.getBoardContent() == null || boardDto.getBoardContent().trim().isEmpty()) {
 			boardDto.setBoardContent("(내용 없음)");
 		}
+		
+        int boardNo = boardDao.sequence();
+        boardDto.setBoardNo(boardNo);
 
-		boardDto.setBoardNo(boardDao.sequence());
-		int boardType = 1;
-
-		boardDao.insert(boardDto, boardType);
+		boardDao.insert(boardDto, 1);
         mainController.clearBoardCache("community_board_list");
+        
+        if(!media.isEmpty()) 
+		{
+			int mediaNo = mediaService.save(media);
+			boardDao.connect(boardNo, mediaNo);
+		}
 
 		// 게시글 포인트
 		memberDao.addPoint(loginId, 50);
@@ -233,5 +242,18 @@ public class BoardController {
 
 	    return "success";
 	}
-
+	
+	@GetMapping("/image")
+	public String image(@RequestParam int boardNo) 
+	{
+		try 
+		{
+			int mediaNo = boardDao.findMedia(boardNo);
+			return "redirect:/media/download?mediaNo=" + mediaNo;			
+		}
+		catch(Exception e) 
+		{
+			return "redirect:/image/error/no-image.png";
+		}
+	}
 }
