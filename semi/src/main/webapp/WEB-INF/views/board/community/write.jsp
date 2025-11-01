@@ -67,7 +67,7 @@
 }
 </style>
 
-<form autocomplete="off" action="write" method="post">
+<form autocomplete="off" action="write" method="post" enctype="multipart/form-data">
   <div class="container w-800">
       <div class="cell center">
           <h1>자유 게시판 작성</h1>
@@ -101,7 +101,12 @@
       <div class="cell mt-20">
           <textarea name="boardContent" class="summernote-editor"></textarea>
       </div>
-      
+
+	<div class = "cell">
+		<label>썸네일</label>
+		<input type = "file" name = "media" accept = ".png,.jpg" class = "field w-100" required>
+	</div>
+
       <div class="cell right mt-20">
           <button class="btn btn-positive">등록하기</button>
       </div>

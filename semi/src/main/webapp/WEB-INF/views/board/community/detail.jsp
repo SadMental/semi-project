@@ -141,7 +141,8 @@ $(function() {
 		</table>
 	</div>
 
-	<div class="content">
+		<div class="content">
+		<img src = "/board/community/image?boardNo=${boardDto.boardNo}">
 		<c:out value="${boardDto.boardContent}" escapeXml="false" />
 	</div>
 
