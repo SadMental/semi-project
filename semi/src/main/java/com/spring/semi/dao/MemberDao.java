@@ -179,7 +179,7 @@ public class MemberDao {
 	}
 
 	public int usePoint(String loginId) {
-		String sql = "update member set member_used_point = NVL(member_used_point,0) +( NVL(member_point,0) - NVL(member_used_point,0)  )where member_id = ? ";
+		String sql = "update member set member_used_point =  member_used_point + NVL(member_point,0) , member_point = 0 where member_id = ? ";
 		Object[] params = {loginId};
 		return jdbcTemplate.update(sql, params);
 		

@@ -234,9 +234,30 @@ public class BoardController {
 	        }
 
 	        boardDao.delete(boardNo);
+	        int minusPnt;
+	        int boardCat = boardDto.getBoardCategoryNo();
+	        
+	        switch (boardCat) {
+			case 1:
+				minusPnt = 50;
+				break;
+			case 2:
+				minusPnt = 70;
+				break;
+			case 3:
+				minusPnt = 50;
+				break;
+			case 4:
+				minusPnt = 60;
+				break;
 
+			default: minusPnt = 50;
+				break;
+			}
+	        
+	        
 	        if (boardDto.getBoardWriter() != null) {
-	            memberDao.minusPoint(boardDto.getBoardWriter(), 50);
+	            memberDao.minusPoint(boardDto.getBoardWriter(), minusPnt);
 	        }
 	    }
 
