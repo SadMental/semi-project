@@ -22,7 +22,7 @@
 						${pageVO.column == 'member_nickname' ? 'selected' : ''}>닉네임</option>
 				</select> <input type="text" name="keyword" value="${pageVO.keyword}"
 					required placeholder="검색어 입력">
-
+ 
 				<button type="submit" class="btn btn-positive">검색</button>
 			</div>
 		</form>
@@ -68,7 +68,7 @@
 					</thead>
 					<tbody>						
 						<table border="1">
-						    <c:forEach var="boardDto" items="${boardList}" varStatus="st">
+						    <c:forEach var="boardDetailVO" items="${boardList}" varStatus="st">
 						        <c:if test="${st.index % 3 == 0}">
 						            <tr>
 						        </c:if>
@@ -76,14 +76,14 @@
 						        <td>
 						        	<a href="detail?boardNo=${boardDto.boardNo}">
 						        		<div class="cell card">
-									        <img src="/board/petfluencer/image?boardNo=${boardDto.boardNo}">
+									        <img src="/board/petfluencer/image?boardNo=${boardDetailVO.boardNo}">
 									        <button class="overlay-btn"><i class="fa fa-camera"></i></button>
-									        <div class="like-badge"><i class="fa fa-heart"></i> ${boardDto.boardLike}</div>
+									        <div class="like-badge"><i class="fa fa-heart"></i> ${boardDetailVO.boardLike}</div>
 									        <div class="card-container">
-									            <div class="card-title">${boardDto.boardTitle}</div>
+									            <div class="card-title">${boardDetailVO.boardTitle}</div>
 									            <div class="card-info">
-									                <i class="fa fa-eye"></i> ${boardDto.boardView}
-									                <i class="fa fa-comment"></i> ${boardDto.boardReply}
+									                <i class="fa fa-eye"></i> ${boardDetailVO.boardView}
+									                <i class="fa fa-comment"></i> ${boardDetailVO.boardReply}
 									            </div>
 									        </div>
 									    </div>
