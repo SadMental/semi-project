@@ -8,23 +8,16 @@
 <link rel="stylesheet" type="text/css" href="/css/board_list.css">
 
 <style>
-	
-	.score-badge {
-/*          position: absolute; */
-		right: 8px;
-/*         background-color: #fdcb6e; */
-/*         color: white; */
-/*         font-size: 14px; */
-/*         border: 1px solid #2d3436; */
-/*         border-radius: 10px; */
-/*         padding: 4px 8px; */
-/*         display: flex; */
-/*         align-items: center; */
-/*         gap: 4px; */
-		background-color: #fdcb6e;
+	.score-badge {		
+		display: flex;
+		align-items: center;    /* 세로 가운데 */
+		height: inherit;          /* 부모 높이가 있어야 중앙 기준이 생김 */	
+		background-color: #F35F4C;
 		border: 1px solid #2d3436;
-		border-radius: 11px;
+		color:white;
+		border-radius: 10px;
 		padding: 0 0.25em;
+		margin-left: auto;
     }
 </style>
 
@@ -91,33 +84,31 @@
 					</thead>
 					<tbody>						
 						<table border="1">
-						    <c:forEach var="boardDto" items="${boardList}" varStatus="st">
+						    <c:forEach var="boardDetailVO" items="${boardList}" varStatus="st">
 						        <tr>
 							        <td>
-							        	<a href="detail?boardNo=${boardDto.boardNo}">
-							        		<div class="cell flex-box w-100p">
-							        			<img src="/board/review/image?boardNo=${boardDto.boardNo}" style="width:100px;">
-							        			<div class="review-container">
-							        				<div class="top-container flex-box w-600">
-							        					<div class="flex-box">
-														   <div class="badge me-10">${boardDto.animalHeaderName}</div>
-														   <div class="badge me-10">${boardDto.typeHeaderName}</div>
-														</div>
-							        					<label>${boardDto.boardTitle}</label>
-							        					<label class="red">[${boardDto.boardReply}]</label>
-							        				</div>
-							        				<div class="bottom-container flex-box w-400">
-							        					<img src="/member/profile?member_id=" + boadrDto.boardWriter" style="width:33px;">
-							        					<label style="font-size:0.8em;" class="ms-10 me-10">${boardDto.boardWriter}</label> 
-							        					<fmt:formatDate value="${boardDto.boardWtime}" pattern="MM-dd"/> 
-							        					<i class="fa fa-eye ms-10"></i> ${boardDto.boardView} 
-							        					<i class="fa fa-heart red ms-10"></i> ${boardDto.boardLike}
-							        					<div class="score-badge">						        					
-								        					<i class="fa-solid fa-star"></i> ${boardDto.boardScore}
-							        					</div>
-							        				</div>
+							        	<a href="detail?boardNo=${boardDetailVO.boardNo}">
+							        		<div class="cell flex-box">
+										        <img src="/board/review/image?boardNo=${boardDetailVO.boardNo}" class="left" style="width:60px; height:60px;">
+										        <div class="animal-container">
+										        	<div class="top-container flex-box">										        		
+														 <div class="badge me-10">${boardDetailVO.animalHeaderName}</div>
+														 <div class="badge me-10">${boardDetailVO.typeHeaderName}</div>
+										        		 <div class="review-title">${boardDetailVO.boardTitle}</div>
+										        		 <div class="review-reply red">[${boardDetailVO.boardReply}]</div>
+										        	</div>
+										        	<div class="bottom-container flex-box">
+										        		<img src="/member/profile?member_id=${boardDetailVO.boardWriter}" width="24px;" height="24px;">
+										        		<div class="ms-10 review-writer">[${boardDetailVO.memberNickname}]</div>
+										        		<div class="ms-10 review-wtime">${boardDetailVO.formattedWtime}</div>
+										        		<i class="ms-10 fa fa-eye"></i> ${boardDetailVO.boardView}
+										                <i class="ms-10 fa-regular fa-heart"></i> ${boardDetailVO.boardLike}
+										        	</div>
+										        </div>
+										        <div class="score-badge">						        					
+								        			<i class="fa-solid fa-star"></i> ${boardDetailVO.boardScore}
 							        			</div>
-										    </div>
+									    	</div>
 							        	</a>
 							        </td>
 						        </tr>
