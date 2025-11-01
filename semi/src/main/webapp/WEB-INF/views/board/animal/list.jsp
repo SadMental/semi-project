@@ -70,29 +70,29 @@
 					</thead>
 					<tbody>						
 						<table border="1">
-						    <c:forEach var="boardDto" items="${boardList}" varStatus="st">
+						    <c:forEach var="boardDetailVO" items="${boardList}" varStatus="st">
 						        <tr>
 							        <td>
-							        	<a href="detail?boardNo=${boardDto.boardNo}">
-							        		<div class="cell flex-box w-100p">
-							        			<img src="/board/animal/image?boardNo=${boardDto.boardNo}" style="width:100px;">
-							        			<div class="animal-container">
-							        				<div class="top-container flex-box w-400">
-							        					<label>${boardDto.boardTitle}</label>
-							        					<label class="red">[${boardDto.boardReply}]</label>
-							        				</div>
-							        				<div class="bottom-container flex-box w-400">
-							        					<img src="/member/profile?member_id=" + boadrDto.boardWriter" style="width:33px;">
-							        					<label style="font-size:0.8em;" class="ms-10 me-10">${boardDto.boardWriter}</label> 
-							        					<fmt:formatDate value="${boardDto.boardWtime}" pattern="MM-dd"/> 
-							        					<i class="fa fa-eye ms-10"></i> ${boardDto.boardView} 
-							        					<i class="fa fa-heart red ms-10"></i> ${boardDto.boardLike} 
-							        				</div>
-							        			</div>
-										    </div>
+							        	<a href="detail?boardNo=${boardDetailVO.boardNo}">
+							        		<div class="cell flex-box">
+										        <img src="/board/animal/image?boardNo=${boardDetailVO.boardNo}" class="left" style="width:60px; height:60px;">
+										        <div class="animal-container">
+										        	<div class="top-container flex-box">
+										        		 <div class="animal-title">${boardDetailVO.boardTitle}</div>
+										        		 <div class="animal-reply red">[${boardDetailVO.boardReply}]</div>
+										        	</div>
+										        	<div class="bottom-container flex-box">
+										        		<img src="/member/profile?member_id=${boardDetailVO.boardWriter}" width="24px;" height="24px;">
+										        		<div class="ms-10 animal-writer">[${boardDetailVO.memberNickname}]</div>
+										        		<div class="ms-10 animal-wtime">${boardDetailVO.formattedWtime}</div>
+										        		<i class="ms-10 fa fa-eye"></i> ${boardDetailVO.boardView}
+										                <i class="ms-10 fa-regular fa-heart"></i> ${boardDetailVO.boardLike}
+										        	</div>
+										        </div>
+									    	</div>
 							        	</a>
 							        </td>
-						        </tr>
+							    </tr>
 						    </c:forEach>
 						</table>
 					</tbody>
