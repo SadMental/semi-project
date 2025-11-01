@@ -61,8 +61,8 @@ public class AnimalWikiController {
 	     pageVO.setSize(10);
 	     pageVO.setDataCount(boardDao.count(pageVO, boardType));
 
-	     List<BoardVO> boardList = boardDao.selectList2(
-	             pageVO.getBegin(), pageVO.getEnd(), orderBy, boardType);
+	     List<BoardDetailVO> boardList = boardDao.selectListDetail(
+	             pageVO.getBegin(), pageVO.getEnd(), boardType, orderBy);
 
 	     model.addAttribute("category", categoryDto);
 	     model.addAttribute("boardList", boardList);
