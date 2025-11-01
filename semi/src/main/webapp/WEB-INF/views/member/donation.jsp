@@ -132,7 +132,7 @@
             <div class="ms-10 point" style="font-weight: bold; font-size: 20px; position: relative; z-index: 2;">
                 <i class="fa-solid fa-bone me-5" style="font-size: 20px;"></i>
                 <span style="font-size: 25px;">
-                <fmt:formatNumber value="${memberDto.memberPoint - memberDto.memberUsedPoint}" pattern="###,###"/>
+                <fmt:formatNumber value="${memberDto.memberPoint}" pattern="###,###"/>
                 </span>
                 <a href="" class="point-use">펫콩 기부하기</a>
             </div>

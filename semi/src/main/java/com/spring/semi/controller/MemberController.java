@@ -271,9 +271,9 @@ public class MemberController {
 
 	    MemberDto memberDto = memberDao.selectOne(loginId);
 
-	    int point = memberDto.getMemberPoint() - memberDto.getMemberUsedPoint();
+	   // int point = memberDto.getMemberPoint() - memberDto.getMemberUsedPoint();
 
-	    model.addAttribute("memberPoint", memberDto.getMemberPoint());
+	    model.addAttribute("memberDto", memberDto);
 	    model.addAttribute("rewardType", rewardType);
 
 	    return "/WEB-INF/views/member/donation.jsp";
