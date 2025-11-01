@@ -64,40 +64,52 @@
 				<table>
 					<thead>
 						<tr>
-							<th>No</th>
-							<th>썸네일</th>
-                            <th>분류	</th>
-							<th>제목</th>
-							<th>작성자</th>
-							<th>조회수</th>
-							<th>추천수</th>
+							<th></th>
 						</tr>
 					</thead>
-					<tbody>
-						<c:forEach var="boardDto" items="${boardList}">
-							<tr>
-								<td>${boardDto.boardNo}</td>
-								<td><img src="/board/fun/image?boardNo=${boardDto.boardNo}" style="width:32px;"></td>
-                                <td>${headerMap[boardDto.boardNo].headerName}</td>  
-								<td style="text-align: center;"><a
-									href="detail?boardNo=${boardDto.boardNo}">${boardDto.boardTitle}</a>
-								</td>
-								<td>${boardDto.boardWriter}</td>
-								<td>${boardDto.boardView}</td>
-								<td>${boardDto.boardLike}</td>
-							</tr>
-						</c:forEach>
+					<tbody>						
+						<table border="1">
+						    <c:forEach var="boardDetailVO" items="${boardList}" varStatus="st">
+						        <tr>
+							        <td>
+							        	<a href="detail?boardNo=${boardDetailVO.boardNo}">
+							        		<div class="cell flex-box">
+										        <img src="/board/fun/image?boardNo=${boardDetailVO.boardNo}" class="left" style="width:60px; height:60px;">
+										        <div class="fun-container">
+										        	<div class="top-container flex-box">
+										        		 <div class="fun-title">${boardDetailVO.boardTitle}</div>
+										        		 <div class="fun-reply red">[${boardDetailVO.boardReply}]</div>
+										        	</div>
+										        	<div class="bottom-container flex-box">
+										        		<img src="/member/profile?member_id=${boardDetailVO.boardWriter}" width="24px;" height="24px;">
+										        		<div class="ms-10 fun-writer">[${boardDetailVO.memberNickname}]</div>
+										        		<div class="ms-10 fun-wtime">${boardDetailVO.formattedWtime}</div>
+										        		<i class="ms-10 fa fa-eye"></i> ${boardDetailVO.boardView}
+										                <i class="ms-10 fa-regular fa-heart"></i> ${boardDetailVO.boardLike}
+										        	</div>
+										        </div>
+									    	</div>
+							        	</a>
+							        </td>
+							    </tr>
+						    </c:forEach>
+						</table>
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="7">검색결과 : ${pageVO.begin} - ${pageVO.end} /
-								${pageVO.dataCount}개</td>
+							<td colspan="7">
+								검색결과 : 
+								${pageVO.begin} - ${pageVO.end}
+								/
+								${pageVO.dataCount}개
+							</td>
 						</tr>
 
 						<tr>
-							<td colspan="7" style="text-align: center;"><jsp:include
-									page="/WEB-INF/views/template/pagination.jsp"></jsp:include></td>
-						</tr>
+							<td colspan="7" style="text-align: center;">
+					            <jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+					        </td>
+					    </tr>
 					</tfoot>
 				</table>
 			</div>
