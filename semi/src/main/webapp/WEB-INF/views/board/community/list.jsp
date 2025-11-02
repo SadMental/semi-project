@@ -1,93 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-<style>
-body {
-	background-color: #f4ede6;
-	color: #5b3a29;
-	margin: 0;
-	padding: 0;
-}
+<link rel="stylesheet" type="text/css" href="/css/board_list.css">
 
-.container.w-800 {
-	max-width: 800px;
-	margin: 40px auto;
-	padding: 30px 35px;
-	border-radius: 15px;
-	background-color: #ffffffdd;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-h1 {
-	font-size: 2.8rem;
-	font-weight: 700;
-	margin-bottom: 25px;
-	text-align: center;
-}
-
-table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 1.05rem;
-}
-
-table thead {
-	background-color: #e9d8c6;
-}
-
-table th, table td {
-	padding: 14px 12px;
-	border-bottom: 1px solid #d3bfa6;
-	text-align: center;
-}
-
-table tr:hover {
-	background-color: #f3eae1;
-}
-
-a {
-	color: #5b3a29;
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-.btn.btn-positive {
-	background-color: #7e5a3c;
-	color: #f9f6f1;
-	border: none;
-	padding: 10px 20px;
-	font-size: 1rem;
-	font-weight: 700;
-	border-radius: 10px;
-	cursor: pointer;
-	text-decoration: none;
-	display: inline-block;
-	margin-top: 20px;
-}
-
-.btn.btn-positive:hover {
-	background-color: #a67849;
-}
-
-.cell.right {
-	text-align: right;
-}
-
-.no-posts {
-	text-align: center;
-	padding: 40px 0;
-	color: #8c6d5b;
-}
-
-.mb-20 {
-	margin-bottom: 20px;
-}
-</style>
 
 <div class="container w-800">
 
@@ -158,24 +74,31 @@ a:hover {
 						    <c:forEach var="boardDetailVO" items="${boardList}" varStatus="st">
 						        <tr>
 							        <td>
-							        	<a href="detail?boardNo=${boardDetailVO.boardNo}">
 							        		<div class="cell flex-box">
 										        <img src="/board/community/image?boardNo=${boardDetailVO.boardNo}" class="left" style="width:60px; height:60px;">
-										        <div class="community-container">
-										        	<div class="top-container flex-box">
-										        		 <div class="comminity-title">${boardDetailVO.boardTitle}</div>
-										        		 <div class="comminity-reply red">[${boardDetailVO.boardReply}]</div>
-										        	</div>
-										        	<div class="bottom-container flex-box">
-										        		<img src="/member/profile?member_id=${boardDetailVO.boardWriter}" width="24px;" height="24px;">
-										        		<div class="ms-10 comminity-writer">[${boardDetailVO.memberNickname}]</div>
-										        		<div class="ms-10 comminity-wtime">${boardDetailVO.formattedWtime}</div>
-										        		<i class="ms-10 fa fa-eye"></i> ${boardDetailVO.boardView}
-										                <i class="ms-10 fa-regular fa-heart"></i> ${boardDetailVO.boardLike}
-										        	</div>
+										        <div class="community-container ms-10">
+											        	<div class="top-container flex-box">
+											        		 <div class="comminity-title">
+												        		 <a href="detail?boardNo=${boardDetailVO.boardNo}">
+												        		 ${boardDetailVO.boardTitle}
+												        		 </a>	
+											        		 </div>
+											        		
+											        		 <div class="comminity-reply red">[${boardDetailVO.boardReply}]</div>
+											        	</div>
+											        	<div class="bottom-container flex-box">
+											        		<img src="/member/profile?member_id=${boardDetailVO.boardWriter}" width="24px;" height="24px;">
+											        		<div class="ms-10 comminity-writer">
+											        		<a href="/member/detail?memberNickname=${boardDetailVO.memberNickname }">
+											        			[${boardDetailVO.memberNickname}]
+											        		</a>
+											        		</div>
+											        		<div class="ms-10 comminity-wtime">${boardDetailVO.formattedWtime}</div>
+											        		<i class="ms-10 fa fa-eye"></i> ${boardDetailVO.boardView}
+											                <i class="ms-10 fa-regular fa-heart"></i> ${boardDetailVO.boardLike}
+											        	</div>
 										        </div>
 									    	</div>
-							        	</a>
 							        </td>
 							    </tr>
 						    </c:forEach>

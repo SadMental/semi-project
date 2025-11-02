@@ -28,7 +28,7 @@ body {
     color: #5b3a29;
   }
 
-  .field.w-100 {
+  .field.w-100p {
     width: 100%;
     padding: 12px 15px;
     border: 2px solid #c9a66b;
@@ -38,7 +38,7 @@ body {
     box-sizing: border-box;
   }
 
-  .field.w-100:focus {
+  .field.w-100p:focus {
     outline: none;
     border-color: #7e5a3c;
     box-shadow: 0 0 8px #a57a50;
@@ -46,26 +46,6 @@ body {
 
   .summernote-editor {
     margin-top: 10px;
-  }
-
-  .btn.btn-positive.w-100 {
-    background-color: #7e5a3c;
-    color: #f9f6f1;
-    border: none;
-    padding: 14px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .btn.btn-positive.w-100:hover {
-    background-color: #a67849;
   }
 
   .mt-40 {

@@ -7,64 +7,9 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
 <script src="/summernote/custom-summernote.js"></script>
-<link rel="stylesheet" type="text/css" href="./commons.css">
+<link rel="stylesheet" type="text/css" href="/css/board_edit.css">
 
 <style>
-  body {
-    background-color: #f4ede6;
-    color: #5b3a29;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container.w-800 {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px 35px;
-    border-radius: 15px;
-  }
-  
-  h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-
-
-  input.field.w-100 {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #c9a66b;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    color: #5b3a29;
-  }
-  
-  input.field.w-100:focus {
-    outline: none;
-    border-color: #7e5a3c;
-    box-shadow: 0 0 8px #a57a50;
-  }
-  .cell.right {
-    text-align: right;
-  }
-  button.btn.btn-positive {
-    background-color: #7e5a3c;
-    color: #f9f6f1;
-    border: none;
-    padding: 12px 28px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-  
-  button.btn.btn-positive:hover {
-    background-color: #a67849;
-  }
-  .mt-20 {
-  margin-top: 20px;
-}
 </style>
 
 <form autocomplete="off" action="write" method="post" enctype="multipart/form-data">
@@ -95,7 +40,7 @@
 	      </div>
       </div>
       <div class="cell mt-20">
-          <input type="text" name="boardTitle" class="field w-100" placeholder="제목을 입력하세요.">
+          <input type="text" name="boardTitle" class="field w-100p" placeholder="제목을 입력하세요.">
       </div>
       
       <div class="cell mt-20">

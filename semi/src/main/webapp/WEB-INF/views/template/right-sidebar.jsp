@@ -33,7 +33,7 @@
 <script src="/js/sidebar.js"></script>
 
 	<c:if test="${pageContext.request.requestURI != '/WEB-INF/views/member/join.jsp'}">
-		 <div class="cell flex-box flex-vertical w-25p">
+		 <div class="cell flex-box flex-vertical w-25p ms-20">
             <div class="cell ms-10 me-10 center">
             	<c:choose>
 	            	<c:when test="${sessionScope.loginId != null && sessionScope.loginLevel == '0' }">

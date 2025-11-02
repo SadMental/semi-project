@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp" />
-
 <div class="container w-600 mt-50 mb-50">
   <h2 class="center mb-20">새로운 게시판 등록</h2>
 
