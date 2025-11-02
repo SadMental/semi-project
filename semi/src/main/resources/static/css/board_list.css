@@ -43,7 +43,6 @@ table tr:hover {
 }
 
 a {
-	color: #5b3a29;
 	text-decoration: none;
 }
 
@@ -51,23 +50,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-.btn.btn-positive {
-	background-color: #7e5a3c;
-	color: #f9f6f1;
-	border: none;
-	padding: 10px 20px;
-	font-size: 1rem;
-	font-weight: 700;
-	border-radius: 10px;
-	cursor: pointer;
-	text-decoration: none;
-	display: inline-block;
-	margin-top: 20px;
-}
-
-.btn.btn-positive:hover {
-	background-color: #a67849;
-}
 
 .cell.right {
 	text-align: right;

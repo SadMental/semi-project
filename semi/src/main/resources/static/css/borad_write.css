@@ -1,4 +1,4 @@
-  body {
+body {
     background-color: #f4ede6;
     color: #5b3a29;
     margin: 0;
@@ -19,7 +19,7 @@
   }
 
 
-  input.field.w-100 {
+  input.field.w-100p {
     width: 100%;
     padding: 12px 15px;
     border: 2px solid #c9a66b;
@@ -28,7 +28,7 @@
     color: #5b3a29;
   }
   
-  input.field.w-100:focus {
+  input.field.w-100p:focus {
     outline: none;
     border-color: #7e5a3c;
     box-shadow: 0 0 8px #a57a50;
@@ -50,6 +50,3 @@
   button.btn.btn-positive:hover {
     background-color: #a67849;
   }
-  .mt-20 {
-  margin-top: 20px;
-}
