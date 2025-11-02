@@ -1,13 +1,10 @@
+
 package com.spring.semi.vo;
-
-
 import java.sql.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class ReplyListVO {
 	private int replyNo;
@@ -19,4 +16,5 @@ public class ReplyListVO {
 	private boolean writer;
 	private boolean owner;
 	private int replyLike;
+	private boolean isLiked;
 }
