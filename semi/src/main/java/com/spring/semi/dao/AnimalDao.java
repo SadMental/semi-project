@@ -129,4 +129,13 @@ public class AnimalDao {
 			jdbcTemplate.update(sql, params);
 			
 		}
+		//1102추가
+		public List<AnimalDto> selectFilterTMaster(String animal_master) {
+		    String sql = "SELECT * FROM animal WHERE animal_master = ? AND animal_permission = 't'";
+		  
+		    Object[] params = {animal_master};
+		    
+		    return jdbcTemplate.query(sql, animalMapper, params);
+		}
+
 }
