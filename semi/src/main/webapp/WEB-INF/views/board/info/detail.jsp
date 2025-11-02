@@ -143,6 +143,14 @@
 		height: 1.4em;
 		vertical-align: middle;
 	}
+	
+	/* 좋아요 아이콘 색상 추가: active 클래스가 있을 때만 색상 적용 */
+	.reply-like.active .fa-solid {
+	    color: #ff6347; /* 채워진 하트 색상 (예: 토마토 레드) */
+	}
+	.reply-like {
+	    cursor: pointer;
+	}
 </style>	
 	
 	
@@ -217,7 +225,7 @@ $(document).ready(function() {
 	}
 	  
 	// ---------------------- 🎨 이모지 목록 설정 ----------------------
-	const emojiList = ["😀","😂","😍","🤣","😅","😊","🥰","😘","😎","🤩","🥳","🤔","😮","😇","😋","🎉","🎁","🎂","🎈","✨","🦄","🐶","❤️"];
+	const emojiList = ["😀","😂","😍","🤣","😅","😊","🥰","😘","😎","🤩","🥳","🤔","😮","😪","😭","🎉","🎁","🎂","🎈","✨","🦄","🐶","❤️"];
 	emojiContainer.html(emojiList.join(''));
 	safeTwemojiParse(emojiContainer[0]); // 초기 이모지 파싱
 	let emojiOpen = false;
@@ -268,19 +276,27 @@ $(document).ready(function() {
 	            const list = resp.list || [];
 	            $("#reply-count").text(resp.boardReply || 0);
 	            $(".reply-list-wrapper").empty();
+	            
+	            // 💡 디버깅 코드 추가: 서버가 어떤 liked 값을 보내는지 확인합니다.
+	            console.log("--- Reply List Load Debug ---");
+	            
 	            if (list.length === 0) {
 	                $(".reply-list-wrapper").html('<div style="text-align:center; padding:20px; color:#a67c52;">아직 댓글이 없습니다.</div>');
 	            } else {
 	                list.forEach(reply => {
+	                    // ⭐ 수정됨: 서버 응답 키인 reply.liked를 사용합니다.
+	                    console.log(`Reply No: ${reply.replyNo}, Count: ${reply.replyLike}, IS_LIKED (Server): ${reply.liked}`);
+	                    
 	                    // ⭐ isOwner/isWriter는 RestController에서 ReplyListVO에 이미 설정되어 넘어오므로
 	                    // 여기서 다시 로그인 ID와 비교할 필요 없이 바로 사용합니다.
 	                    const isOwner = reply.owner;
 	                    const isWriter = reply.writer;
 	                    const writerBadge = isWriter ? '<span style="color:#7b4e36; font-size:0.85em; margin-left:5px;">(글쓴이)</span>' : '';
 	                   
-	                    // ⭐ 서버에서 넘어온 reply.isLiked 값에 따라 초기 아이콘 클래스를 설정합니다.
-	                    const heartIconClass = reply.isLiked ? 'fa-solid' : 'fa-regular';
-	                    const likeSpanClass = reply.isLiked ? 'active' : '';
+	                    // ⭐ 수정됨: reply.isLiked 대신 서버 응답 키인 reply.liked를 사용합니다.
+	                    const heartIconClass = reply.liked ? 'fa-solid' : 'fa-regular';
+	                    // ⭐ 수정됨: reply.isLiked 대신 서버 응답 키인 reply.liked를 사용하여 active 클래스를 설정합니다.
+	                    const likeSpanClass = reply.liked ? 'active' : ''; 
 	                   
 	                    const formattedTime = formatTime(reply.replyWtime);
 	                    const html = `

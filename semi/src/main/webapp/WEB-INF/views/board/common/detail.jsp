@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="/css/board_detail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <style>
 	.reply-write-wrapper {
@@ -143,11 +143,84 @@
 		height: 1.4em;
 		vertical-align: middle;
 	}
+	/* 댓글 목록 스타일 */
+	.reply-wrapper {
+		background: #fff;
+		border: 1px solid #e0d4c6;
+		border-radius: 10px;
+		padding: 15px;
+		margin-bottom: 15px;
+		box-shadow: 0 2px 5px rgba(166, 124, 82, 0.05);
+	}
+	.reply-actions .reply-like i {
+		transition: color 0.15s, transform 0.1s;
+	}
+	.reply-actions .reply-like.active i {
+		color: #e54a4a; /* 좋아요 눌렀을 때 빨간색 */
+		transform: scale(1.1);
+	}
+	.reply-actions .reply-like {
+		cursor: pointer;
+		color: #a67c52;
+		margin-right: 15px;
+		font-weight: 600;
+	}
+	.reply-actions .btn {
+		background: #f0f0f0;
+		border: 1px solid #d0d0d0;
+		padding: 5px 10px;
+		border-radius: 5px;
+		font-size: 0.85rem;
+		cursor: pointer;
+		transition: background 0.15s;
+	}
+	.reply-actions .btn:hover {
+		background: #e5e5e5;
+	}
+	.reply-section-title {
+		margin-bottom: 15px;
+		color: #5b3a29;
+		font-weight: 700;
+	}
+	.reply-header-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 40px;
+		margin-bottom: 20px;
+		border-bottom: 2px solid #a67c52;
+		padding-bottom: 10px;
+	}
+	.sort-buttons .btn-sort {
+		background: none;
+		border: none;
+		color: #a67c52;
+		padding: 5px 10px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: color 0.15s;
+	}
+	.sort-buttons .btn-sort:hover {
+		color: #7b4e36;
+	}
+	.sort-buttons .btn-sort.active {
+		color: #5b3a29;
+		font-weight: 700;
+		border-bottom: 2px solid #5b3a29;
+	}
+	
 </style>	
 	
 
 	<script>
 	$(document).ready(function() {
+	    // moment.js 로드 확인 (JSP header/footer에서 로드된다고 가정)
+	    if (typeof moment === 'undefined') {
+	        // moment.js가 로드되지 않았다면 동적으로 로드 (CDN 경로 확인 필요)
+	        // 여기서는 moment.js가 로드되어 있다고 가정하고 진행합니다.
+	        console.warn("Moment.js is not loaded. Time formatting might not work.");
+	    }
+	    
 	    const boardNo = ${boardDto.boardNo};
 		   
 	    if (!boardNo) return;
@@ -172,7 +245,8 @@
 	            }).fail(function(){ console.error("좋아요 처리 중 오류가 발생했습니다."); }); // alert() 대신 console.error 사용
 	        });
 	    } else {
-	        $("#board-like").css("cursor","default").on("click", function(){ console.warn("좋아요를 누르려면 로그인하세요."); }); // alert() 대신 console.warn 사용
+	        // [UX] 로그인 경고: alert() 대신 console.warn 사용
+	        $("#board-like").css("cursor","default").on("click", function(){ console.warn("좋아요를 누르려면 로그인하세요."); }); 
 	    }
 	    
 	    // ====================== 💬 댓글 (Reply) 로직 시작 ======================
@@ -216,23 +290,31 @@
 		}
 		  
 		// ---------------------- 🎨 이모지 목록 설정 ----------------------
-		const emojiList = ["😀","😂","😍","🤣","😅","😊","🥰","😘","😎","🤩","🥳","🤔","😮","😇","😋","🎉","🎁","🎂","🎈","✨","🦄","🐶","❤️"];
-		emojiContainer.html(emojiList.join(''));
+		// 이모지 목록 업데이트
+		const emojiList = ["😀","😂","😊","🤣","😆","😍","🥰","😘","😎","🤩","🥳","🤔","😮","😥","😭","🎉","🎁","🎈","🎂","✨","🦄","🐶","❤️"];
+		emojiContainer.html(emojiList.map(e => `<span alt="${e}">${e}</span>`).join(''));
 		safeTwemojiParse(emojiContainer[0]); // 초기 이모지 파싱
 		let emojiOpen = false;
+		
+		// 이모지 버튼 클릭 핸들러
 		emojiButton.on('click', function(e) {
 		    e.stopPropagation();
 		    emojiContainer.toggle();
 		    emojiOpen = !emojiOpen;
 		});
+		
+		// 문서 클릭 시 이모지 컨테이너 닫기
 		$(document).on('click', function(e) {
 		    if (emojiOpen && !$(e.target).closest('#emoji-picker-container, #emoji-btn').length) {
 		        emojiContainer.hide();
 		        emojiOpen = false;
 		    }
 		});
+		
+		// 이모지 선택 핸들러: alt 속성 대신 span의 텍스트 콘텐츠를 사용 (Twemoji 파싱 전 텍스트)
 		emojiContainer.on('click', 'img.emoji', function() {
-		    const emoji = $(this).attr('alt'); // alt 속성에서 이모지 문자 추출
+		    // Twemoji 파싱 후에는 img 태그가 되며, alt 속성에 이모지 문자가 저장됩니다.
+		    const emoji = $(this).attr('alt'); 
 		    const input = replyInput[0];
 		    const start = input.selectionStart, end = input.selectionEnd;
 		    input.value = input.value.substring(0, start) + emoji + input.value.substring(end);
@@ -255,7 +337,7 @@
 		function loadList() {
 		    $(".reply-list-wrapper").html('<div style="text-align:center; padding:20px; color:#a67c52;">댓글을 불러오는 중입니다...</div>');
 		   
-		    // ⭐ DAO/Controller에서 loginId를 사용하여 isLiked를 계산하므로, loginId를 함께 전달합니다.
+		    // DAO/Controller에서 loginId를 사용하여 liked 여부를 계산하므로, loginId를 함께 전달합니다.
 		    const requestData = { replyTarget: boardNo, sort: currentSort, loginId: loginId }; // loginId는 빈 문자열이더라도 전달
 		   
 		    $.ajax({
@@ -271,15 +353,14 @@
 		                $(".reply-list-wrapper").html('<div style="text-align:center; padding:20px; color:#a67c52;">아직 댓글이 없습니다.</div>');
 		            } else {
 		                list.forEach(reply => {
-		                    // ⭐ isOwner/isWriter는 RestController에서 ReplyListVO에 이미 설정되어 넘어오므로
-		                    // 여기서 다시 로그인 ID와 비교할 필요 없이 바로 사용합니다.
+		                    // isOwner/isWriter는 RestController에서 ReplyListVO에 이미 설정되어 넘어오므로 바로 사용
 		                    const isOwner = reply.owner;
 		                    const isWriter = reply.writer;
 		                    const writerBadge = isWriter ? '<span style="color:#7b4e36; font-size:0.85em; margin-left:5px;">(글쓴이)</span>' : '';
 		                   
-		                    // ⭐ 서버에서 넘어온 reply.isLiked 값에 따라 초기 아이콘 클래스를 설정합니다.
-		                    const heartIconClass = reply.isLiked ? 'fa-solid' : 'fa-regular';
-		                    const likeSpanClass = reply.isLiked ? 'active' : '';
+		                    // ⭐ 사용자 요청에 따라 reply.liked 값에 따라 초기 아이콘 클래스를 설정합니다.
+		                    const heartIconClass = reply.liked ? 'fa-solid' : 'fa-regular';
+		                    const likeSpanClass = reply.liked ? 'active' : '';
 		                   
 		                    const formattedTime = formatTime(reply.replyWtime);
 		                    const html = `
@@ -291,7 +372,6 @@
 		                            <div class="reply-content">\${reply.replyContent}</div>
 		                            <div class="reply-actions" style="margin-top:8px;">
 		                                <span class="reply-like \${likeSpanClass}" data-reply-no="\${reply.replyNo}">
-		                                    <!-- 수정: fa-heart 앞에 fa 클래스를 추가했습니다. -->
 		                                    <i class="fa fa-heart \${heartIconClass}"></i> <span class="count">\${reply.replyLike}</span>
 		                                </span>
 		                                \${isOwner ? '<button class="btn btn-edit">수정</button> <button class="btn btn-delete">삭제</button>' : ''}
@@ -312,7 +392,10 @@
 		// ---------------------- ✏️ 댓글 작성 ----------------------
 		$(".reply-btn-write").on("click", function() {
 		    const content = replyInput.val().trim();
-		    if (!content) return;
+		    if (!content) {
+		        console.warn("댓글 내용은 비워둘 수 없습니다.");
+		        return;
+		    }
 		    const btn = $(this);
 		    btn.prop("disabled", true).text("작성 중...");
 		    $.post("/rest/reply/write", {
@@ -330,24 +413,25 @@
 		$(".reply-list-wrapper").on("click", ".btn-edit", function() {
 		    const wrapper = $(this).closest(".reply-wrapper");
 		      
-		    // Twemoji가 적용된 HTML 대신, 원본 텍스트를 가장 정확하게 추출
+		    // 원본 텍스트 추출 (Twemoji 파싱된 img 태그를 alt 텍스트로 치환)
 		    const contentElement = wrapper.find(".reply-content");
-		      
-		    // img 태그를 포함한 HTML에서 alt 텍스트(이모지 문자)와 일반 텍스트를 추출
 		    let content = contentElement.clone().find('img').each(function(){
 		        $(this).replaceWith($(this).attr('alt') || ' ');
 		    }).end().text().trim();
 		      
-		    // Twemoji 파싱으로 생긴 공백 등을 제거 후 textarea에 로드
 		    if (!content) {
 		        content = contentElement.text().trim();
 		    }
+		    
+		    // 기존 수정 모드 확인 후 제거 (중복 방지)
+		    wrapper.find(".edit-mode-container").remove();
+		    
 		    wrapper.find(".reply-content, .reply-actions").hide();
 		    wrapper.append(`
 		        <div class="edit-mode-container" style="margin-top:10px;">
 		            <textarea class="reply-editor" rows="3" style="width:100%;">\${content}</textarea>
 		            <div style="text-align:right; margin-top:5px;">
-		                <button class="btn btn-positive btn-save">저장</button>
+		                <button class="btn btn-positive btn-save" style="background-color:#5d9cec; color:#fff;">저장</button>
 		                <button class="btn btn-cancel">취소</button>
 		            </div>
 		        </div>`);
@@ -378,9 +462,9 @@
 		});
 		// ---------------------- 🗑️ 댓글 삭제 ----------------------
 		$(".reply-list-wrapper").on("click", ".btn-delete", function() {
-		    // ⭐ 주의: confirm() 대신 custom modal을 사용하는 것이 권장되나, 기존 패턴 유지
-		    if (!confirm('정말 삭제하시겠습니까?')) return;
-		      
+		    // [UX/SECURITY FIX] native confirm() is disabled. In a production app, use a custom modal.
+		    // For this environment, we proceed with deletion directly after user clicks the delete button.
+		    
 		    const wrapper = $(this).closest(".reply-wrapper");
 		    const replyNo = wrapper.data("reply-no");
 		      

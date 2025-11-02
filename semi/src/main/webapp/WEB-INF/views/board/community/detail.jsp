@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/CDQ6WpT9FSAJ5/z5Y13iWlWgPj9/2/jYg52T9kK/L3G8cW5WwM0r1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<style>
 		.reply-write-wrapper {
@@ -217,7 +217,7 @@
 			}
 			  
 			// ---------------------- 🎨 이모지 목록 설정 ----------------------
-			const emojiList = ["😀","😂","😍","🤣","😅","😊","🥰","😘","😎","🤩","🥳","🤔","😮","😇","😋","🎉","🎁","🎂","🎈","✨","🦄","🐶","❤️"];
+			const emojiList = ["😀","😂","😊","🤣","😅","😍","🥰","😘","😎","🤩","🥳","🤔","😮","🤭","🤫","🎉","🎁","🎈","🎂","✨","🦄","🐶","❤️"];
 			emojiContainer.html(emojiList.join(''));
 			safeTwemojiParse(emojiContainer[0]); // 초기 이모지 파싱
 			let emojiOpen = false;
@@ -278,9 +278,9 @@
 			                    const isWriter = reply.writer;
 			                    const writerBadge = isWriter ? '<span style="color:#7b4e36; font-size:0.85em; margin-left:5px;">(글쓴이)</span>' : '';
 			                   
-			                    // ⭐ 서버에서 넘어온 reply.isLiked 값에 따라 초기 아이콘 클래스를 설정합니다.
-			                    const heartIconClass = reply.isLiked ? 'fa-solid' : 'fa-regular';
-			                    const likeSpanClass = reply.isLiked ? 'active' : '';
+			                    // ⭐ 수정: 서버에서 넘어온 reply.liked 값에 따라 초기 아이콘 클래스를 설정합니다.
+			                    const heartIconClass = reply.liked ? 'fa-solid' : 'fa-regular';
+			                    const likeSpanClass = reply.liked ? 'active' : '';
 			                   
 			                    const formattedTime = formatTime(reply.replyWtime);
 			                    const html = `

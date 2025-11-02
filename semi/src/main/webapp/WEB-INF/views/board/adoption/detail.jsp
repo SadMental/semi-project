@@ -582,7 +582,7 @@ $(function() {
    }
   
    // ---------------------- 🎨 이모지 목록 설정 ----------------------
-   const emojiList = ["😀","😂","😍","🤣","😅","😊","🥺","😘","😎","🤩","🥳","🤔","😮","🤫","😫","🎉","🎁","🎈","🎂","✨","🦄","🐶","❤️"];
+   const emojiList = ["😀","😂","😍","🤣","😅","😊","😎","😘","😎","🤩","🥰","🤔","😮","🥳","👏","🎉","🎁","🎈","🎂","✨","🦄","🐶","❤️"];
    emojiContainer.html(emojiList.join(''));
    safeTwemojiParse(emojiContainer[0]); // 초기 이모지 파싱
    let emojiOpen = false;
@@ -621,7 +621,7 @@ $(function() {
 	function loadList() {
 	    $(".reply-list-wrapper").html('<div style="text-align:center; padding:20px; color:#a67c52;">댓글을 불러오는 중입니다...</div>');
 	   
-	    // ⭐ DAO/Controller에서 loginId를 사용하여 isLiked를 계산하므로, loginId를 함께 전달합니다.
+	    // ⭐ DAO/Controller에서 loginId를 사용하여 liked를 계산하므로, loginId를 함께 전달합니다.
 	    const requestData = { replyTarget: boardNo, sort: currentSort, loginId: loginId }; // loginId는 빈 문자열이더라도 전달
 	   
 	    $.ajax({
@@ -643,9 +643,9 @@ $(function() {
 	                    const isWriter = reply.writer;
 	                    const writerBadge = isWriter ? '<span style="color:#7b4e36; font-size:0.85em; margin-left:5px;">(글쓴이)</span>' : '';
 	                   
-	                    // ⭐ 서버에서 넘어온 reply.isLiked 값에 따라 초기 아이콘 클래스를 설정합니다.
-	                    const heartIconClass = reply.isLiked ? 'fa-solid' : 'fa-regular';
-	                    const likeSpanClass = reply.isLiked ? 'active' : '';
+	                    // ✅ 요청에 따라 reply.liked 속성을 사용하여 초기 아이콘 클래스를 설정합니다.
+	                    const heartIconClass = reply.liked ? 'fa-solid' : 'fa-regular';
+	                    const likeSpanClass = reply.liked ? 'active' : '';
 	                   
 	                    const formattedTime = formatTime(reply.replyWtime);
 	                    const html = `

@@ -33,15 +33,14 @@ public class ReplyRestController {
 	public ReplyListResponseVO list(
 	           @RequestParam int replyTarget,
 	           @RequestParam(defaultValue = "time") String sort,
-	           // 💡 요청하신 대로 클라이언트가 보낸 loginId를 받는 파라미터를 추가했습니다.
-	           // 이 값은 세션 ID와 동일해야 하지만, 세션 ID를 우선하여 사용합니다.
-	           @RequestParam(required = false) String clientLoginId, 
+	           // 💡 클라이언트에서 보낸 파라미터(clientLoginId)는 제거하고 세션에만 의존하여 보안과 일관성을 유지합니다.
 	           HttpSession session) {
 	      
-	     
+	        // 💡 수정된 부분: 세션에서 loginId를 가져오되, null이면 빈 문자열로 초기화합니다.
+	        // 이 loginId가 DAO로 전달되어 해당 사용자의 좋아요 상태를 조회합니다.
 			String loginId = (String) session.getAttribute("loginId");
 	        if (loginId == null) {
-	            // null 대신 빈 문자열을 사용하여 DAO의 SQL 쿼리에서 NULL 비교 오류를 방지합니다.
+	            // DAO 쿼리가 SQL NULL 비교를 하지 않도록 빈 문자열로 대체하여 비로그인 상태를 명확히 합니다.
 	            loginId = "";
 	        }
 	        
@@ -49,7 +48,7 @@ public class ReplyRestController {
 			if (boardDto == null)
 				throw new TargetNotfoundException("존재하지 않는 게시글");
 	       
-	       // ⭐ DAO 메소드 호출 시, null 대신 빈 문자열이 전달될 수 있으므로 안전합니다.
+	       // ⭐ DAO 호출 시, loginId가 null 대신 ""로 전달되어 안전합니다.
 			List<ReplyListVO> result = replyDao.selectListWithLike(replyTarget, sort, loginId);
 	       
 	       // 2. ReplyListVO의 writer/owner 필드 채우기 (Mapper가 못 하므로 여기서 처리)
@@ -60,13 +59,12 @@ public class ReplyRestController {
 	                                   boardDto.getBoardWriter().equals(reply.getReplyWriter());
 	           reply.setWriter(isBoardWriter);
 	          
-	           // owner: 댓글 작성자와 현재 로그인 사용자가 같은지
-	           // loginId가 빈 문자열이므로, .isEmpty()를 사용하여 로그인 상태를 판단합니다.
+	        
 	           boolean isOwner = !loginId.isEmpty() && // loginId가 빈 문자열이 아닌 경우 (로그인 상태)
 	                             reply.getReplyWriter() != null &&
 	                             loginId.equals(reply.getReplyWriter());
 	           reply.setOwner(isOwner);
-	           // isLiked 필드는 이미 DAO/Mapper에서 채워져 있습니다.
+	    
 	       }
 	       // ⭐ 3. 댓글 총 개수를 DB에서 COUNT하여 가져옴
 	       int totalReplyCount = replyDao.countByBoardNo(replyTarget);
@@ -76,6 +74,7 @@ public class ReplyRestController {
 					.list(result)
 					.build();
 		}
+
   
    // ... (write, delete, edit, likeAction, likeCheck 메소드는 변경 없음)
 	/**
