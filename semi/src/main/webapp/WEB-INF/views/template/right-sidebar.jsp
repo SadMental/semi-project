@@ -93,7 +93,7 @@
 	            		</div>
 					</c:when>
 					<c:otherwise>
-						<form id="login-form">
+						<form id="login-form" method="post">
 							<div class="cell">
 								<label>아이디</label>
 								<input class="field w-100p" type="text" name="memberId">

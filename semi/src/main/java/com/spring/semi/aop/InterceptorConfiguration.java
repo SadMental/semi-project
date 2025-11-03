@@ -28,7 +28,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		.addPathPatterns("/board/**", "/member/**", "/rest/**")
 		.excludePathPatterns(
 				"/board/**/detail", "/board/**/list",
-				"/member/detail", "/member/login",
+				"/member/detail", "/**/login",
 				"/member/join**", "/member/find**",
 				"/**/profile", "/rest/main/**",
 				"/**/image"
