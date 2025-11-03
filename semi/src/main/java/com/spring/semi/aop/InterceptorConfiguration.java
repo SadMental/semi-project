@@ -12,6 +12,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 	private AdminInterceptor adminInterceptor;
 	@Autowired
 	private BoardViewIntercepter boardViewIntercepter;
+	@Autowired
+	private MemberLoginInterceptor memberLoginInterceptor;
 	
 	
 	@Override
@@ -21,5 +23,20 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		.addPathPatterns("/board/community/detail", "/infoBoard/detail", "/board/petfluence/detail",
 				"/board/fun/detail", "/board/**/detail")
 		.order(10);
+		
+		registry.addInterceptor(memberLoginInterceptor)
+		.addPathPatterns("/board/**", "/member/**", "/rest/**")
+		.excludePathPatterns(
+				"/board/**/detail", "/board/**/list",
+				"/member/detail", "/member/login",
+				"/member/join**", "/member/find**",
+				"/**/profile", "/rest/main/**",
+				"/**/image"
+				)
+		.order(2);
+		
+		registry.addInterceptor(adminInterceptor)
+		.addPathPatterns("/admin/**")
+		.order(1);
 	} 
 }
