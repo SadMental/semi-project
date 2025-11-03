@@ -60,9 +60,34 @@
 							</div>
 						</div>
 						<div class="cell">
-							<a href="/mail/list/receive" class="btn btn-neutral w-50p">우편함</a>
-						</div>
-						<div class="flex-box">
+		            		<div class="flex-box">
+			                	<img src="/member/profile?member_id=${sessionScope.loginId }" width="50" height="50">
+			                	<div class="flex-box flex-center">
+									<span>${sidebarInfo.memberNickname }</span>
+			                	</div>
+		            		</div>
+		            		<div class="cell">
+		            			<div class="flex-box">
+		            				<span>보유 포인트 : ${sidebarInfo.memberPoint }</span>
+		            				<hr>
+		            				<span>사용 포인트 : ${sidebarInfo.memberUsedPoint }</span>
+		            			</div>
+		            		</div>
+		            		<div class="cell">
+		            			<a href="/mail/list/receive" class="btn btn-neutral w-50p">우편함</a>
+		            		</div>
+		            		<div class="flex-box">
+								<div class="cell">
+									<a href="/member/mypage" class="btn btn-neutral">내 정보</a>
+			            		</div>					
+								<div class="cell">
+									<a href="/member/logout" class="btn btn-neutral">로그아웃</a>
+			            		</div>					
+		            		</div>
+	            		</div>
+					</c:when>
+					<c:otherwise>
+						<form id="login-form" method="post">
 							<div class="cell">
 								<a href="/member/mypage" class="btn btn-neutral">내 정보</a>
 							</div>

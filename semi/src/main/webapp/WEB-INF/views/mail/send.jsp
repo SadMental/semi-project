@@ -8,6 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
 <script src="/summernote/custom-summernote.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/board_write.css">
 
 <script type="text/javascript">
 	
