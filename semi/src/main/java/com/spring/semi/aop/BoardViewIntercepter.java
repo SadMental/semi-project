@@ -46,7 +46,7 @@ public class BoardViewIntercepter implements HandlerInterceptor
 		}
 		
 		Integer loginLevel = (Integer)session.getAttribute("loginLevel");
-		if (loginLevel != null && loginLevel == 2) 
+		if (loginLevel != null && loginLevel == 0) 
 		{
 			return true; // 관리자는 조회수가 오르지 않는다
 		}
