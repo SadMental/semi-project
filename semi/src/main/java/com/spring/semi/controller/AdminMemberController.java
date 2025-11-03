@@ -40,84 +40,67 @@ public class AdminMemberController {
 	private EmailService emailService;
 	@Autowired
 	private MemberService memberService;
-	
+
 	@GetMapping("/list")
-	public String list(
-			Model model,
-			@ModelAttribute PageVO pageVO
-			) {
-        pageVO.setDataCount(memberDao.count(pageVO));
+	public String list(Model model, @ModelAttribute PageVO pageVO) {
+		pageVO.setDataCount(memberDao.count(pageVO));
 		List<MemberDto> memberList = memberDao.selectListForPaging(pageVO);
-		
+
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pageVO", pageVO);
-		
+
 		return "/WEB-INF/views/admin/member/list.jsp";
 	}
-	
-	@GetMapping("/detail")
-	public String detail(
-			Model model,
-			@RequestParam String memberId
 
-			) {
+	@GetMapping("/detail")
+	public String detail(Model model, @RequestParam String memberId
+
+	) {
 		MemberDto memberDto = memberDao.selectOne(memberId);
 		List<AnimalDto> animalList = animalDao.selectList(memberId);
 		List<BoardListVO> boardListVO = boardDao.selectByMemberId(memberId);
-		
+
 		model.addAttribute("memberDto", memberDto);
 		model.addAttribute("animalList", animalList);
 		model.addAttribute("boardListVO", boardListVO);
-		
+
 		return "/WEB-INF/views/admin/member/detail.jsp";
 	}
-	
+
 	@GetMapping("/edit")
-	public String edit(
-			Model model,
-			@RequestParam String memberId
-			) {
+	public String edit(Model model, @RequestParam String memberId) {
 		MemberDto memberDto = memberDao.selectOne(memberId);
-		
+
 		model.addAttribute("memberDto", memberDto);
-		
+
 		return "/WEB-INF/views/admin/member/edit.jsp";
 	}
+
 	@PostMapping("/edit")
-	public String edit(
-			@ModelAttribute MemberDto memberDto
-			) {
-		
-		memberDao.updateForAdmin(
-				MemberDto.builder()
-										.memberNickname(memberDto.getMemberNickname())
-										.memberDescription(memberDto.getMemberDescription())
-										.memberPoint(memberDto.getMemberPoint())
-										.memberId(memberDto.getMemberId())
-										.build()
-				);
-		
+	public String edit(@ModelAttribute MemberDto memberDto) {
+
+		memberDao.updateForAdmin(MemberDto.builder().memberNickname(memberDto.getMemberNickname())
+				.memberDescription(memberDto.getMemberDescription()).memberPoint(memberDto.getMemberPoint())
+				.memberId(memberDto.getMemberId()).build());
+
 		return "redirect:list";
 	}
-	
+
 	@GetMapping("/drop")
-	public String drop(
-			@RequestParam String memberId
-			) {
+	public String drop(@RequestParam String memberId) {
 		MemberDto memberDto = memberDao.selectOne(memberId);
 		memberService.deleteMember(memberDto.getMemberId(), memberDto.getMemberPw());
 		return "redirect:list";
 	}
-	
+
 	@GetMapping("/password")
-	public String password(
-			@RequestParam String memberEmail
-			) throws MessagingException, IOException {
+	public String password(@RequestParam String memberEmail) throws MessagingException, IOException {
 		MemberDto findDto = memberDao.selectForEmail(memberEmail);
-		if(findDto == null) throw new TargetNotfoundException("해당 이메일이 등록된 회원이 없습니다.");
-		
+		if (findDto == null)
+			throw new TargetNotfoundException("해당 이메일이 등록된 회원이 없습니다.");
+
 		emailService.sendEmailForFindPw(findDto);
-		
+
 		return "redirect:list";
 	}
 
