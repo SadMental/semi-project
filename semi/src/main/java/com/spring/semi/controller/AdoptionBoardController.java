@@ -119,29 +119,56 @@ public class AdoptionBoardController {
     // =============================
     @GetMapping("/list")
     public String list(@ModelAttribute PageFilterVO pageFilterVO, Model model) {
+        // 1. 기본 상수 설정
         final int boardType = 4;
         final int pageSize = 10;
-
+        
+        // 2. 파라미터 정리 및 PageFilterVO 설정
+        
+        // 2-1. 정렬 기준 설정
         String orderBy = (pageFilterVO.getOrderBy() == null || pageFilterVO.getOrderBy().isBlank())
                 ? "wtime" : pageFilterVO.getOrderBy();
-
+        pageFilterVO.setOrderBy(orderBy); 
+        
+        // 2-2. 검색어와 검색 컬럼 설정
         String keyword = null;
+        String column = null;
+
         if (pageFilterVO.getAnimalHeaderName() != null && !pageFilterVO.getAnimalHeaderName().isBlank()) {
             keyword = pageFilterVO.getAnimalHeaderName();
+            // 통합 헤더 검색을 위한 컬럼명 설정 (DAO에서 사용)
+            column = "animal_header_name"; 
         } else if (pageFilterVO.getTypeHeaderName() != null && !pageFilterVO.getTypeHeaderName().isBlank()) {
             keyword = pageFilterVO.getTypeHeaderName();
+            column = "type_header_name"; 
         } else if (pageFilterVO.getKeyword() != null && !pageFilterVO.getKeyword().isBlank()) {
             keyword = pageFilterVO.getKeyword();
+            // 일반 검색일 경우, column은 VO에 이미 담겨있는 값을 사용하거나 기본값 설정
+            column = (pageFilterVO.getColumn() == null || pageFilterVO.getColumn().isBlank()) ? "board_title" : pageFilterVO.getColumn();
         }
+        
+        // 최종 검색 파라미터만 VO에 설정
+        pageFilterVO.setKeyword(keyword);
+        pageFilterVO.setColumn(column);
+        
+        // ❌ 에러를 일으켰던 코드를 삭제합니다.
+        // pageFilterVO.setSearch(!isSearch); 
+        // PageFilterVO의 isList()와 isSearch()는 keyword, animalHeaderName 등의 값으로 자동 판단됩니다.
 
+        // 2-3. 페이징 설정
         int page = (pageFilterVO.getPage() > 0) ? pageFilterVO.getPage() : 1;
         int begin = (page - 1) * pageSize + 1;
         int end = page * pageSize;
+        
+        pageFilterVO.setBegin(begin); // ⭐ PageFilterVO에 필드를 추가하여 이제 오류 없이 작동합니다.
+        pageFilterVO.setEnd(end);     // ⭐ 
 
-        List<BoardVO> boardList = boardDao.selectFilterList(begin, end, orderBy, boardType, keyword);
+        // 3. DAO 호출
+        List<AdoptDetailVO> boardList = boardDao.selectFilterListWithPaging(pageFilterVO, boardType);
         int totalCount = boardDao.countFilter(pageFilterVO, boardType);
 
-        pageFilterVO.setDataCount(totalCount);
+        // 4. Model에 데이터 저장
+        pageFilterVO.setDataCount(totalCount); // 페이징 계산을 위해 총 개수 저장
 
         List<HeaderDto> animalList = headerDao.selectAll("animal").stream()
                 .filter(h -> h.getHeaderNo() != 0)
@@ -156,14 +183,13 @@ public class AdoptionBoardController {
         model.addAttribute("typeList", typeList);
         model.addAttribute("category", categoryDto);
         model.addAttribute("boardType", boardType);
-        model.addAttribute("pageVO", pageFilterVO);
+        model.addAttribute("pageVO", pageFilterVO); 
         model.addAttribute("selectedAnimalHeaderName", pageFilterVO.getAnimalHeaderName());
         model.addAttribute("selectedTypeHeaderName", pageFilterVO.getTypeHeaderName());
         model.addAttribute("selectedOrderBy", orderBy);
 
         return "/WEB-INF/views/board/adoption/list.jsp";
     }
-
     // =============================
     // 🔹 글 수정 페이지
     // =============================
@@ -179,8 +205,7 @@ public class AdoptionBoardController {
             throw new RuntimeException("로그인이 필요합니다."); 
         }
         
-        // 2. 게시글 상세 정보 (AdoptDetailVO) 조회
-        // AdoptDetailVO는 boardDto와 animalDto의 핵심 정보를 모두 포함하고 있습니다.
+      
         AdoptDetailVO detailVO = boardDao.selectAdoptDetail(boardNo);
         
         if (detailVO == null) {
@@ -213,12 +238,17 @@ public class AdoptionBoardController {
         return "/WEB-INF/views/board/adoption/edit.jsp";
     }
     @PostMapping("/edit")
-	public String edit(@ModelAttribute BoardDto boardDto) {
-
+	public String edit(
+        @ModelAttribute BoardDto boardDto,
+        @RequestParam int animalNo // 🌟 JSP 폼에서 전송된 name="animalNo" 값을 직접 받습니다.
+    ) {
+        
 		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
 		if (beforeDto == null)
 			throw new TargetNotfoundException("존재하지 않는 글");
 
+        // [첨부 이미지 변경 로직]
+        // Jsoup을 사용한 게시글 내용 내 이미지(attachment) 처리 로직
 		Set<Integer> before = new HashSet<>();
 		Document beforeDocument = Jsoup.parse(beforeDto.getBoardContent());
 		Elements beforeElements = beforeDocument.select(".custom-image");
@@ -239,10 +269,19 @@ public class AdoptionBoardController {
 		for (int attachmentNo : minus) {
 			mediaService.delete(attachmentNo);
 		}
+        
+        // 1. 게시글 본문 및 헤더 업데이트 (board 테이블)
 		boardDao.update(boardDto);
+
+        // 2. 🌟 [핵심 수정] board_animal 연결 테이블 업데이트
+        // animalNo가 폼에서 직접 전달되었으므로 이 값을 사용합니다.
+        if (animalNo != 0) {
+            // boardDao.updateBoardAnimal(boardNo, animalNo) 호출
+            boardDao.updateBoardAnimal(boardDto.getBoardNo(), animalNo);
+        }
+        
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}
-
     // =============================
     // 🔹 글 삭제 (첨부 안전 처리 추가)
     // =============================

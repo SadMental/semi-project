@@ -352,41 +352,60 @@ a:hover { color: #FFB8A2; }
                </div>
 		    </c:when><c:otherwise>
 		        <table>
-		            <thead>
-		                <tr>
-		                    <th style="width: 5%;">No</th>
-		                    <th style="width: 10%;">분류</th>
-		                    <th style="width: 10%;">종류</th>
-		                    <th style="width: 45%;">제목</th>
-		                    <th style="width: 10%;">작성자</th>
-		                    <th style="width: 10%;">조회수</th>
-		                    <th style="width: 10%;">작성일</th>
-		                </tr>
-		            </thead>
-		            <tbody>
-		                <c:forEach var="boardDto" items="${boardList}">
-		                    <tr>
-		                        <td>${boardDto.boardNo}</td>
-		                        <td>${boardDto.typeHeaderName}</td>
-		                        <td>${boardDto.animalHeaderName}</td>
-		                        <td style="text-align: left; padding-left: 20px; font-weight: 600;">
-		                            <a href="detail?boardNo=${boardDto.boardNo}">
-                                       <i class="fas fa-heart" style="color:#FFB8A2; margin-right:5px;"></i>
-		                                ${boardDto.boardTitle}
-		                                <c:if test="${boardDto.boardReply > 0}">
-		                                    <span class="reply-count">(${boardDto.boardReply})</span>
-		                                </c:if>
-		                            </a>
-		                        </td>
-		                        <td>${boardDto.boardWriter}</td>
-		                        <td><i class="fas fa-eye" style="margin-right: 5px;"></i> ${boardDto.boardView}</td>
-		                        <td style="font-size: 0.9em; color:#A97B5F;">
-                                   <fmt:parseDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm:ss" var="wtimeDate" />
-                                   <fmt:formatDate value="${wtimeDate}" pattern="yy.MM.dd" />
-                               </td>
-		                    </tr>
-		                </c:forEach>
-		            </tbody>
+					<thead>
+					    <tr>
+					        <th style="width: 5%;">No</th>
+					        <th style="width: 10%;">분류</th>
+					        <th style="width: 10%;">종류</th>
+					        <th style="width: 22%;">제목</th>
+					        <th style="width: 23%;">작성자</th>
+					        <th style="width: 12%;">분양여부</th> <th style="width: 9%;">조회수</th>
+					        <th style="width: 9%;">작성일</th>
+					    </tr>
+					</thead>
+					<tbody>
+					    <c:forEach var="boardDto" items="${boardList}">
+					        <tr>
+					            <td>${boardDto.boardNo}</td>
+					            <td>${boardDto.typeHeaderName}</td>
+					            <td>${boardDto.animalHeaderName}</td>
+					            <td style="text-align: left; padding-left: 20px; font-weight: 600;">
+					                <a href="detail?boardNo=${boardDto.boardNo}">
+					                   <i class="fas fa-heart" style="color:#FFB8A2; margin-right:5px;"></i>
+					                    ${boardDto.boardTitle}
+					                    <c:if test="${boardDto.boardReply > 0}">
+					                        <span class="reply-count">(${boardDto.boardReply})</span>
+					                    </c:if>
+					                </a>
+					            </td>
+					            <td>
+					                ${boardDto.memberNickname}
+					                <c:if test="${not empty boardDto.badgeImage}">
+					                    ${boardDto.badgeImage}
+					                </c:if>
+					                <c:if test="${not empty boardDto.levelName}">
+					                    <span class="level-badge">${boardDto.levelName}</span>
+					                </c:if>
+					            </td>
+					            
+					            <td style="font-size: 1.2em;">
+					                <c:choose>
+					                    <c:when test="${boardDto.animalPermission eq 't' or boardDto.animalPermission eq '분양 가능'}">
+					                        <span title="분양 가능" style="color: green;">✅</span> 
+					                    </c:when>
+					                    <c:otherwise>
+					                        <span title="분양 완료" style="color: red;">❌</span> 
+					                    </c:otherwise>
+					                </c:choose>
+					            </td>
+					            <td><i class="fas fa-eye" style="margin-right: 5px;"></i> ${boardDto.boardView}</td>
+					            <td style="font-size: 0.9em; color:#A97B5F;">
+					               <fmt:parseDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm:ss" var="wtimeDate" />
+					               <fmt:formatDate value="${wtimeDate}" pattern="yy.MM.dd" />
+					           </td>
+					        </tr>
+					    </c:forEach>
+					</tbody>
 		            <tfoot>
 		                <tr>
 		                    <td colspan="7" style="border-top: 1px solid #EED9C4; padding-top: 20px;">

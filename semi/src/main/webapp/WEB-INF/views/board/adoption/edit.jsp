@@ -126,17 +126,16 @@
        </c:forEach>
    </select>
    
-   <c:if test="${sessionScope.loginLevel == 0}">
-       <label for="typeHeader">게시글 분류</label>
+   <label for="typeHeader">게시글 분류</label>
        <select name="boardTypeHeader" id="typeHeader" required>
            <option value="">-- 분류 선택 --</option>
+          
            <c:forEach var="type" items="${typeList}">
-               <option value="${type.headerNo}" ${type.headerNo != adoptDetailVO.boardTypeHeader? '':'selected'}>
+               <option value="${type.headerNo}" ${type.headerNo == adoptDetailVO.boardTypeHeader ? 'selected' : ''}>
                    ${type.headerName}
                </option>
            </c:forEach>
        </select>
-   </c:if>
    
    <label for="animalNo">분양할 동물 선택</label>
    <select name="animalNo" id="animalNo" required>

@@ -12,14 +12,18 @@ import lombok.NoArgsConstructor;
 public class PageFilterVO {
     
     // 🔹 페이징 관련
-    private int page = 1;          // 현재 페이지
-    private int size = 10;         // 한 페이지당 표시할 개수
-    private int dataCount;         // 전체 데이터 개수
-    private int blockSize = 10;    // 페이지 블록 크기
-
+    private int page = 1;      // 현재 페이지
+    private int size = 10;     // 한 페이지당 표시할 개수
+    private int dataCount;     // 전체 데이터 개수
+    private int blockSize = 10; // 페이지 블록 크기
+    
+    // ⭐ 추가된 필드: DAO로 전달할 시작/끝 행 번호
+    private int begin;
+    private int end;
+    
     // 🔹 검색 및 필터 관련
-    private String column;         // 검색 컬럼 (board_title, board_content 등)
-    private String keyword;        // 검색어
+    private String column;       // 검색 컬럼 (board_title, board_content 등)
+    private String keyword;      // 검색어
     private String animalHeaderName; // 동물 헤더명 (예: 강아지, 고양이)
     private String typeHeaderName;   
     
@@ -27,10 +31,14 @@ public class PageFilterVO {
     private String orderBy = "wtime"; // 정렬 기준 (view, like, wtime)
     
     // =============================
-    // 🔸 상태 판단 메서드
+    // 🔸 상태 판단 메서드 (수정됨: 헤더 필터 포함)
     // =============================
+    
+    
     public boolean isSearch() {
-        return keyword != null && !keyword.isEmpty();
+        return (keyword != null && !keyword.isEmpty()) || 
+               (animalHeaderName != null && !animalHeaderName.isEmpty()) || 
+               (typeHeaderName != null && !typeHeaderName.isEmpty());
     }
 
     public boolean isList() {
@@ -38,16 +46,17 @@ public class PageFilterVO {
     }
 
     // =============================
-    // 🔸 페이징 계산 메서드
+    // 🔸 페이징 계산 메서드 (begin/end는 필드 값 반환으로 수정)
     // =============================
+    // ⭐⭐ 이제 이 메소드는 컨트롤러에서 set된 필드 값을 반환합니다.
     public int getBegin() {
-        return (page - 1) * size + 1;
+        return begin;
     }
 
     public int getEnd() {
-        return page * size;
+        return end;
     }
-
+    
     public int getTotalPage() {
         return (dataCount - 1) / size + 1;
     }
@@ -90,13 +99,21 @@ public class PageFilterVO {
         StringBuilder sb = new StringBuilder();
         sb.append("size=").append(size);
 
-        if (orderBy != null) sb.append("&orderBy=").append(orderBy);
+        if (orderBy != null && !orderBy.isEmpty()) sb.append("&orderBy=").append(orderBy);
+
         if (animalHeaderName != null && !animalHeaderName.isEmpty())
             sb.append("&animalHeaderName=").append(animalHeaderName);
+            
         if (typeHeaderName != null && !typeHeaderName.isEmpty())
             sb.append("&typeHeaderName=").append(typeHeaderName);
-        if (keyword != null && !keyword.isEmpty())
+            
+        if (keyword != null && !keyword.isEmpty()) {
             sb.append("&keyword=").append(keyword);
+            
+            if (column != null && !column.isEmpty()) {
+                sb.append("&column=").append(column);
+            }
+        }
 
         return sb.toString();
     }
